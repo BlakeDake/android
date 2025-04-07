@@ -255,14 +255,16 @@ private fun AutoFillContent(
                     .fillMaxWidth()
                     .standardHorizontalMargin(),
             )
-            PrivilegedAppsRow(
-                text = R.string.privileged_apps.asText(),
-                onClick = autoFillHandlers.onPrivilegedAppsClick,
-                onHelpLinkClick = autoFillHandlers.onPrivilegedAppsHelpLinkClick,
-                modifier = Modifier
-                    .standardHorizontalMargin()
-                    .fillMaxWidth(),
-            )
+            if (state.showPrivilegedAppsRow) {
+                PrivilegedAppsRow(
+                    text = R.string.privileged_apps.asText(),
+                    onClick = autoFillHandlers.onPrivilegedAppsClick,
+                    onHelpLinkClick = autoFillHandlers.onPrivilegedAppsHelpLinkClick,
+                    modifier = Modifier
+                        .standardHorizontalMargin()
+                        .fillMaxWidth(),
+                )
+            }
             Spacer(modifier = Modifier.height(8.dp))
         }
         AccessibilityAutofillSwitch(
@@ -443,6 +445,7 @@ private fun AutoFillContent_DynamicColorPreview() {
                 showAutofillActionCard = true,
                 activeUserId = "",
                 chromeAutofillSettingsOptions = persistentListOf(),
+                showPrivilegedAppsRow = true,
             ),
             autoFillHandlers = AutoFillHandlers(
                 onAutofillActionCardClick = {},

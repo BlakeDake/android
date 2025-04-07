@@ -43,6 +43,7 @@ fun <T : Any> FlagKey<T>.ListItemContent(
     FlagKey.SimpleLoginSelfHostAlias,
     FlagKey.ChromeAutofill,
     FlagKey.MobileErrorReporting,
+    FlagKey.UserTrustedPrivilegedAppManagement,
         -> {
         @Suppress("UNCHECKED_CAST")
         BooleanFlagItem(
@@ -107,4 +108,7 @@ private fun <T : Any> FlagKey<T>.getDisplayLabel(): String = when (this) {
     FlagKey.SimpleLoginSelfHostAlias -> stringResource(R.string.simple_login_self_hosted_aliases)
     FlagKey.ChromeAutofill -> stringResource(R.string.enable_chrome_autofill)
     FlagKey.MobileErrorReporting -> stringResource(R.string.enable_error_reporting_dialog)
+    FlagKey.UserTrustedPrivilegedAppManagement -> {
+        stringResource(R.string.user_trusted_privileged_app_management)
+    }
 }

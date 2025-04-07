@@ -609,4 +609,5 @@ private val DEFAULT_STATE: AutoFillState = AutoFillState(
     showAutofillActionCard = false,
     activeUserId = "activeUserId",
     chromeAutofillSettingsOptions = persistentListOf(),
+    showPrivilegedAppsRow = true,
 )

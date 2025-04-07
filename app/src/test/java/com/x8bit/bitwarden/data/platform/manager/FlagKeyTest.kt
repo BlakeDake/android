@@ -81,6 +81,10 @@ class FlagKeyTest {
             FlagKey.ChromeAutofill.keyName,
             "android-chrome-autofill",
         )
+        assertEquals(
+            FlagKey.UserTrustedPrivilegedAppManagement.keyName,
+            "user-trusted-privileged-app-management",
+        )
     }
 
     @Test
@@ -104,6 +108,7 @@ class FlagKeyTest {
                 FlagKey.SimpleLoginSelfHostAlias,
                 FlagKey.CipherKeyEncryption,
                 FlagKey.ChromeAutofill,
+                FlagKey.UserTrustedPrivilegedAppManagement,
             ).all {
                 !it.defaultValue
             },
@@ -132,6 +137,7 @@ class FlagKeyTest {
                 FlagKey.AnonAddySelfHostAlias,
                 FlagKey.SimpleLoginSelfHostAlias,
                 FlagKey.ChromeAutofill,
+                FlagKey.UserTrustedPrivilegedAppManagement,
             ).all {
                 it.isRemotelyConfigured
             },

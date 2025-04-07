@@ -45,6 +45,7 @@ sealed class FlagKey<out T : Any> {
                 SimpleLoginSelfHostAlias,
                 ChromeAutofill,
                 MobileErrorReporting,
+                UserTrustedPrivilegedAppManagement,
             )
         }
     }
@@ -229,6 +230,15 @@ sealed class FlagKey<out T : Any> {
      */
     data object ChromeAutofill : FlagKey<Boolean>() {
         override val keyName: String = "android-chrome-autofill"
+        override val defaultValue: Boolean = false
+        override val isRemotelyConfigured: Boolean = true
+    }
+
+    /**
+     * Data object holding the feature flag key to enable user-trusted privileged app management.
+     */
+    data object UserTrustedPrivilegedAppManagement : FlagKey<Boolean>() {
+        override val keyName: String = "user-trusted-privileged-app-management"
         override val defaultValue: Boolean = false
         override val isRemotelyConfigured: Boolean = true
     }

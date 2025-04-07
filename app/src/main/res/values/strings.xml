@@ -1250,4 +1250,5 @@ Do you want to switch to this account?</string>
   <string name="installed_apps">Installed apps</string>
   <string name="trusted_by_x">Trusted by %s</string>
   <string name="all_trusted_apps">All trusted apps</string>
+    <string name="user_trusted_privileged_app_management">User-trusted privileged app management</string>
 </resources>
