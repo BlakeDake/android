@@ -54,7 +54,7 @@ class CallingAppInfoExtensionsTest {
     }
 
     @Test
-    fun `getCallingAppApkFingerprint should return null when app has multiple signers`() {
+    fun `getCallingAppApkFingerprint should return empty string when app has multiple signers`() {
         val mockMessageDigest = mockk<MessageDigest> {
             every { digest(any()) } returns DEFAULT_SIGNATURE.toByteArray()
         }
@@ -69,7 +69,7 @@ class CallingAppInfoExtensionsTest {
             every { signingInfo } returns mockSigningInfo
             every { getOrigin(any()) } returns null
         }
-        assertNull(appInfo.getSignatureFingerprintAsHexString())
+        assertEquals("", appInfo.getSignatureFingerprintAsHexString())
     }
 
     @Test

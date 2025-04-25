@@ -24,7 +24,7 @@ object Fido2NetworkModule {
     ): DigitalAssetLinkService =
         DigitalAssetLinkServiceImpl(
             digitalAssetLinkApi = retrofits
-                .createStaticRetrofit()
+                .createStaticRetrofit(baseUrl = "https://digitalassetlinks.googleapis.com/")
                 .create(),
         )
 }
