@@ -58,9 +58,3 @@ com.x8bit.bitwarden.ui.vault.feature.movetoorganization.VaultMoveToOrganizationS
 com.x8bit.bitwarden.ui.vault.feature.qrcodescan.QrCodeScanScreenTest
 com.x8bit.bitwarden.ui.vault.feature.vault.VaultScreenTest
 com.x8bit.bitwarden.ui.vault.feature.verificationcode.VerificationCodeScreenTest
-com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.ItemListingScreenTest
-com.bitwarden.authenticator.ui.authenticator.feature.manualcodeentry.ManualCodeEntryScreenTest
-com.bitwarden.authenticator.ui.authenticator.feature.qrcodescan.QrCodeScanScreenTest
-com.bitwarden.authenticator.ui.authenticator.feature.tutorial.TutorialScreenTest
-com.bitwarden.authenticator.ui.platform.feature.debugmenu.DebugMenuScreenTest
-com.bitwarden.authenticator.ui.platform.feature.settings.SettingsScreenTest
