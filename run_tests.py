@@ -8,7 +8,7 @@ test_file_path = 'ui_test_fqns.txt'
 # Use gradlew.bat on Windows, ./gradlew otherwise
 gradle_executable = '.\\gradlew.bat' if platform.system() == "Windows" else './gradlew'
 gradle_task = 'testStandardDebugUnitTest' # Task name common to modules
-gradle_command_base = [gradle_executable, gradle_task]
+gradle_command_base = [gradle_executable, gradle_task, '--rerun-tasks']
 
 # Check if the test file exists
 if not os.path.exists(test_file_path):
@@ -51,7 +51,7 @@ try:
     # to avoid it if possible. Let's try without first. If gradlew.bat fails,
     # add shell=True back.
     # Ensure gradlew has execute permissions on non-Windows systems.
-    result = subprocess.run(gradle_command_full, check=True, text=True, capture_output=True)
+    result = subprocess.run(gradle_command_full, check=True, text=True)
     print("Gradle output:\n", result.stdout)
     if result.stderr:
         print("Gradle errors/warnings:\n", result.stderr)
