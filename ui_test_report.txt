@@ -1,25 +1,21 @@
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/accountsetup/SetupAutofillScreenTest.kt", "SetupAutofillScreenTest.kt (15)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/accountsetup/SetupAutofillScreenTest.kt", "SetupAutofillScreenTest.kt (12)")
 Turning on autofill should send AutofillServiceChanged with value of true
 Turning off autofill should send AutofillServiceChanged with value of false
 Continue click should send correct action
 Turn on later click should send correct action
 Turn on later component should not be displayed when not in initial setup
-NavigateToAutoFillSettings should start system autofill settings activity
-NavigateToAutoFillSettings should send AutoFillServiceFallback action when intent fails
 Show autofill fallback dialog when dialog state is AutoFillFallbackDialog
 When autofill fallback dialog is dismissed, sends action to dismiss dialog and is removed when state is null
 Show turn on later dialog when dialog state is TurnOnLaterDialog
 On confirm click on TurnOnLaterDialog, sends action to turn on later
 When turn on later dialog is dismissed, sends action to dismiss dialog and is removed when state is null
-on NavigateBack event should invoke onNavigateBack
 close icon should not show when in initial setup
 close icon should show when not initial setup and send action when clicked
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/accountsetup/SetupCompleteScreenTest.kt", "SetupCompleteScreenTest.kt (2)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/accountsetup/SetupCompleteScreenTest.kt", "SetupCompleteScreenTest.kt (1)")
 When continue button clicked sends CompleteSetup action
-When system back behavior is triggered sends CompleteSetup action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/accountsetup/SetupUnlockScreenTest.kt", "SetupUnlockScreenTest.kt (28)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/accountsetup/SetupUnlockScreenTest.kt", "SetupUnlockScreenTest.kt (27)")
 header should display in landscape mode
 on unlock with biometrics should be toggled on or off according to state
 on unlock with biometrics toggle should send EnableBiometricsClick when isUnlockWithBiometricsEnabled is false
@@ -45,24 +41,19 @@ on Set up later dialog cancel click should dismiss the dialog
 on Set up later dialog confirm click should dismiss the dialog and send SetUpLaterClick
 Loading Dialog should be displayed according to state
 Error Dialog should be displayed according to state and send DismissDialog action on click
-on NavigateBack event should invoke onNavigateBack
 close icon should not show when in initial setup
 close icon should show when not initial setup and send action when clicked
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/checkemail/CheckEmailScreenTest.kt", "CheckEmailScreenTest.kt (5)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/checkemail/CheckEmailScreenTest.kt", "CheckEmailScreenTest.kt (3)")
 close button click should send BackClick action
 open email app button click should send OpenEmailClcik action
-NavigateBack should call onNavigateBack
-NavigateToEmailApp should call openEmailApp
 change email button click should send ChangeEmailClick action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/completeregistration/CompleteRegistrationScreenTest.kt", "CompleteRegistrationScreenTest.kt (24)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/completeregistration/CompleteRegistrationScreenTest.kt", "CompleteRegistrationScreenTest.kt (19)")
 determine if using the old ui by title text
 call to action with valid input click should send CreateAccountClick action
 close click should send CloseClick action
 check data breaches click should send CheckDataBreachesToggle action
-NavigateBack event should invoke navigate back lambda
-system back event should send BackClick action
 password input change should send PasswordInputChange action
 confirm password input change should send ConfirmPasswordInputChange action
 password hint input change should send PasswordHintChange action
@@ -72,9 +63,6 @@ clicking Yes on the HIBP dialog should send ContinueWithBreachedPasswordClick ac
 when BasicDialogState is Shown should show dialog
 password strength should change as state changes
 toggling one password field visibility should toggle the other
-NavigateToPreventAccountLockout event should invoke navigate to prevent account lockout lambda
-NavigateToPasswordGuidance event should invoke navigate to password guidance lambda
-NavigateToLogin event should invoke navigate to login lambda
 determine if using the new ui by title text
 call to action state should update with input based on if both fields are populated
 Click on action card should send MakePasswordStrongClick action
@@ -86,17 +74,12 @@ Header should be displayed in landscape mode
 PasswordStrengthIndicator with minimum character count met displays minimum character count
 PasswordStrengthIndicator with no minimum character count met does not minimum character count
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/createaccount/CreateAccountScreenTest.kt", "CreateAccountScreenTest.kt (22)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/createaccount/CreateAccountScreenTest.kt", "CreateAccountScreenTest.kt (17)")
 app bar submit click should send SubmitClick action
 close click should send CloseClick action
 check data breaches click should send CheckDataBreachesToggle action
 accept policies should be toggled on or off according to the state
 accept policies click should send AcceptPoliciesToggle action
-NavigateBack event should invoke navigate back lambda
-NavigateToLogin event should invoke navigate login lambda
-NavigateToCaptcha event should invoke intent manager
-NavigateToPrivacyPolicy event should invoke intent manager
-NavigateToTerms event should invoke intent manager
 email input change should send EmailInputChange action
 password input change should send PasswordInputChange action
 confirm password input change should send ConfirmPasswordInputChange action
@@ -110,16 +93,11 @@ toggling one password field visibility should toggle the other
 terms of service click should send TermsClick action
 privacy policy click should send PrivacyPolicyClick action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/enterprisesignon/EnterpriseSignOnScreenTest.kt", "EnterpriseSignOnScreenTest.kt (15)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/enterprisesignon/EnterpriseSignOnScreenTest.kt", "EnterpriseSignOnScreenTest.kt (10)")
 app bar log in click should send LogInClick action
 close button click should send CloseButtonClick action
 organization identifier input change should send OrgIdentifierInputChange action
 organization identifier should change according to state
-NavigateBack should call onNavigateBack
-NavigateToSsoLogin should call startCustomTabsActivity
-NavigateToCaptcha should call startCustomTabsActivity
-NavigateToSetPassword should call onNavigateToSetPassword
-NavigateToTwoFactorLogin should call onNavigateToTwoFactorLogin
 error dialog should be shown or hidden according to the state
 loading dialog should be displayed according to state
 error dialog OK click should send DialogDismiss action
@@ -127,8 +105,7 @@ ConfirmKeyConnector dialog should be shown or hidden according to the state
 ConfirmKeyConnector Confirm click should send ConfirmKeyConnectorDomainClick action
 ConfirmKeyConnector Cancel click should send CancelKeyConnectorDomainClick action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/environment/EnvironmentScreenTest.kt", "EnvironmentScreenTest.kt (19)")
-NavigateBack event should invoke onNavigateBack
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/environment/EnvironmentScreenTest.kt", "EnvironmentScreenTest.kt (16)")
 close click should send CloseClick
 save click should send SaveClick
 error dialog should be shown or hidden according to the state
@@ -136,8 +113,6 @@ error dialog OK click should send ErrorDialogDismiss action
 server URL should change according to the state
 server URL change should send ServerUrlChange
 use system certificate click should send UseSystemKeyCertificateClick
-ShowSystemCertificateSelection event should show system certificate selection dialog
-system certificate selection should send SystemCertificateSelectionResultReceive action
 key alias should change according to the state
 web vault URL should change according to the state
 web vault server URL change should send WebVaultServerUrlChange
@@ -148,16 +123,12 @@ identity server URL change should send IdentityServerUrlChange
 icons server URL should change according to the state
 icons server URL change should send IconsServerUrlChange
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/expiredregistrationlink/ExpiredRegistrationLinkScreenTest.kt", "ExpiredRegistrationLinkScreenTest.kt (7)")
-System back event invokes CloseClicked action
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/expiredregistrationlink/ExpiredRegistrationLinkScreenTest.kt", "ExpiredRegistrationLinkScreenTest.kt (3)")
 CloseClicked sends NavigateBack action
 RestartRegistrationClicked sends RestartRegistrationClicked action
 GoToLoginClicked sends GoToLoginClicked action
-NavigateBack event invokes onNavigateBack
-NavigateToLogin event invokes onNavigateToLogin
-NavigateToStartRegistration event invokes onNavigateToStartRegistration
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/landing/LandingScreenTest.kt", "LandingScreenTest.kt (29)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/landing/LandingScreenTest.kt", "LandingScreenTest.kt (24)")
 account menu icon is present according to the state
 account menu icon click should show the account switcher
 account click in the account switcher should send SwitchAccountClick and close switcher
@@ -176,11 +147,6 @@ app settings button should be displayed according to state
 on app settings click should send AppSettingsClick action
 email address should change according to state
 email address change should send EmailInputChanged action
-NavigateToCreateAccount event should call onNavigateToCreateAccount
-NavigateToLogin event should call onNavigateToLogin
-NavigateToEnvironment event should call onNavigateToEvent
-NavigateToStartRegistration event should call onNavigateToStartRegistration
-NavigateToSettings event should call onNavigateToPreAuthSettings
 selecting environment should send EnvironmentOptionSelect action
 error dialog should be shown or hidden according to the state
 error dialog OK click should send DialogDismiss action
@@ -188,7 +154,7 @@ account already added dialog should be shown or hidden according to the state
 account already added dialog Cancel click should send DialogDismiss action
 account already added dialog Yes click should send ConfirmSwitchToMatchingAccountClick action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/login/LoginScreenTest.kt", "LoginScreenTest.kt (21)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/login/LoginScreenTest.kt", "LoginScreenTest.kt (16)")
 account menu icon is present according to the state
 account menu icon click should show the account switcher
 account click in the account switcher should send SwitchAccountClick and close switcher
@@ -205,51 +171,36 @@ Not you text click should send NotYouButtonClick action
 master password hint text click should send MasterPasswordHintClick action
 master password hint option menu click should send MasterPasswordHintClick action
 password input change should send PasswordInputChanged action
-NavigateBack should call onNavigateBack
-NavigateToCaptcha should call intentManager startCustomTabsActivity
-NavigateToMasterPasswordHint should call onNavigateToMasterPasswordHint
-NavigateToEnterpriseSignOn should call onNavigateToEnterpriseSignOn
-NavigateToLoginWithDevice should call onNavigateToLoginWithDevice
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/loginwithdevice/LoginWithDeviceScreenTest.kt", "LoginWithDeviceScreenTest.kt (10)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/loginwithdevice/LoginWithDeviceScreenTest.kt", "LoginWithDeviceScreenTest.kt (7)")
 close button click should send CloseButtonClick action
 dismissing dialog should send DismissDialog
 resend notification click should send ResendNotificationClick action
 view all log in options click should send ViewAllLogInOptionsClick action
-NavigateBack should call onNavigateBack
-NavigateBack should call onNavigateToTwoFactorLoginEmail
-NavigateToCaptcha should call launchUri on intentManager
 progress bar should be displayed according to state
 progress dialog should be displayed according to state
 error dialog should be displayed according to state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/masterpasswordgenerator/MasterPasswordGeneratorScreenTest.kt", "MasterPasswordGeneratorScreenTest.kt (8)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/masterpasswordgenerator/MasterPasswordGeneratorScreenTest.kt", "MasterPasswordGeneratorScreenTest.kt (5)")
 Generated password field state should update with ViewModel state
-NavigateBack event should invoke onNavigateBack lambda
-NavigateToPreventLockout event should invoke onNavigateToPreventLockout lambda
 Verify clicking the back navigation button sends correct action
 Verify clicking the save text button sends correct action
 Verify clicking the generate button sends correct action
 Verify clicking the learn to prevent lockout text sends correct action
-Verify navigating back with password invokes the lambda
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/masterpasswordguidance/MasterPasswordGuidanceScreenTest.kt", "MasterPasswordGuidanceScreenTest.kt (4)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/masterpasswordguidance/MasterPasswordGuidanceScreenTest.kt", "MasterPasswordGuidanceScreenTest.kt (2)")
 Close button click should invoke send of CloseAction
 Generator card click should invoke send of TryPasswordGeneratorAction
-NavigateBack event should invoke onNavigateBack lambda
-NavigateToPasswordGenerator event should invoke onNavigateToGeneratePassword lambda
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/masterpasswordhint/MasterPasswordHintScreenTest.kt", "MasterPasswordHintScreenTest.kt (6)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/masterpasswordhint/MasterPasswordHintScreenTest.kt", "MasterPasswordHintScreenTest.kt (5)")
 email input change should send EmailInputChange action
 should show success dialog when PasswordHintSent state is set
 should show error dialog when Error state is set
 should show loading dialog when Loading state is set
 clicking ok in dialog should send DismissDialog action
-NavigateBack should call onNavigateBack
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/preventaccountlockout/PreventAccountLockoutScreenTest.kt", "PreventAccountLockoutScreenTest.kt (2)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/preventaccountlockout/PreventAccountLockoutScreenTest.kt", "PreventAccountLockoutScreenTest.kt (1)")
 When navigation button is clicked CloseClickAction is sent
-NavigateBackEvent from ViewModel invokes onBackNavigation lambda
 
 =HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/removepassword/RemovePasswordScreenTest.kt", "RemovePasswordScreenTest.kt (7)")
 dialog should update according to state
@@ -260,7 +211,7 @@ leave organization button click should emit LeaveOrganizationClick
 leave organization confirm press should emit LeaveOrganizationConfirm
 leave organization cancel press should emil DialogDismiss
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/resetPassword/ResetPasswordScreenTest.kt", "ResetPasswordScreenTest.kt (14)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/resetPassword/ResetPasswordScreenTest.kt", "ResetPasswordScreenTest.kt (13)")
 basicDialog should update according to state
 loadingDialog should update according to state
 logout button click from more menu should display confirmation dialog and emit ConfirmLogoutClick
@@ -273,7 +224,6 @@ password input change should send PasswordInputChange action
 retype password input change should send RetypePasswordInputChanged action
 password hint input change should send PasswordHintInputChanged action
 toggling one password field visibility should toggle the other
-NavigateToPreventAccountLockout event calls onNavigateToPreventAccountLockout
 When learn new ways text is clicked, send correct action
 
 =HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/setpassword/SetPasswordScreenTest.kt", "SetPasswordScreenTest.kt (8)")
@@ -286,32 +236,21 @@ retype password input change should send RetypePasswordInputChanged action
 password hint input change should send PasswordHintInputChanged action
 toggling one password field visibility should toggle the other
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/startregistration/StartRegistrationScreenTest.kt", "StartRegistrationScreenTest.kt (20)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/startregistration/StartRegistrationScreenTest.kt", "StartRegistrationScreenTest.kt (12)")
 close click should send CloseClick action
-NavigateBack event should invoke navigate back lambda
-onNavigateToCompleteRegistration event should invoke navigate to complete registration
-NavigateToCheckEmail event should invoke navigate to check email
-NavigateToEnvironment event should invoke navigate to environment
-NavigateToPrivacyPolicy event should invoke intent manager
-NavigateToTerms event should invoke intent manager
-NavigateToUnsubscribe event should invoke intent manager
 email input change should send EmailInputChange action
 name input change should send NameInputChange action
 clicking OK on the error dialog should send ErrorDialogDismiss action
 when BasicDialogState is Shown should show dialog
 clicking the server tool tip should send ServerGeologyHelpClickAction
 server tool tip should not exist if not in new onboarding ui
-when NavigateToServerSelectionInfo is observed event should invoke intent manager
 when environment selected in dialog should send EnvironmentTypeSelect action
 when continue button clicked should send ContinueClick action
 when unsubscribe custom action invoked should send UnsubscribeMarketingEmailsClick
 when terms and conditions custom action invoked should send TermsClick
 when privacy policy custom action invoked should send TermsClick
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/trusteddevice/TrustedDeviceScreenTest.kt", "TrustedDeviceScreenTest.kt (17)")
-on NavigateToApproveWithDevice event should invoke onNavigateToAdminApproval
-on NavigateToApproveWithDevice event should invoke onNavigateToLoginWithOtherDevice
-on NavigateToLockScreen event should invoke NavigateToLockScreen
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/trusteddevice/TrustedDeviceScreenTest.kt", "TrustedDeviceScreenTest.kt (14)")
 on back click should send BackClick
 on remember toggle changed should send RememberToggle
 continue button should be displayed according to state
@@ -327,7 +266,7 @@ remember this device toggle should update according to state
 email and environment label should update according to state
 dialog should update according to state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/twofactorlogin/TwoFactorLoginScreenTest.kt", "TwoFactorLoginScreenTest.kt (24)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/twofactorlogin/TwoFactorLoginScreenTest.kt", "TwoFactorLoginScreenTest.kt (19)")
 basicDialog should update according to state
 close button click should send CloseButtonClick action
 code input change should send CodeInputChanged action
@@ -344,21 +283,11 @@ input field visibility should update according to state
 options menu icon click should show the auth method options
 options menu option click should should send SelectAuthMethod and close the menu
 title text should update according to state
-NavigateBack should call onNavigateBack
-NavigateToCaptcha should call intentManager startCustomTabsActivity
-NavigateToDuo should call intentManager startCustomTabsActivity
-NavigateToDuoNavigateToWebAuth should call intentManager startCustomTabsActivity
-NavigateToRecoveryCode should launch the recovery code uri
 remember me should not be visible if isNewDeviceVerification is true
 if isNewDeviceVerification is true description should contain We don't recognize this device string
 if isNewDeviceVerification is false description should not contain We don't recognize this device string
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/vaultunlock/VaultUnlockScreenTest.kt", "VaultUnlockScreenTest.kt (33)")
-on PromptForBiometrics should call promptBiometrics on biometricsManager
-on biometrics authentication success should send BiometricsUnlockSuccess
-on biometrics authentication lockout should send BiometricsLockOut
-on Fido2GetCredentialsError should call completeFido2GetCredentialRequest on fido2CompletionManager
-on Fido2AssertCredentialError should call completeFido2AssertCredential on fido2CompletionManager
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/vaultunlock/VaultUnlockScreenTest.kt", "VaultUnlockScreenTest.kt (28)")
 account icon click should show the account switcher
 account click in the account switcher should send AccountSwitchClick and close switcher
 add account click in the account switcher should send AddAccountClick and close switcher
@@ -388,14 +317,11 @@ biometrics not supported dialog shows correctly
 DismissBiometricsNoLongerSupportedDialog should be sent when dialog is dismissed
 when biometric is needed but no longer supported BiometricsNoLongerSupported action is sent
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/welcome/WelcomeScreenTest.kt", "WelcomeScreenTest.kt (7)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/welcome/WelcomeScreenTest.kt", "WelcomeScreenTest.kt (4)")
 pages should display and update according to state
 pages should display and update according to state in landscape mode
-NavigateToCreateAccount event should call onNavigateToCreateAccount
-NavigateToLogin event should call onNavigateToLogin
 create account button click should send CreateAccountClick action
 login button click should send LoginClick action
-on NavigateToStartRegistration event should call onNavigateToStartRegistration
 
 =HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/base/util/StringRestExtensionsTest.kt", "StringRestExtensionsTest.kt (6)")
 toAnnotatedString should add Clickable LinkAnnotation to highlighted string
@@ -405,8 +331,7 @@ string with args should only use the arguments available in the string
 string with arg annotations but no passed in args should just append empty string
 string with no annotations with args should just be handled as normal annotated string
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/debugmenu/DebugMenuScreenTest.kt", "DebugMenuScreenTest.kt (11)")
-onNavigateBack should set onNavigateBackCalled to true
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/debugmenu/DebugMenuScreenTest.kt", "DebugMenuScreenTest.kt (10)")
 onNavigateBack should send action to viewModel
 feature flag content should not display if the state is empty
 feature flag content should display if the state is not empty
@@ -418,13 +343,7 @@ Show onboarding carousel should send action when enabled and clicked
 show onboarding carousel should not send action when not enabled
 reset all coach mark tours should send ResetCoachMarkTourStatuses action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/search/SearchScreenTest.kt", "SearchScreenTest.kt (33)")
-NavigateBack should call onNavigateBack
-NavigateToEditSend should call onNavigateToEditSend
-NavigateToEditCipher should call onNavigateToEditCipher
-NavigateToViewCipher should call onNavigateToViewCipher
-NavigateToUrl should call launchUri on the IntentManager
-ShowShareSheet should call onNavigateBack
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/search/SearchScreenTest.kt", "SearchScreenTest.kt (27)")
 clicking back button should send BackClick action
 progressbar should be displayed according to state
 error text and retry should be displayed according to state
@@ -453,7 +372,7 @@ on send item delete overflow option click should display delete confirmation dia
 error dialog should be displayed according to state
 loading dialog should be displayed according to state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/about/AboutScreenTest.kt", "AboutScreenTest.kt (23)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/about/AboutScreenTest.kt", "AboutScreenTest.kt (15)")
 on back click should send BackClick
 on flight recorder tooltip click should emit FlightRecorderTooltipClick
 on view recorded logs click should emit ViewRecordedLogsClick
@@ -462,14 +381,6 @@ on bitwarden help center click should display confirmation dialog and confirm cl
 on privacy policy click should display confirmation dialog and confirm click should emit PrivacyPolicyClick
 on bitwarden web vault click should display confirmation dialog and confirm click should emit WebVaultClick
 on learn about organizations click should display confirmation dialog and confirm click should emit LearnAboutOrganizationsClick
-on NavigateBack should call onNavigateBack
-on NavigateToFlightRecorder should call onNavigateToFlightRecorder
-on NavigateToRecordedLogs should call onNavigateToRecordedLogs
-on NavigateToFlightRecorderHelp should call launchUri on IntentManager
-on NavigateToHelpCenter should call launchUri on IntentManager
-on NavigateToPrivacyPolicy should call launchUri on IntentManager
-on NavigateToLearnAboutOrganizations should call launchUri on IntentManager
-on NavigateToWebVault should call launchUri on IntentManager
 submit crash logs switch should be displayed according to state
 on submit crash logs toggle should send SubmitCrashLogsClick
 on version info click should send VersionClick
@@ -478,9 +389,8 @@ copyright info should update according to the state
 flight recorder info should update according to the state
 flight recorder switch should update according to the state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/AccountSecurityScreenTest.kt", "AccountSecurityScreenTest.kt (71)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/AccountSecurityScreenTest.kt", "AccountSecurityScreenTest.kt (63)")
 on Log out click should send LogoutClick
-on NavigateToApplicationDataSettings should launch the correct intent
 on pending login requests click should send PendingLoginRequestsClick
 on unlock with biometrics toggle should send EnableBiometricsClick when isUnlockWithBiometricsEnabled is false
 on unlock with biometrics toggle should send UnlockWithBiometricToggleDisabled
@@ -523,15 +433,10 @@ on session timeout action Logout confirmation dialog Yes click should dismiss th
 on session timeout action dialog cancel click should close the dialog
 session timeout action should be updated according to state
 on two-step login click should display confirmation dialog and confirm click should send TwoStepLoginClick
-on NavigateToTwoStepLogin should call launchUri on intentManager
 on change master password click should display confirmation dialog and confirm should send ChangeMasterPasswordClick
-on NavigateToChangeMasterPassword should call launchUri on intentManager
 on Lock now click should send LockNowClick
 on delete account click should send DeleteAccountClick
 on back click should send BackClick
-on NavigateBack should call onNavigateBack
-on NavigateToDeleteAccount should call onNavigateToDeleteAccount
-on NavigateToPendingRequests should call onNavigateToPendingRequests
 confirm dialog be shown or hidden according to the state
 on confirm logout click should send ConfirmLogoutClick
 on cancel click should send DismissDialog
@@ -540,7 +445,6 @@ Error dialog dismiss should send DismissDialog
 fingerprint phrase dialog should be shown or hidden according to the state
 on close click should send DismissDialog
 on learn more click should send FingerPrintLearnMoreClick
-on NavigateToFingerprintPhrase should call launchUri on intentManager
 loading dialog should be displayed according to state
 change master password row should be displayed according to state
 lock now row should be displayed according to state
@@ -549,11 +453,8 @@ sync with Bitwarden authenticator click should send AuthenticatorSyncToggle acti
 unlock action card should show when state is true and hide when false
 when unlock action card is visible clicking the cta button should send correct action
 when unlock action card is visible clicking dismissing should send correct action
-on NavigateToSetupUnlockScreen event invokes the correct lambda
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/deleteaccount/DeleteAccountScreenTest.kt", "DeleteAccountScreenTest.kt (9)")
-on NavigateBack should call onNavigateBack
-NavigateToDeleteAccountConfirmationScreen should call onNavigateToDeleteAccountConfirmationScreenCalled
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/deleteaccount/DeleteAccountScreenTest.kt", "DeleteAccountScreenTest.kt (7)")
 cancel click should emit CancelClick
 loading dialog presence should update with dialog state
 error dialog presence should update with dialog state
@@ -562,8 +463,7 @@ delete success dialog dismiss should emit DeleteAccountAction
 delete account dialog should dismiss on cancel click
 delete account dialog should emit DeleteAccountClick on submit click
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/deleteaccountconfirmation/DeleteAccountConfirmationScreenTest.kt", "DeleteAccountConfirmationScreenTest.kt (8)")
-on NavigateBack should call onNavigateBack
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/deleteaccountconfirmation/DeleteAccountConfirmationScreenTest.kt", "DeleteAccountConfirmationScreenTest.kt (7)")
 loading dialog presence should update with dialog state
 error dialog presence should update with dialog state
 delete success dialog presence should update with dialog state
@@ -572,25 +472,20 @@ Delete account button click should emit DeleteAccountClick
 Resend code button click should emit ResendCodeClick
 Verification code text input should emit VerificationCodeTextChange
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/loginapproval/LoginApprovalScreenTest.kt", "LoginApprovalScreenTest.kt (8)")
-on NavigateBack should call onNavigateBack
-system back should send CloseClick
-on ExitApp should call exit appliction
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/loginapproval/LoginApprovalScreenTest.kt", "LoginApprovalScreenTest.kt (5)")
 on Confirm login should send ApproveRequestClick
 on Deny login should send DeclineRequestClick
 on error dialog dismiss click should send ErrorDialogDismiss
 on change account dialog confirm click should send ApproveAccountChangeClick
 on change account dialog dismiss click should send CancelAccountChangeClick
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/pendingrequests/PendingRequestsScreenTest.kt", "PendingRequestsScreenTest.kt (6)")
-on NavigateBack should call onNavigateBack
-on NavigateToLoginApproval should call onNavigateToLoginApproval
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/pendingrequests/PendingRequestsScreenTest.kt", "PendingRequestsScreenTest.kt (4)")
 on decline all requests confirmation should send DeclineAllRequestsConfirm
 on decline all requests cancel should hide confirmation dialog
 on skip for now click should emit HideBottomSheet
 on Enable notifications click should emit HideBottomSheet
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/appearance/AppearanceScreenTest.kt", "AppearanceScreenTest.kt (9)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/appearance/AppearanceScreenTest.kt", "AppearanceScreenTest.kt (8)")
 on back click should send BackClick
 on language row click should display language selection dialog
 on language selection dialog item click should send LanguageChange
@@ -599,10 +494,8 @@ on theme row click should display theme selection dialog
 on theme selection dialog item click should send ThemeChange
 on theme selection dialog cancel click should dismiss dialog
 on show website icons row click should send ShowWebsiteIconsToggled
-on NavigateBack should call onNavigateBack
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/autofill/AutoFillScreenTest.kt", "AutoFillScreenTest.kt (35)")
-on NavigateToAccessibilitySettings should attempt to navigate to system settings
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/autofill/AutoFillScreenTest.kt", "AutoFillScreenTest.kt (30)")
 on NavigateToAutofillSettings should attempt to navigate to system settings and not show the fallback dialog when result is a success
 on NavigateToAutofillSettings should attempt to navigate to system settings and show the fallback dialog when result is not a success
 on NavigateToSettings should attempt to navigate to credential manager settings
@@ -627,20 +520,15 @@ on default URI match type dialog item click should send DefaultUriMatchTypeSelec
 on default URI match type dialog cancel click should close the dialog
 default URI match type should update according to state
 on back click should send BackClick
-on NavigateBack should call onNavigateBack
 on block auto fill click should send BlockAutoFillClick
-on NavigateToBlockAutoFill should call onNavigateToBlockAutoFillScreen
 autofill action card should show when state is true and hide when false
 when autofill card is visible clicking the cta button should send correct action
 when autofill action card is visible clicking dismissing should send correct action
-when NavigateToSetupAutofill event is sent should call onNavigateToSetupAutofill
 ChromeAutofillSettingsCard is only displayed when there are options in the list
 when Chrome autofill options are clicked the correct action is sent
-when NavigateToChromeAutofillSettings events are sent they invoke the intent manager with the correct release channel
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/autofill/blockautofill/BlockAutoFillScreenTest.kt", "BlockAutoFillScreenTest.kt (14)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/autofill/blockautofill/BlockAutoFillScreenTest.kt", "BlockAutoFillScreenTest.kt (13)")
 on back click should send BackClick
-on NavigateBack should call onNavigateBack
 Screen should display empty state view when in ViewState Empty
 Screen should display content state view when in ViewState Content
 empty state should display 'New blocked URI' button
@@ -654,8 +542,7 @@ clicking save in dialog should send SaveUri action
 clicking cancel in dialog should send DismissDialog action
 clicking remove in dialog should send RemoveUriClick action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/exportvault/ExportVaultScreenTest.kt", "ExportVaultScreenTest.kt (18)")
-NavigateToSelectExportDataLocation should invoke createDocumentIntent
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/exportvault/ExportVaultScreenTest.kt", "ExportVaultScreenTest.kt (16)")
 basicDialog should update according to state
 progress dialog should be displayed according to state
 close button click should send CloseButtonClick action
@@ -665,7 +552,6 @@ policy text should update according to state
 file format selection button should send ExportFormatOptionSelect action
 file format selection button should update according to state
 loadingDialog should update according to state
-NavigateBack event should call onNavigateBack
 confirm file password input change should send ConfirmFilePasswordInputChange action
 file password input change should send FilePasswordInputChange action
 send code click should send SendCodeClick action
@@ -674,20 +560,16 @@ send code button and verification input field should appear based on state
 master password field should appear based on state
 password input change should send PasswordInputChange action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/flightrecorder/FlightRecorderScreenTest.kt", "FlightRecorderScreenTest.kt (7)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/flightrecorder/FlightRecorderScreenTest.kt", "FlightRecorderScreenTest.kt (5)")
 on navigation icon click should emit BackClick action
 on save click should emit SaveClick action
 on help center click should emit HelpCenterClick action
 on logging duration click should display select dialog
 on selection of new duration should emit action
-on NavigateBack event should invoke onNavigateBack
-on NavigateToHelpCenter event should launch intent for help center
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/flightrecorder/recordedlogs/RecordedLogsScreenTest.kt", "RecordedLogsScreenTest.kt (11)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/flightrecorder/recordedlogs/RecordedLogsScreenTest.kt", "RecordedLogsScreenTest.kt (9)")
 on navigation icon click should emit BackClick action
-on NavigateBack event should invoke onNavigateBack
 on ShowSnackbar event should display the snackbar with the correct message
-on ShareLog event should invoke shareFile on intent manager
 UI should change based on ViewState
 on Share All click should emit ShareAllClick
 on Delete All click should display Dialog, on Yes click emits DeleteAllClick
@@ -696,8 +578,7 @@ on individual Share click should emit ShareClick
 on individual Delete click should display Dialog, on Yes click emits DeleteClick
 dialog should update according to state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/folders/addedit/FolderAddEditScreenTest.kt", "FolderAddEditScreenTest.kt (9)")
-NavigateBack should call onNavigateBack
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/folders/addedit/FolderAddEditScreenTest.kt", "FolderAddEditScreenTest.kt (8)")
 clicking save button should send SaveClick action
 overflow menu should only be displayed in edit mode
 clicking overflow menu and delete, and cancel should dismiss the dialog
@@ -707,17 +588,14 @@ error dialog should display according to state
 loading dialog should display according to state
 content should be displayed according to the state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/folders/FoldersScreenTest.kt", "FoldersScreenTest.kt (8)")
-NavigateBack should call onNavigateBack
-NavigateToAddFolderScreen should call onNavigateToAddFolderScreen
-NavigateToEditFolderScreen should call onNavigateToEditFolderScreen
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/folders/FoldersScreenTest.kt", "FoldersScreenTest.kt (5)")
 close button click should send CloseButtonClick
 add folder button click should send AddFolderButtonClick
 error text should display according to state
 folders should be displayed according to state
 clicking on a folder should send FolderClick action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/other/OtherScreenTest.kt", "OtherScreenTest.kt (12)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/other/OtherScreenTest.kt", "OtherScreenTest.kt (11)")
 on allow screen capture confirm should send AllowScreenCaptureToggle
 on allow screen capture cancel should dismiss dialog
 on allow screen capture row click should display confirm enable screen capture dialog
@@ -727,40 +605,26 @@ on clear clipboard row click should show show clipboard selection dialog
 on clear clipboard dialog item click should send ClearClipboardFrequencyChange
 on clear clipboard dialog cancel should dismiss dialog
 on sync now button click should send SyncNowButtonClick
-on NavigateBack should call onNavigateBack
 loading dialog should be displayed according to state
 should display correct items according to state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/SettingsScreenTest.kt", "SettingsScreenTest.kt (16)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/SettingsScreenTest.kt", "SettingsScreenTest.kt (8)")
 on about row click should emit SettingsClick
 on account security row click should emit SettingsClick
 on appearance row click should emit SettingsClick
 on auto-fill row click should emit SettingsClick
 on other row click should emit SettingsClick
 on vault row click should emit SettingsClick
-on NavigateAbout should call onNavigateToAbout
-on NavigateAccountSecurity should call onNavigateToAccountSecurity
-on NavigateAppearance should call onNavigateToAppearance
-on NavigateAutoFill should call onNavigateToAutoFill
-on NavigateOther should call onNavigateToOther
-on NavigateVault should call onNavigateToVault
-on NavigateAccountSecurityShortcut should call onNavigateToAccountSecurity
-on NavigateBack should call onNavigateBack
 should display correct items according to state
 Settings screen should show correct number of notification badges based on state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/vault/VaultSettingsScreenTest.kt", "VaultSettingsScreenTest.kt (16)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/vault/VaultSettingsScreenTest.kt", "VaultSettingsScreenTest.kt (11)")
 on back click should send BackClick
 export vault click should send ExportVaultClick
 import items click should display dialog and confirming should send ImportItemsClick
 import items click should display dialog & canceling should not send ImportItemsClick
 import items click should display dialog with importUrl
-NavigateBack should call onNavigateBack
-NavigateToExportVault should call onNavigateToExportVault
-NavigateToFolders should call onNavigateToFolders
-on NavigateToImportVault should invoke IntentManager not lambda
 when new logins feature flag is enabled send action right when import items is clicked
-when new logins feature flag is enabled NavigateToImportVault should invoke lambda
 when new show action card is true the import logins card should show
 when action card is visible clicking the close icon should send correct action
 when action card is visible get started button should send correct action
@@ -782,7 +646,7 @@ NavigateToSettingsScreen should navigate to SettingsScreen
 vault nav bar should update according to state
 settings tab notification count should update according to state and show correct count
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/generator/GeneratorScreenTest.kt", "GeneratorScreenTest.kt (73)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/generator/GeneratorScreenTest.kt", "GeneratorScreenTest.kt (70)")
 ModalAppBar should be displayed for Password Mode
 ModalAppBar should be displayed for Username Mode
 on close click should send CloseClick
@@ -790,7 +654,6 @@ on save click should send SaveClick
 DefaultAppBar should be displayed for Default Mode
 MainTypeOption select control should be hidden for password mode
 MainTypeOption select control should be hidden for username mode
-NavigateToPasswordHistory event should call onNavigateToPasswordHistoryScreen
 Snackbar should be displayed with correct message on ShowSnackbar event
 clicking the Regenerate button should send RegenerateClick action
 clicking the Copy button should send CopyClick action
@@ -839,12 +702,10 @@ in Username_ForwardedEmailAlias_SimpleLogin state, should display self host serv
 in Username_ForwardedEmailAlias_ForwardEmail state, updating api key text input should send ApiKeyTextChange action
 in Username_ForwardedEmailAlias_ForwardEmail state, updating domain name text input should send DomainNameChange action
 in Username state, clicking the tooltip icon should send the TooltipClick action
-on NavigateToTooltip should call launchUri on IntentManager
 in Username_PlusAddressedEmail state, updating text in email field should send EmailTextChange action
 in Username_CatchAllEmail state, updating text in email field should send EmailTextChange action
 in Username_RandomWord state, toggling capitalize should send ToggleCapitalizeChange action
 in Username_RandomWord state, toggling the include number toggle should send ToggleIncludeNumberChange action
-send LifecycleResumed action on screen resume
 Explore generator card shows when default mode and shouldShowCoachMarkTour is true
 Explore generator card does not show when default mode and shouldShowCoachMarkTour is false
 Explore generator card does not show when modal mode and shouldShowCoachMarkTour is true
@@ -857,22 +718,17 @@ when a coach mark next button is clicked should progress to the next coach mark
 when a coach mark back button is clicked should return to previous coach mark
 The full coach mark tour can be completed showing all steps
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/generator/passwordhistory/PasswordHistoryScreenTest.kt", "PasswordHistoryScreenTest.kt (8)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/generator/passwordhistory/PasswordHistoryScreenTest.kt", "PasswordHistoryScreenTest.kt (7)")
 Empty state should display no passwords message
 Error state should display error message
 navigation icon click should trigger navigate back
-NavigateBack event should call onNavigateBack
 clicking the Copy button should send PasswordCopyClick action
 clicking the Clear button in the overflow menu should send PasswordClearClick action
 Clear button should depend on state
 Content state should display list of passwords
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/send/addsend/AddSendScreenTest.kt", "AddSendScreenTest.kt (44)")
-on NavigateBack should call onNavigateBack
-ExitApp should call exitApplication on ExitManager
-on ShowShareSheet should call shareText on IntentManager
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/send/addsend/AddSendScreenTest.kt", "AddSendScreenTest.kt (40)")
 on close icon click should send CloseClick
-on system back should send CloseClick
 display navigation icon according to state
 on save click should send SaveClick
 on overflow button click should display overflow menu
@@ -913,14 +769,7 @@ error dialog Ok click should send DismissDialogClick
 loading dialog should be displayed according to state
 policy send options text should be displayed based on state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/send/SendScreenTest.kt", "SendScreenTest.kt (35)")
-on NavigateToNewSend should call onNavigateToNewSend
-on NavigateToEditSend should call onNavigateToEditSend
-on NavigateToFileSends should call onNavigateToSendFilesList
-on NavigateToTextSends should call onNavigateToSendTextList
-on NavigateToSearch should call onNavigateToSendSearch
-on NavigateToAboutSend should call launchUri on intentManager
-on ShowShareSheet should call shareText on IntentManager
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/send/SendScreenTest.kt", "SendScreenTest.kt (28)")
 on overflow item click should display menu
 on sync click should send SyncClick
 on lock click should send LockClick
@@ -950,18 +799,7 @@ on send item overflow dialog cancel click should close the dialog
 error dialog should be displayed according to state
 loading dialog should be displayed according to state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/addedit/VaultAddEditScreenTest.kt", "VaultAddEditScreenTest.kt (174)")
-on ExitApp event should call the exitApplication of ExitManager
-on NavigateBack event should invoke onNavigateBack
-on NavigateToTooltipUri Event should invoke IntentManager
-on NavigateToAuthenticatorKeyTooltipUri Event should invoke IntentManager
-on NavigateToQrCodeScan event should invoke NavigateToQrCodeScan
-on NavigateToManualCodeEntry event should invoke NavigateToManualCodeEntry
-on NavigateToGeneratorModal event in password mode should invoke NavigateToGeneratorModal with Password Generator Mode 
-on NavigateToAttachments event should invoke onNavigateToAttachments
-on NavigateToMoveToOrganization event should invoke onNavigateToMoveToOrganization with the correct ID
-on NavigateToGeneratorModal event in username mode should invoke NavigateToGeneratorModal with Username Generator Mode 
-on CompleteFido2Create event should invoke Fido2CompletionManager
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/addedit/VaultAddEditScreenTest.kt", "VaultAddEditScreenTest.kt (157)")
 Fido2Error dialog should display based on state
 fido2 master password prompt dialog should display based on state
 fido2 master password error dialog should display based on state
@@ -1104,12 +942,6 @@ should display policy warning when personal vault is disabled for add item type
 should not display policy warning when personal vault is disabled for edit item type
 Delete dialog ok click should send ConfirmDeleteClick
 Delete dialog cancel click should dismiss the dialog
-Fido2UserVerification event should prompt for user verification
-Fido2UserVerification onSuccess should send UserVerificationSuccess action
-Fido2UserVerification onCancel should send UserVerificationCancelled action
-Fido2UserVerification onLockout should send UserVerificationLockOut action
-Fido2UserVerification onError should send UserVerificationFail action
-Fido2UserVerification onNotSupported should send UserVerificationNotSupported action
 OverwritePasskeyConfirmationPrompt should display based on dialog state and send ConfirmOverwriteExistingPasskeyClick on Ok click
 in ItemType_SshKeys the public key field should be read only
 in ItemType_SshKeys the private key field should be read only
@@ -1126,8 +958,7 @@ learn about add logins card should not show when state is add mode, card type co
 when learn about logins card is showing, clicking the close button sends LearnAboutLoginsDismissed action
 when learn about logins card is showing, clicking the call to action sends StartLearnAboutLogins action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/attachments/AttachmentsScreenTest.kt", "AttachmentsScreenTest.kt (12)")
-NavigateBack should call onNavigateBack
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/attachments/AttachmentsScreenTest.kt", "AttachmentsScreenTest.kt (11)")
 on back click should send BackClick
 on save click should send SaveClick
 on choose file click should send ChooseFileClick
@@ -1140,26 +971,20 @@ on confirm delete click should send DeleteClick
 error dialog should be displayed according to state
 loading dialog should be displayed according to state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/importlogins/ImportLoginsScreenTest.kt", "ImportLoginsScreenTest.kt (25)")
-navigate back when event is NavigateBack
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/importlogins/ImportLoginsScreenTest.kt", "ImportLoginsScreenTest.kt (19)")
 when close icon clicked, CloseClick action is sent
 when get started clicked, GetStartedClick action is sent
 when import later clicked, ImportLaterClick action is sent
 dialog content is shown when state updates and is hidden when null
 when dialog state is GetStarted, GetStarted dialog is shown and sends correct actions when clicked
 when dialog state is ImportLater, ImportLater dialog is shown and sends correct actions when clicked
-OpenHelpLink event is used to open URI with intent manager
-while on initial content system back sends CloseClick action
 Step one content is displayed when view state is ImportStepOne
 while on step one correct actions are sent when buttons are clicked
-while on step one system back returns to the previous content
 Step two content is displayed when view state is ImportStepTwo
 Step two content shows correct vault url when vault url is set
 while on step two correct actions are sent when buttons are clicked
-while on step two system back returns to the previous content
 Step three content is displayed when view state is ImportStepThree
 while on step three correct actions are sent when buttons are clicked
-while on step three system back returns to the previous content
 Loading content is displayed when dialog state is syncing
 Error dialog is displayed when dialog state is Error
 Error dialog is displayed when dialog state is Error for no logins
@@ -1167,15 +992,8 @@ Success bottom sheet is shown when state is updated
 SuccessfulSyncAcknowledged action is sent when bottom sheet CTA is clicked
 SuccessfulSyncAcknowledged action is sent when bottom sheet is closed
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/item/VaultItemScreenTest.kt", "VaultItemScreenTest.kt (121)")
-NavigateToEdit event should invoke onNavigateToVaultEditItem
-NavigateToMoveToOrganization event should invoke onNavigateToMoveToOrganization
-NavigateToMoveToOrganization event should invoke onNavigateToAttachments
-NavigateToPasswordHistory event should invoke onNavigateToPasswordHistory
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/item/VaultItemScreenTest.kt", "VaultItemScreenTest.kt (114)")
 on close click should send CloseClick
-NavigateBack event should invoke onNavigateBack
-NavigateToUri event should invoke launchUri
-NavigateToSelectAttachmentSaveLocation should invoke createDocumentIntent
 basic dialog should be displayed according to state
 Ok click on generic dialog should emit DismissDialogClick
 loading dialog should be displayed according to state
@@ -1290,7 +1108,7 @@ in ssh key state, on copy private key click should send CopyPrivateKeyClick
 in ssh key state, fingerprint should be displayed according to state
 in ssh key state, on copy fingerprint click should send CopyFingerprintClick
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/itemlisting/VaultItemListingScreenTest.kt", "VaultItemListingScreenTest.kt (81)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/itemlisting/VaultItemListingScreenTest.kt", "VaultItemListingScreenTest.kt (59)")
 the app bar title should update according to state
 back button should update according to state
 overflow menu should update according to state
@@ -1303,24 +1121,12 @@ logout button click in the lock-or-logout dialog should show the logout confirma
 logout button click in the logout confirmation dialog should send LogoutAccountClick action and close the dialog
 remove account button click in the lock-or-logout dialog should show the remove account confirmation dialog and hide the lock-or-logout dialog
 remove account button click in the remove account confirmation dialog should send LogoutAccountClick action and close the dialog
-NavigateBack event should invoke NavigateBack
-ExitApp event should invoke exitApplication
-back gesture should send BackClick action
 clicking back button should send BackClick action
 search icon click should send SearchIconClick action
 policy warning should update according to state
 floating action button click should send AddItemClick action
 Add an Item button click should send AddItemClick action
 refresh button click should send RefreshClick action
-ShowShareSheet event should call shareText in intentManager
-NavigateToAdd VaultItem event should call NavigateToVaultAddItemScreen
-NavigateToAddSendItem should call onNavigateToAddSendScreen
-NavigateToVaultSearchScreen should call onNavigateToSearch
-NavigateToEditCipher should call onNavigateToVaultEditItemScreen
-NavigateToSendItem event should call onNavigateToEditSendItemId
-NavigateToVaultItem event should call NavigateToVaultItemScreen
-NavigateToFolderItem should call onNavigateToVaultItemListing
-NavigateToUrl should call launchUri on the IntentManager
 progressbar should be displayed according to state
 error text and retry should be displayed according to state
 Add an Item button should be displayed according to state
@@ -1359,24 +1165,11 @@ fido2 pin error dialog should display and function according to state
 fido2 pin set up dialog should display and function according to state
 fido2 pin set up error dialog should display and function according to state
 fido2 error dialog should display and function according to state
-CompleteFido2Registration event should call Fido2CompletionManager with result
-CompleteFido2Assertion event should call Fido2CompletionManager with result
-CompleteFido2GetCredentials event should call Fido2CompletionManager with result
-Fido2UserVerification event should perform user verification when it is supported
-promptForUserVerification onSuccess should send UserVerificationSuccess action
-promptForUserVerification onCancel should send UserVerificationCancelled action
-promptForUserVerification onLockOut should send UserVerificationLockOut action
-promptForUserVerification onError should send UserVerificationFail action
-promptForUserVerification onNotSupported should send UserVerificationNotFailed action
 OverwritePasskeyConfirmationPrompt should display based on dialog state and send ConfirmOverwriteExistingPasskeyClick on Ok click
-NavigateToAddFolder event calls onNavigateToAddFolder callback with parent name
 VaultItemTypeSelection dialog state show vault item type selection dialog
 when option is selected in VaultItemTypeSelection dialog add item action is sent
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/manualcodeentry/ManualCodeEntryScreenTests.kt", "ManualCodeEntryScreenTests.kt (11)")
-on NavigateBack event should invoke onNavigateBack
-on NavigateToScanQrCode event should invoke NavigateToScanQrCode
-on NavigateToAppSettings event should invoke intent handler
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/manualcodeentry/ManualCodeEntryScreenTests.kt", "ManualCodeEntryScreenTests.kt (8)")
 clicking on manual text should send ScanQrCodeTextClick if camera permission is granted
 dialog should be dismissed on dismiss click in settings dialog
 error dialog should be updated according to state
@@ -1386,12 +1179,11 @@ CodeTextChanged will be sent when text for code is updated
 Authenticator key text should display the text provided by the state
 clicking Add TOTP button should send CodeSubmit action
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/movetoorganization/VaultMoveToOrganizationScreenTest.kt", "VaultMoveToOrganizationScreenTest.kt (13)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/movetoorganization/VaultMoveToOrganizationScreenTest.kt", "VaultMoveToOrganizationScreenTest.kt (12)")
 the app bar title should display according to state
 the app bar button text should display according to state
 the organization option field should update according to state
 the organization option field description should update according to state
-on NavigateBack event should invoke onNavigateBack
 clicking close button should send BackClick action
 clicking move button should send MoveClick action
 selecting an organization should send OrganizationSelect action
@@ -1401,16 +1193,11 @@ the collection list should display according to state
 loading dialog should display according to state
 error dialog should display according to state
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/qrcodescan/QrCodeScanScreenTest.kt", "QrCodeScanScreenTest.kt (7)")
-on NavigateBack event should invoke onNavigateBack
-on NavigateToManualCodeEntry event should invoke onNavigateToManualCodeEntryScreen
-when unable to setup camera CameraErrorReceive will be sent
-when a scan is successful a result will be sent
-when a scan is unsuccessful a result will not be sent
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/qrcodescan/QrCodeScanScreenTest.kt", "QrCodeScanScreenTest.kt (2)")
 clicking on manual text should send ManualEntryTextClick in landscape mode
 clicking on manual text should send ManualEntryTextClick
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/vault/VaultScreenTest.kt", "VaultScreenTest.kt (76)")
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/vault/VaultScreenTest.kt", "VaultScreenTest.kt (57)")
 app bar title should update according to state
 vault filter should update according to state
 vault filter menu click should display the filter selection dialog
@@ -1437,23 +1224,9 @@ syncing dialog should be displayed according to state
 Error screen should be shown according to the state
 try again button click on the Error screen should send TryAgainClick
 verification code click should call VerificationCodesClick 
-NavigateToVerificationCodeScreen event should call onNavigateToVerificationCodeScreen
 search icon click should send SearchIconClick action
 floating action button click should send SelectAddItemType action
 add an item button click should send AddItemClick action
-NavigateToAddItemScreen event should call onNavigateToVaultAddItemScreen
-NavigateToVaultSearchScreen event should call onNavigateToSearchScreen
-NavigateToVaultItem event should call onNavigateToVaultItemScreen
-NavigateToEditVaultItem event should call onNavigateToVaultEditItemScreen
-NavigateToItemListing event for Card type should call onNavigateToVaultItemListingType with Card type
-NavigateToItemListing event for Identity type should call onNavigateToVaultItemListingType with Identity type
-NavigateToItemListing event for Login type should call onNavigateToVaultItemListingType with Login type
-NavigateToItemListing event for SecureNote type should call onNavigateToVaultItemListingType with SecureNote type
-NavigateToItemListing event for SshKey type should call onNavigateToVaultItemListingType with SshKey type
-NavigateToItemListing event for Trash type should call onNavigateToVaultItemListingType with Trash type
-NavigateToItemListing event for Folder type should call onNavigateToVaultItemListingType with Folder type
-NavigateToUrl event should call launchUri
-NavigateOutOfApp event should call exitApplication on the ExitManager
 totp section should be visible based on state
 clicking totp section should emit VerificationCodesClick action
 clicking a favorite item should send VaultItemClick with the correct item
@@ -1474,24 +1247,16 @@ clicking trash item should send TrashClick action
 action card for importing logins should show based on state
 when import action card is showing, clicking it should send ImportLoginsClick action
 when import action card is showing, dismissing it should send DismissImportActionCard action
-when NavigateToImportLogins is sent, it should call onNavigateToImportLogins
-when NavigateToAbout is sent, it should call onNavigateToAbout
 when ShowSnackbar is sent snackbar should be displayed
 when snackbar is displayed clicking on it should dismiss
 SSH key group header should display correctly based on state
 SSH key vault items should display correctly based on state
-LifecycleResumed action is sent when the screen is resumed
-PromptForAppReview triggers app review manager
-NavigateToAddItemScreen event calls onNavigateToAddFolder callback when cipher item type is FOLDER
 SelectVaultAddItemType dialog state show vault item type selection dialog
 when option is selected in SelectVaultAddItemType dialog add item action is sent
 on FlightRecorder Snackbar close click sends the DismissFlightRecorderSnackbar
 on FlightRecorder Snackbar go to setting click sends the FlightRecorderGoToSettingsClick
 
-=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/verificationcode/VerificationCodeScreenTest.kt", "VerificationCodeScreenTest.kt (17)")
-NavigateBack event should invoke onNavigateBack
-NavigateToVaultSearchScreen event should invoke onNavigateToSearch
-NavigateToVaultItem event should call onNavigateToVaultItemScreen
+=HYPERLINK("https://github.com/BlakeDake/android/tree/0f6d15d6a625ba1cd7545bfe1590337dc9ba23ff/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/verificationcode/VerificationCodeScreenTest.kt", "VerificationCodeScreenTest.kt (14)")
 clicking back button should send BackClick action
 search icon click should send SearchIconClick action
 refresh button click should send RefreshClick action
