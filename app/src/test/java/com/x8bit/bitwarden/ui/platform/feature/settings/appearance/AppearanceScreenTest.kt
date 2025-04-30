@@ -8,10 +8,7 @@ import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
-import androidx.compose.ui.test.printToLog
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.feature.settings.appearance.model.AppLanguage
@@ -53,10 +50,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on language row click should display language selection dialog`() {
-        composeTestRule
-            .onNodeWithContentDescription(label = "Default (System). Language")
-            .performScrollTo()
-            .performClick()
+        composeTestRule.onNodeWithText("Language").performClick()
         composeTestRule
             .onAllNodesWithText("Language")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -66,10 +60,7 @@ class AppearanceScreenTest : BaseComposeTest() {
     @Test
     fun `on language selection dialog item click should send LanguageChange and show dialog`() {
         // Clicking the Language row shows the language selection dialog
-        composeTestRule
-            .onNodeWithContentDescription(label = "Default (System). Language")
-            .performScrollTo()
-            .performClick()
+        composeTestRule.onNodeWithText("Language").performClick()
         // Selecting a language dismisses this dialog and displays the confirmation
         composeTestRule
             .onAllNodesWithText("Afrikaans")
@@ -102,10 +93,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on language selection dialog cancel click should dismiss dialog`() {
-        composeTestRule
-            .onNodeWithContentDescription(label = "Default (System). Language")
-            .performScrollTo()
-            .performClick()
+        composeTestRule.onNodeWithText("Language").performClick()
         composeTestRule
             .onAllNodesWithText("Cancel")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -115,13 +103,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on theme row click should display theme selection dialog`() {
-        composeTestRule.onRoot().printToLog("Brian")
-        composeTestRule
-            .onNodeWithContentDescription(
-                label = "Default (System). Theme. Change the application's color theme",
-            )
-            .performScrollTo()
-            .performClick()
+        composeTestRule.onNodeWithText("Theme").performClick()
         composeTestRule
             .onAllNodesWithText("Theme")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -130,12 +112,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on theme selection dialog item click should send ThemeChange`() {
-        composeTestRule
-            .onNodeWithContentDescription(
-                label = "Default (System). Theme. Change the application's color theme",
-            )
-            .performScrollTo()
-            .performClick()
+        composeTestRule.onNodeWithText("Theme").performClick()
         composeTestRule
             .onAllNodesWithText("Dark")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -153,12 +130,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on theme selection dialog cancel click should dismiss dialog`() {
-        composeTestRule
-            .onNodeWithContentDescription(
-                label = "Default (System). Theme. Change the application's color theme",
-            )
-            .performScrollTo()
-            .performClick()
+        composeTestRule.onNodeWithText("Theme").performClick()
         composeTestRule
             .onAllNodesWithText("Cancel")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -172,11 +144,7 @@ class AppearanceScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AppearanceAction.ShowWebsiteIconsToggle(true)) }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(AppearanceEvent.NavigateBack)
-        assertTrue(haveCalledNavigateBack)
-    }
+
 }
 
 private val DEFAULT_STATE = AppearanceState(

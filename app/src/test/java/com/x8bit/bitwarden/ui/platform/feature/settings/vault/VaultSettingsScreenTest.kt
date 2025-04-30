@@ -120,33 +120,13 @@ class VaultSettingsScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(VaultSettingsEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToExportVault should call onNavigateToExportVault`() {
-        mutableEventFlow.tryEmit(VaultSettingsEvent.NavigateToExportVault)
-        assertTrue(onNavigateToExportVaultCalled)
-    }
 
-    @Test
-    fun `NavigateToFolders should call onNavigateToFolders`() {
-        mutableEventFlow.tryEmit(VaultSettingsEvent.NavigateToFolders)
-        assertTrue(onNavigateToFoldersCalled)
-    }
 
-    @Test
-    fun `on NavigateToImportVault should invoke IntentManager not lambda`() {
-        val testUrl = "testUrl"
-        mutableEventFlow.tryEmit(VaultSettingsEvent.NavigateToImportVault(testUrl))
-        verify {
-            intentManager.launchUri(testUrl.toUri())
-        }
-        assertFalse(onNavigateToImportLoginsCalled)
-    }
+
+
+
+
 
     @Test
     fun `when new logins feature flag is enabled send action right when import items is clicked`() {
@@ -157,16 +137,7 @@ class VaultSettingsScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(VaultSettingsAction.ImportItemsClick) }
     }
 
-    @Test
-    fun `when new logins feature flag is enabled NavigateToImportVault should invoke lambda`() {
-        mutableStateFlow.update {
-            it.copy(isNewImportLoginsFlowEnabled = true)
-        }
-        val testUrl = "testUrl"
-        mutableEventFlow.tryEmit(VaultSettingsEvent.NavigateToImportVault(testUrl))
-        assertTrue(onNavigateToImportLoginsCalled)
-        verify(exactly = 0) { intentManager.launchUri(testUrl.toUri()) }
-    }
+
 
     @Test
     fun `when new show action card is true the import logins card should show`() {

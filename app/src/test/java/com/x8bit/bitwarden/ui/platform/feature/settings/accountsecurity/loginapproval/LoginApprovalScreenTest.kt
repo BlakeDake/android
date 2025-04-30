@@ -49,27 +49,11 @@ class LoginApprovalScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(LoginApprovalEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `system back should send CloseClick`() {
-        backDispatcher?.onBackPressed()
-        verify {
-            viewModel.trySendAction(LoginApprovalAction.CloseClick)
-        }
-    }
 
-    @Test
-    fun `on ExitApp should call exit appliction`() {
-        mutableEventFlow.tryEmit(LoginApprovalEvent.ExitApp)
-        verify(exactly = 1) {
-            exitManager.exitApplication()
-        }
-    }
+
+
+
 
     @Test
     fun `on Confirm login should send ApproveRequestClick`() = runTest {

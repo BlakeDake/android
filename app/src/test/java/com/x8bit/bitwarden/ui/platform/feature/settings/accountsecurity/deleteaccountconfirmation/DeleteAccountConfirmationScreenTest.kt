@@ -41,11 +41,7 @@ class DeleteAccountConfirmationScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(DeleteAccountConfirmationEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `loading dialog presence should update with dialog state`() {

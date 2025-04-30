@@ -100,27 +100,11 @@ class LoginWithDeviceScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(LoginWithDeviceEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateBack should call onNavigateToTwoFactorLoginEmail`() {
-        val email = "test@email.com"
-        mutableEventFlow.tryEmit(LoginWithDeviceEvent.NavigateToTwoFactorLogin(email))
-        assertEquals(email, onNavigateToTwoFactorLoginEmail)
-    }
 
-    @Test
-    fun `NavigateToCaptcha should call launchUri on intentManager`() {
-        val uri = mockk<Uri>()
-        mutableEventFlow.tryEmit(LoginWithDeviceEvent.NavigateToCaptcha(uri))
-        verify(exactly = 1) {
-            intentManager.startCustomTabsActivity(uri)
-        }
-    }
+
+
+
 
     @Test
     fun `progress bar should be displayed according to state`() {

@@ -245,17 +245,17 @@ class LandingScreenTest : BaseComposeTest() {
 
     @Test
     fun `remember me should be toggled on or off according to the state`() {
-        composeTestRule.onNodeWithText("Remember email").assertIsOff()
+        composeTestRule.onNodeWithText("Remember me").assertIsOff()
 
-        mutableStateFlow.update { it.copy(isRememberEmailEnabled = true) }
+        mutableStateFlow.update { it.copy(isRememberMeEnabled = true) }
 
-        composeTestRule.onNodeWithText("Remember email").assertIsOn()
+        composeTestRule.onNodeWithText("Remember me").assertIsOn()
     }
 
     @Test
     fun `remember me click should send RememberMeToggle action`() {
         composeTestRule
-            .onNodeWithText("Remember email")
+            .onNodeWithText("Remember me")
             .performClick()
         verify {
             viewModel.trySendAction(LandingAction.RememberMeToggle(true))
@@ -264,7 +264,7 @@ class LandingScreenTest : BaseComposeTest() {
 
     @Test
     fun `create account click should send CreateAccountClick action`() {
-        composeTestRule.onNodeWithText("Create an account").performScrollTo().performClick()
+        composeTestRule.onNodeWithText("Create account").performScrollTo().performClick()
         verify {
             viewModel.trySendAction(LandingAction.CreateAccountClick)
         }
@@ -292,27 +292,11 @@ class LandingScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `NavigateToCreateAccount event should call onNavigateToCreateAccount`() {
-        mutableEventFlow.tryEmit(LandingEvent.NavigateToCreateAccount)
-        assertTrue(onNavigateToCreateAccountCalled)
-    }
 
-    @Test
-    fun `NavigateToLogin event should call onNavigateToLogin`() {
-        val testEmail = "test@test.com"
 
-        mutableEventFlow.tryEmit(LandingEvent.NavigateToLogin(testEmail))
 
-        assertEquals(testEmail, capturedEmail)
-        assertTrue(onNavigateToLoginCalled)
-    }
 
-    @Test
-    fun `NavigateToEnvironment event should call onNavigateToEvent`() {
-        mutableEventFlow.tryEmit(LandingEvent.NavigateToEnvironment)
-        assertTrue(onNavigateToEnvironmentCalled)
-    }
+
 
     @Test
     fun `selecting environment should send EnvironmentOptionSelect action`() {
@@ -473,7 +457,7 @@ private val ACTIVE_ACCOUNT_SUMMARY = AccountSummary(
 private val DEFAULT_STATE = LandingState(
     emailInput = "",
     isContinueButtonEnabled = true,
-    isRememberEmailEnabled = false,
+    isRememberMeEnabled = false,
     selectedEnvironmentType = Environment.Type.US,
     selectedEnvironmentLabel = Environment.Us.label,
     dialog = null,

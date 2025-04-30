@@ -41,7 +41,7 @@ class VaultUnlockedNavBarScreenTest : BaseComposeTest() {
                 VaultUnlockedNavBarScreen(
                     viewModel = viewModel,
                     navController = fakeNavHostController,
-                    onNavigateToVaultAddItem = {},
+                    onNavigateToVaultAddItem = { _, _, _ -> },
                     onNavigateToVaultItem = {},
                     onNavigateToVaultEditItem = {},
                     onNavigateToAddSend = {},
@@ -56,7 +56,6 @@ class VaultUnlockedNavBarScreenTest : BaseComposeTest() {
                     onNavigateToSetupAutoFillScreen = {},
                     onNavigateToSetupUnlockScreen = {},
                     onNavigateToImportLogins = {},
-                    onNavigateToAddFolderScreen = {},
                 )
             }
         }

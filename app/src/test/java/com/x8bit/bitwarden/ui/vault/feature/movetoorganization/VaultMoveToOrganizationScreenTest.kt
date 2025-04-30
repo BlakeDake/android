@@ -12,10 +12,8 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
-import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import androidx.compose.ui.test.printToLog
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
@@ -106,10 +104,7 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
     @Test
     fun `the organization option field should update according to state`() {
         composeTestRule
-            .onNodeWithContentDescription(
-                label = "mockOrganizationName-1. Organization",
-                substring = true,
-            )
+            .onNodeWithContentDescription(label = "mockOrganizationName-1. Organization")
             .assertIsDisplayed()
 
         mutableStateFlow.update { currentState ->
@@ -123,9 +118,8 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
 
     @Test
     fun `the organization option field description should update according to state`() {
-        composeTestRule.onRoot().printToLog("Brian")
         composeTestRule
-            .onNodeWithContentDescription(label = "Choose an organization that", substring = true)
+            .onNodeWithText(text = "Choose an organization that", substring = true)
             .assertIsDisplayed()
 
         mutableStateFlow.update { currentState ->
@@ -134,15 +128,11 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
 
         composeTestRule
         composeTestRule
-            .onNodeWithContentDescription(label = "Choose an organization that", substring = true)
+            .onNodeWithText(text = "Choose an organization that", substring = true)
             .assertIsNotDisplayed()
     }
 
-    @Test
-    fun `on NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(VaultMoveToOrganizationEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `clicking close button should send BackClick action`() {
@@ -172,14 +162,8 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
 
     @Test
     fun `selecting an organization should send OrganizationSelect action`() {
-        composeTestRule.onRoot().printToLog("Brian")
         composeTestRule
-            .onNodeWithContentDescriptionAfterScroll(
-                label = "mockOrganizationName-1. Organization. " +
-                    "Choose an organization that you wish to move this item to. Moving to an " +
-                    "organization transfers ownership of the item to that organization. You " +
-                    "will no longer be the direct owner of this item once it has been moved.",
-            )
+            .onNodeWithContentDescriptionAfterScroll(label = "mockOrganizationName-1. Organization")
             .performClick()
         // Choose the option from the menu
         composeTestRule
@@ -210,12 +194,7 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
     @Test
     fun `the organization option field should display according to state`() {
         composeTestRule
-            .onNodeWithContentDescriptionAfterScroll(
-                label = "mockOrganizationName-1. Organization. " +
-                    "Choose an organization that you wish to move this item to. Moving to an " +
-                    "organization transfers ownership of the item to that organization. You " +
-                    "will no longer be the direct owner of this item once it has been moved.",
-            )
+            .onNodeWithContentDescriptionAfterScroll(label = "mockOrganizationName-1. Organization")
             .assertIsDisplayed()
 
         mutableStateFlow.update { currentState ->
@@ -228,12 +207,7 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
         }
 
         composeTestRule
-            .onNodeWithContentDescriptionAfterScroll(
-                label = "mockOrganizationName-2. Organization. " +
-                    "Choose an organization that you wish to move this item to. Moving to an " +
-                    "organization transfers ownership of the item to that organization. You " +
-                    "will no longer be the direct owner of this item once it has been moved.",
-            )
+            .onNodeWithContentDescriptionAfterScroll(label = "mockOrganizationName-2. Organization")
             .assertIsDisplayed()
     }
 

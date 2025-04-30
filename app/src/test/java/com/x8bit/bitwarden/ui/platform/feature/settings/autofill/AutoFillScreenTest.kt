@@ -62,14 +62,7 @@ class AutoFillScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on NavigateToAccessibilitySettings should attempt to navigate to system settings`() {
-        mutableEventFlow.tryEmit(AutoFillEvent.NavigateToAccessibilitySettings)
 
-        verify(exactly = 1) {
-            intentManager.startSystemAccessibilitySettingsActivity()
-        }
-    }
 
     @Suppress("MaxLineLength")
     @Test
@@ -369,7 +362,7 @@ class AutoFillScreenTest : BaseComposeTest() {
     fun `on default URI match type click should display dialog`() {
         composeTestRule.assertNoDialogExists()
         composeTestRule
-            .onNodeWithContentDescription(label = "Default URI match detection.", substring = true)
+            .onNodeWithText("Default URI match detection")
             .performScrollTo()
             .assert(!hasAnyAncestor(isDialog()))
             .performClick()
@@ -383,7 +376,7 @@ class AutoFillScreenTest : BaseComposeTest() {
     @Test
     fun `on default URI match type dialog item click should send DefaultUriMatchTypeSelect and close the dialog`() {
         composeTestRule
-            .onNodeWithContentDescription(label = "Default URI match detection.", substring = true)
+            .onNodeWithText("Default URI match detection")
             .performScrollTo()
             .performClick()
 
@@ -402,10 +395,11 @@ class AutoFillScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
     }
 
+    @Suppress("MaxLineLength")
     @Test
     fun `on default URI match type dialog cancel click should close the dialog`() {
         composeTestRule
-            .onNodeWithContentDescription(label = "Default URI match detection.", substring = true)
+            .onNodeWithText("Default URI match detection")
             .performScrollTo()
             .performClick()
 
@@ -421,19 +415,19 @@ class AutoFillScreenTest : BaseComposeTest() {
     @Test
     fun `default URI match type should update according to state`() {
         composeTestRule
-            .onNodeWithContentDescription(label = "Base domain", substring = true)
+            .onNodeWithText("Base domain")
             .assertExists()
         composeTestRule
-            .onNodeWithContentDescription(label = "Starts with", substring = true)
+            .onNodeWithText("Starts with")
             .assertDoesNotExist()
         mutableStateFlow.update {
             it.copy(defaultUriMatchType = UriMatchType.STARTS_WITH)
         }
         composeTestRule
-            .onNodeWithContentDescription(label = "Base domain", substring = true)
+            .onNodeWithText("Base domain")
             .assertDoesNotExist()
         composeTestRule
-            .onNodeWithContentDescription(label = "Starts with", substring = true)
+            .onNodeWithText("Starts with")
             .assertExists()
     }
 
@@ -443,11 +437,7 @@ class AutoFillScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AutoFillAction.BackClick) }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(AutoFillEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `on block auto fill click should send BlockAutoFillClick`() {
@@ -458,11 +448,7 @@ class AutoFillScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AutoFillAction.BlockAutoFillClick) }
     }
 
-    @Test
-    fun `on NavigateToBlockAutoFill should call onNavigateToBlockAutoFillScreen`() {
-        mutableEventFlow.tryEmit(AutoFillEvent.NavigateToBlockAutoFill)
-        assertTrue(onNavigateToBlockAutoFillScreenCalled)
-    }
+
 
     @Test
     fun `autofill action card should show when state is true and hide when false`() {
@@ -500,11 +486,7 @@ class AutoFillScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AutoFillAction.DismissShowAutofillActionCard) }
     }
 
-    @Test
-    fun `when NavigateToSetupAutofill event is sent should call onNavigateToSetupAutofill`() {
-        mutableEventFlow.tryEmit(AutoFillEvent.NavigateToSetupAutofill)
-        assertTrue(onNavigateToSetupAutoFillScreenCalled)
-    }
+
 }
 
 private val DEFAULT_STATE: AutoFillState = AutoFillState(

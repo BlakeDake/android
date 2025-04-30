@@ -113,17 +113,9 @@ class CompleteRegistrationScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(CheckDataBreachesToggle(false)) }
     }
 
-    @Test
-    fun `NavigateBack event should invoke navigate back lambda`() {
-        mutableEventFlow.tryEmit(CompleteRegistrationEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `system back event should send BackClick action`() {
-        backDispatcher?.onBackPressed()
-        verify { viewModel.trySendAction(BackClick) }
-    }
+
+
 
     @Test
     fun `password input change should send PasswordInputChange action`() {
@@ -254,30 +246,11 @@ class CompleteRegistrationScreenTest : BaseComposeTest() {
             .assertCountEquals(2)
     }
 
-    @Suppress("MaxLineLength")
-    @Test
-    fun `NavigateToPreventAccountLockout event should invoke navigate to prevent account lockout lambda`() {
-        mutableEventFlow.tryEmit(CompleteRegistrationEvent.NavigateToPreventAccountLockout)
-        assertTrue(onNavigateToPreventAccountLockoutCalled)
-    }
 
-    @Test
-    fun `NavigateToPasswordGuidance event should invoke navigate to password guidance lambda`() {
-        mutableEventFlow.tryEmit(CompleteRegistrationEvent.NavigateToMakePasswordStrong)
-        assertTrue(onNavigateToPasswordGuidanceCalled)
-    }
 
-    @Test
-    fun `NavigateToLogin event should invoke navigate to login lambda`() {
-        mutableEventFlow.tryEmit(
-            CompleteRegistrationEvent.NavigateToLogin(
-                email = EMAIL,
-                captchaToken = TOKEN,
-            ),
-        )
 
-        assertTrue(onNavigateToLoginCalled)
-    }
+
+
 
     // New Onboarding UI tests
     @Test

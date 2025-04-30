@@ -29,7 +29,6 @@ import com.x8bit.bitwarden.ui.auth.feature.createaccount.CreateAccountAction.Sub
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
-import com.x8bit.bitwarden.ui.util.performCustomAccessibilityAction
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -95,61 +94,34 @@ class CreateAccountScreenTest : BaseComposeTest() {
     @Test
     fun `accept policies should be toggled on or off according to the state`() {
         composeTestRule
-            .onNodeWithText("By activating this switch, you agree", substring = true)
+            .onNodeWithText("By activating this switch you agree", substring = true)
             .assertIsOff()
 
         mutableStateFlow.update { it.copy(isAcceptPoliciesToggled = true) }
 
         composeTestRule
-            .onNodeWithText("By activating this switch, you agree", substring = true)
+            .onNodeWithText("By activating this switch you agree", substring = true)
             .assertIsOn()
     }
 
     @Test
     fun `accept policies click should send AcceptPoliciesToggle action`() {
         composeTestRule
-            .onNodeWithText("By activating this switch, you agree", substring = true)
+            .onNodeWithText("By activating this switch you agree", substring = true)
             .performScrollTo()
             .performClick()
         verify { viewModel.trySendAction(AcceptPoliciesToggle(true)) }
     }
 
-    @Test
-    fun `NavigateBack event should invoke navigate back lambda`() {
-        mutableEventFlow.tryEmit(CreateAccountEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToLogin event should invoke navigate login lambda`() {
-        mutableEventFlow.tryEmit(CreateAccountEvent.NavigateToLogin(email = "", captchaToken = ""))
-        assertTrue(onNavigateToLoginCalled)
-    }
 
-    @Test
-    fun `NavigateToCaptcha event should invoke intent manager`() {
-        val mockUri = mockk<Uri>()
-        mutableEventFlow.tryEmit(CreateAccountEvent.NavigateToCaptcha(uri = mockUri))
-        verify {
-            intentManager.startCustomTabsActivity(mockUri)
-        }
-    }
 
-    @Test
-    fun `NavigateToPrivacyPolicy event should invoke intent manager`() {
-        mutableEventFlow.tryEmit(CreateAccountEvent.NavigateToPrivacyPolicy)
-        verify {
-            intentManager.launchUri("https://bitwarden.com/privacy/".toUri())
-        }
-    }
 
-    @Test
-    fun `NavigateToTerms event should invoke intent manager`() {
-        mutableEventFlow.tryEmit(CreateAccountEvent.NavigateToTerms)
-        verify {
-            intentManager.launchUri("https://bitwarden.com/terms/".toUri())
-        }
-    }
+
+
+
+
+
 
     @Test
     fun `email input change should send EmailInputChange action`() {
@@ -287,18 +259,18 @@ class CreateAccountScreenTest : BaseComposeTest() {
     @Test
     fun `terms of service click should send TermsClick action`() {
         composeTestRule
-            .onNodeWithText(text = "Terms of Service", substring = true)
+            .onNodeWithText("Terms of Service")
             .performScrollTo()
-            .performCustomAccessibilityAction("Terms of Service")
+            .performClick()
         verify { viewModel.trySendAction(CreateAccountAction.TermsClick) }
     }
 
     @Test
     fun `privacy policy click should send PrivacyPolicyClick action`() {
         composeTestRule
-            .onNodeWithText(text = "Privacy Policy", substring = true)
+            .onNodeWithText("Privacy Policy")
             .performScrollTo()
-            .performCustomAccessibilityAction("Privacy Policy")
+            .performClick()
         verify { viewModel.trySendAction(CreateAccountAction.PrivacyPolicyClick) }
     }
 

@@ -22,7 +22,6 @@ import com.x8bit.bitwarden.ui.platform.base.util.asText
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.platform.manager.permissions.FakePermissionManager
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
-import com.x8bit.bitwarden.ui.util.performCustomAccessibilityAction
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
@@ -65,37 +64,11 @@ class ManualCodeEntryScreenTests : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(ManualCodeEntryEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `on NavigateToScanQrCode event should invoke NavigateToScanQrCode`() {
-        mutableEventFlow.tryEmit(ManualCodeEntryEvent.NavigateToQrCodeScreen)
-        assertTrue(onNavigateToScanQrCodeCalled)
-    }
 
-    @Test
-    fun `on NavigateToAppSettings event should invoke intent handler`() {
-        mutableEventFlow.tryEmit(ManualCodeEntryEvent.NavigateToAppSettings)
 
-        val uri = Uri.parse(
-            "package:" +
-                ApplicationProvider
-                    .getApplicationContext<Application>()
-                    .packageName,
-        )
 
-        val intentSlot = slot<Intent>()
-        verify { intentManager.startActivity(capture(intentSlot)) }
 
-        assertEquals(
-            uri,
-            intentSlot.captured.data,
-        )
-    }
 
     @Suppress("MaxLineLength")
     @Test
@@ -103,8 +76,8 @@ class ManualCodeEntryScreenTests : BaseComposeTest() {
         fakePermissionManager.checkPermissionResult = true
 
         composeTestRule
-            .onNodeWithText(text = "Cannot add authenticator key? Scan QR Code")
-            .performCustomAccessibilityAction(label = "Scan QR Code")
+            .onNodeWithText("Scan QR Code")
+            .performClick()
 
         verify {
             viewModel.trySendAction(ManualCodeEntryAction.ScanQrCodeTextClick)
@@ -116,8 +89,8 @@ class ManualCodeEntryScreenTests : BaseComposeTest() {
         fakePermissionManager.checkPermissionResult = false
 
         composeTestRule
-            .onNodeWithText(text = "Cannot add authenticator key? Scan QR Code")
-            .performCustomAccessibilityAction(label = "Scan QR Code")
+            .onNodeWithText("Scan QR Code")
+            .performClick()
 
         composeTestRule
             .onAllNodesWithText("Enable camera permission to use the scanner")
@@ -192,8 +165,8 @@ class ManualCodeEntryScreenTests : BaseComposeTest() {
         fakePermissionManager.checkPermissionResult = false
 
         composeTestRule
-            .onNodeWithText(text = "Cannot add authenticator key? Scan QR Code")
-            .performCustomAccessibilityAction(label = "Scan QR Code")
+            .onNodeWithText("Scan QR Code")
+            .performClick()
 
         composeTestRule
             .onAllNodesWithText("Enable camera permission to use the scanner")

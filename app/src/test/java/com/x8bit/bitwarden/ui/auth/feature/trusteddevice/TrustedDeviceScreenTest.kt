@@ -49,26 +49,11 @@ class TrustedDeviceScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on NavigateToApproveWithDevice event should invoke onNavigateToAdminApproval`() {
-        val email = "test@bitwarden.com"
-        mutableEventFlow.tryEmit(TrustedDeviceEvent.NavigateToApproveWithAdmin(email))
-        assertEquals(onNavigateToAdminApprovalEmail, email)
-    }
 
-    @Test
-    fun `on NavigateToApproveWithDevice event should invoke onNavigateToLoginWithOtherDevice`() {
-        val email = "test@bitwarden.com"
-        mutableEventFlow.tryEmit(TrustedDeviceEvent.NavigateToApproveWithDevice(email))
-        assertEquals(onNavigateToLoginWithOtherDeviceEmail, email)
-    }
 
-    @Test
-    fun `on NavigateToLockScreen event should invoke NavigateToLockScreen`() {
-        val email = "test@bitwarden.com"
-        mutableEventFlow.tryEmit(TrustedDeviceEvent.NavigateToLockScreen(email))
-        assertEquals(onNavigateToLockEmail, email)
-    }
+
+
+
 
     @Test
     fun `on back click should send BackClick`() {

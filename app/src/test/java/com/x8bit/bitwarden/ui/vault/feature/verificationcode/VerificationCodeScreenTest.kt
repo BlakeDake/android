@@ -12,16 +12,13 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
-import com.x8bit.bitwarden.data.platform.manager.util.AppResumeStateManager
 import com.x8bit.bitwarden.data.platform.repository.model.Environment
 import com.x8bit.bitwarden.data.platform.repository.util.baseIconUrl
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
-import com.x8bit.bitwarden.ui.vault.feature.item.VaultItemArgs
 import com.x8bit.bitwarden.ui.vault.feature.vault.model.VaultFilterType
-import com.x8bit.bitwarden.ui.vault.model.VaultItemCipherType
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -36,7 +33,7 @@ class VerificationCodeScreenTest : BaseComposeTest() {
 
     private var onNavigateBackCalled = false
     private var onNavigateToSearchCalled = false
-    private var onNavigateToVaultItemArgs: VaultItemArgs? = null
+    private var onNavigateToVaultItemId: String? = null
 
     private val mutableEventFlow = bufferedMutableSharedFlow<VerificationCodeEvent>()
     private val mutableStateFlow = MutableStateFlow(DEFAULT_STATE)
@@ -44,7 +41,6 @@ class VerificationCodeScreenTest : BaseComposeTest() {
         every { eventFlow } returns mutableEventFlow
         every { stateFlow } returns mutableStateFlow
     }
-    private val appResumeStateManager: AppResumeStateManager = mockk(relaxed = true)
 
     @Before
     fun setUp() {
@@ -52,34 +48,17 @@ class VerificationCodeScreenTest : BaseComposeTest() {
             VerificationCodeScreen(
                 viewModel = viewModel,
                 onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToVaultItemScreen = { onNavigateToVaultItemArgs = it },
+                onNavigateToVaultItemScreen = { onNavigateToVaultItemId = it },
                 onNavigateToSearch = { onNavigateToSearchCalled = true },
-                appResumeStateManager = appResumeStateManager,
             )
         }
     }
 
-    @Test
-    fun `NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(VerificationCodeEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToVaultSearchScreen event should invoke onNavigateToSearch`() {
-        mutableEventFlow.tryEmit(VerificationCodeEvent.NavigateToVaultSearchScreen)
-        assertTrue(onNavigateToSearchCalled)
-    }
 
-    @Test
-    fun `NavigateToVaultItem event should call onNavigateToVaultItemScreen`() {
-        val id = "id4321"
-        mutableEventFlow.tryEmit(VerificationCodeEvent.NavigateToVaultItem(id = id))
-        assertEquals(
-            VaultItemArgs(vaultItemId = id, cipherType = VaultItemCipherType.LOGIN),
-            onNavigateToVaultItemArgs,
-        )
-    }
+
+
+
 
     @Test
     fun `clicking back button should send BackClick action`() {

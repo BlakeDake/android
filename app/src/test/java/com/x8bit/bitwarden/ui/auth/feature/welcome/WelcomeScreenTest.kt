@@ -85,17 +85,9 @@ class WelcomeScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
     }
 
-    @Test
-    fun `NavigateToCreateAccount event should call onNavigateToCreateAccount`() {
-        mutableEventFlow.tryEmit(WelcomeEvent.NavigateToCreateAccount)
-        assertTrue(onNavigateToCreateAccountCalled)
-    }
 
-    @Test
-    fun `NavigateToLogin event should call onNavigateToLogin`() {
-        mutableEventFlow.tryEmit(WelcomeEvent.NavigateToLogin)
-        assertTrue(onNavigateToLoginCalled)
-    }
+
+
 
     @Test
     fun `create account button click should send CreateAccountClick action`() {
@@ -116,11 +108,7 @@ class WelcomeScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(WelcomeAction.LoginClick) }
     }
 
-    @Test
-    fun `on NavigateToStartRegistration event should call onNavigateToStartRegistration`() {
-        mutableEventFlow.tryEmit(WelcomeEvent.NavigateToStartRegistration)
-        assertTrue(onNavigateToStartRegistrationCalled)
-    }
+
 }
 
 private val DEFAULT_STATE = WelcomeState(

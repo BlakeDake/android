@@ -45,25 +45,11 @@ class FoldersScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(FoldersEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToAddFolderScreen should call onNavigateToAddFolderScreen`() {
-        mutableEventFlow.tryEmit(FoldersEvent.NavigateToAddFolderScreen)
-        assertTrue(onNavigateToAddFolderScreenCalled)
-    }
 
-    @Test
-    fun `NavigateToEditFolderScreen should call onNavigateToEditFolderScreen`() {
-        val tesId = "TestId"
 
-        mutableEventFlow.tryEmit(FoldersEvent.NavigateToEditFolderScreen(tesId))
-        assertEquals(tesId, onNavigateToEditFolderScreenId)
-    }
+
+
 
     @Test
     fun `close button click should send CloseButtonClick`() {

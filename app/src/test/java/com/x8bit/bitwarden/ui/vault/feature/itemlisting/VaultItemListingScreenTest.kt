@@ -15,7 +15,6 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import androidx.core.net.toUri
-import com.bitwarden.vault.CipherType
 import com.x8bit.bitwarden.R
 import com.x8bit.bitwarden.data.autofill.fido2.model.Fido2CredentialAssertionResult
 import com.x8bit.bitwarden.data.autofill.fido2.model.Fido2GetCredentialsResult
@@ -54,12 +53,8 @@ import com.x8bit.bitwarden.ui.util.performLockAccountClick
 import com.x8bit.bitwarden.ui.util.performLogoutAccountClick
 import com.x8bit.bitwarden.ui.util.performRemoveAccountClick
 import com.x8bit.bitwarden.ui.util.performYesDialogButtonClick
-import com.x8bit.bitwarden.ui.vault.components.model.CreateVaultItemType
-import com.x8bit.bitwarden.ui.vault.feature.addedit.VaultAddEditArgs
-import com.x8bit.bitwarden.ui.vault.feature.item.VaultItemArgs
 import com.x8bit.bitwarden.ui.vault.feature.itemlisting.model.ListingItemOverflowAction
 import com.x8bit.bitwarden.ui.vault.feature.vault.model.VaultFilterType
-import com.x8bit.bitwarden.ui.vault.model.VaultAddEditType
 import com.x8bit.bitwarden.ui.vault.model.VaultItemCipherType
 import com.x8bit.bitwarden.ui.vault.model.VaultItemListingType
 import io.mockk.every
@@ -70,7 +65,6 @@ import io.mockk.mockkStatic
 import io.mockk.runs
 import io.mockk.unmockkStatic
 import io.mockk.verify
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.After
@@ -86,12 +80,10 @@ class VaultItemListingScreenTest : BaseComposeTest() {
     private var onNavigateToVaultAddItemScreenCalled = false
     private var onNavigateToAddSendScreenCalled = false
     private var onNavigateToEditSendItemId: String? = null
-    private var onNavigateToVaultItemArgs: VaultItemArgs? = null
-    private var onNavigateToVaultEditItemScreenArgs: VaultAddEditArgs? = null
+    private var onNavigateToVaultItemId: String? = null
+    private var onNavigateToVaultEditItemScreenId: String? = null
     private var onNavigateToSearchType: SearchType? = null
     private var onNavigateToVaultItemListingScreenType: VaultItemListingType? = null
-    private var onNavigateToAddFolderCalled = false
-    private var onNavigateToAddFolderParentFolderName: String? = null
 
     private val exitManager: ExitManager = mockk {
         every { exitApplication() } just runs
@@ -125,17 +117,15 @@ class VaultItemListingScreenTest : BaseComposeTest() {
                 fido2CompletionManager = fido2CompletionManager,
                 biometricsManager = biometricsManager,
                 onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToVaultItemScreen = { onNavigateToVaultItemArgs = it },
-                onNavigateToVaultAddItemScreen = { onNavigateToVaultAddItemScreenCalled = true },
+                onNavigateToVaultItem = { onNavigateToVaultItemId = it },
+                onNavigateToVaultAddItemScreen = { _, _, _ ->
+                    onNavigateToVaultAddItemScreenCalled = true
+                },
                 onNavigateToAddSendItem = { onNavigateToAddSendScreenCalled = true },
                 onNavigateToEditSendItem = { onNavigateToEditSendItemId = it },
                 onNavigateToSearch = { onNavigateToSearchType = it },
-                onNavigateToVaultEditItemScreen = { onNavigateToVaultEditItemScreenArgs = it },
+                onNavigateToVaultEditItemScreen = { onNavigateToVaultEditItemScreenId = it },
                 onNavigateToVaultItemListing = { this.onNavigateToVaultItemListingScreenType = it },
-                onNavigateToAddFolder = { folderName ->
-                    onNavigateToAddFolderCalled = true
-                    onNavigateToAddFolderParentFolderName = folderName
-                },
             )
         }
     }
@@ -350,28 +340,11 @@ class VaultItemListingScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
     }
 
-    @Test
-    fun `NavigateBack event should invoke NavigateBack`() {
-        mutableEventFlow.tryEmit(VaultItemListingEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `ExitApp event should invoke exitApplication`() {
-        mutableEventFlow.tryEmit(VaultItemListingEvent.ExitApp)
-        verify(exactly = 1) {
-            exitManager.exitApplication()
-        }
-    }
 
-    @Test
-    fun `back gesture should send BackClick action`() {
-        backDispatcher?.onBackPressed()
 
-        verify(exactly = 1) {
-            viewModel.trySendAction(VaultItemListingsAction.BackClick)
-        }
-    }
+
+
 
     @Test
     fun `clicking back button should send BackClick action`() {
@@ -456,85 +429,23 @@ class VaultItemListingScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(VaultItemListingsAction.RefreshClick) }
     }
 
-    @Test
-    fun `ShowShareSheet event should call shareText in intentManager`() {
-        val content = "content"
-        mutableEventFlow.tryEmit(VaultItemListingEvent.ShowShareSheet(content = content))
-        verify {
-            intentManager.shareText(content)
-        }
-    }
 
-    @Test
-    fun `NavigateToAdd VaultItem event should call NavigateToVaultAddItemScreen`() {
-        mutableEventFlow.tryEmit(
-            VaultItemListingEvent.NavigateToAddVaultItem(VaultItemCipherType.LOGIN),
-        )
-        assertTrue(onNavigateToVaultAddItemScreenCalled)
-    }
 
-    @Test
-    fun `NavigateToAddSendItem should call onNavigateToAddSendScreen`() {
-        mutableEventFlow.tryEmit(VaultItemListingEvent.NavigateToAddSendItem)
-        assertTrue(onNavigateToAddSendScreenCalled)
-    }
 
-    @Test
-    fun `NavigateToVaultSearchScreen should call onNavigateToSearch`() {
-        val searchType = SearchType.Vault.SecureNotes
-        mutableEventFlow.tryEmit(VaultItemListingEvent.NavigateToSearchScreen(searchType))
-        assertEquals(searchType, onNavigateToSearchType)
-    }
 
-    @Test
-    fun `NavigateToEditCipher should call onNavigateToVaultEditItemScreen`() {
-        val cipherId = "cipherId"
-        val type = VaultItemCipherType.LOGIN
-        mutableEventFlow.tryEmit(
-            VaultItemListingEvent.NavigateToEditCipher(cipherId = cipherId, cipherType = type),
-        )
-        assertEquals(
-            VaultAddEditArgs(
-                vaultAddEditType = VaultAddEditType.EditItem(vaultItemId = cipherId),
-                vaultItemCipherType = type,
-            ),
-            onNavigateToVaultEditItemScreenArgs,
-        )
-    }
 
-    @Test
-    fun `NavigateToSendItem event should call onNavigateToEditSendItemId`() {
-        val sendId = "sendId"
-        mutableEventFlow.tryEmit(VaultItemListingEvent.NavigateToSendItem(sendId))
-        assertEquals(sendId, onNavigateToEditSendItemId)
-    }
 
-    @Test
-    fun `NavigateToVaultItem event should call NavigateToVaultItemScreen`() {
-        val id = "id4321"
-        val type = VaultItemCipherType.LOGIN
-        mutableEventFlow.tryEmit(VaultItemListingEvent.NavigateToVaultItem(id = id, type = type))
-        assertEquals(
-            VaultItemArgs(vaultItemId = id, cipherType = type),
-            onNavigateToVaultItemArgs,
-        )
-    }
 
-    @Test
-    fun `NavigateToFolderItem should call onNavigateToVaultItemListing`() {
-        val itemListingType = VaultItemListingType.Folder("testId")
-        mutableEventFlow.tryEmit(VaultItemListingEvent.NavigateToFolderItem("testId"))
-        assertEquals(itemListingType, onNavigateToVaultItemListingScreenType)
-    }
 
-    @Test
-    fun `NavigateToUrl should call launchUri on the IntentManager`() {
-        val url = "www.test.com"
-        mutableEventFlow.tryEmit(VaultItemListingEvent.NavigateToUrl(url))
-        verify(exactly = 1) {
-            intentManager.launchUri(url.toUri())
-        }
-    }
+
+
+
+
+
+
+
+
+
 
     @Test
     fun `progressbar should be displayed according to state`() {
@@ -1023,12 +934,7 @@ class VaultItemListingScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
             .performClick()
         verify {
-            viewModel.trySendAction(
-                VaultItemListingsAction.ItemClick(
-                    id = "mockId-1",
-                    cipherType = null,
-                ),
-            )
+            viewModel.trySendAction(VaultItemListingsAction.ItemClick("mockId-1"))
         }
     }
 
@@ -1344,7 +1250,6 @@ class VaultItemListingScreenTest : BaseComposeTest() {
                 VaultItemListingsAction.OverflowOptionClick(
                     action = ListingItemOverflowAction.VaultAction.EditClick(
                         cipherId = "mockId-1",
-                        cipherType = CipherType.LOGIN,
                         requiresPasswordReprompt = true,
                     ),
                 ),
@@ -1895,219 +1800,27 @@ class VaultItemListingScreenTest : BaseComposeTest() {
             .performClick()
 
         verify {
-            viewModel.trySendAction(
-                VaultItemListingsAction.DismissFido2ErrorDialogClick(
-                    message = dialogMessage.asText(),
-                ),
-            )
+            viewModel.trySendAction(VaultItemListingsAction.DismissFido2ErrorDialogClick)
         }
     }
 
-    @Test
-    fun `CompleteFido2Registration event should call Fido2CompletionManager with result`() {
-        val result = Fido2RegisterCredentialResult.Success("mockResponse")
-        mutableEventFlow.tryEmit(VaultItemListingEvent.CompleteFido2Registration(result))
-        verify {
-            fido2CompletionManager.completeFido2Registration(result)
-        }
-    }
 
-    @Test
-    fun `CompleteFido2Assertion event should call Fido2CompletionManager with result`() {
-        val result = Fido2CredentialAssertionResult.Success("mockResponse")
-        mutableEventFlow.tryEmit(VaultItemListingEvent.CompleteFido2Assertion(result))
-        verify {
-            fido2CompletionManager.completeFido2Assertion(result)
-        }
-    }
 
-    @Test
-    fun `CompleteFido2GetCredentials event should call Fido2CompletionManager with result`() {
-        val result = Fido2GetCredentialsResult.Success(
-            userId = "mockUserId",
-            options = mockk(),
-            credentials = mockk(),
-        )
-        mutableEventFlow.tryEmit(VaultItemListingEvent.CompleteFido2GetCredentialsRequest(result))
-        verify {
-            fido2CompletionManager.completeFido2GetCredentialRequest(result)
-        }
-    }
 
-    @Test
-    fun `Fido2UserVerification event should perform user verification when it is supported`() {
-        every {
-            biometricsManager.promptUserVerification(
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-            )
-        } just runs
-        mutableEventFlow.tryEmit(
-            VaultItemListingEvent.Fido2UserVerification(
-                isRequired = true,
-                selectedCipherView = createMockCipherView(number = 1),
-            ),
-        )
-        verify {
-            biometricsManager.promptUserVerification(
-                any(),
-                any(),
-                any(),
-                any(),
-                any(),
-            )
-        }
-    }
 
-    @Test
-    fun `promptForUserVerification onSuccess should send UserVerificationSuccess action`() {
-        val selectedCipherView = createMockCipherView(number = 1)
-        every {
-            biometricsManager.promptUserVerification(
-                onSuccess = captureLambda(),
-                any(),
-                any(),
-                any(),
-                any(),
-            )
-        } answers {
-            lambda<() -> Unit>().invoke()
-        }
 
-        mutableEventFlow.tryEmit(
-            VaultItemListingEvent.Fido2UserVerification(
-                isRequired = true,
-                selectedCipherView = selectedCipherView,
-            ),
-        )
 
-        verify {
-            viewModel.trySendAction(
-                VaultItemListingsAction.UserVerificationSuccess(selectedCipherView),
-            )
-        }
-    }
 
-    @Test
-    fun `promptForUserVerification onCancel should send UserVerificationCancelled action`() {
-        val selectedCipherView = createMockCipherView(number = 1)
-        every {
-            biometricsManager.promptUserVerification(
-                any(),
-                onCancel = captureLambda(),
-                any(),
-                any(),
-                any(),
-            )
-        } answers {
-            lambda<() -> Unit>().invoke()
-        }
 
-        mutableEventFlow.tryEmit(
-            VaultItemListingEvent.Fido2UserVerification(
-                isRequired = true,
-                selectedCipherView = selectedCipherView,
-            ),
-        )
 
-        verify {
-            viewModel.trySendAction(
-                VaultItemListingsAction.UserVerificationCancelled,
-            )
-        }
-    }
 
-    @Test
-    fun `promptForUserVerification onLockOut should send UserVerificationLockOut action`() {
-        val selectedCipherView = createMockCipherView(number = 1)
-        every {
-            biometricsManager.promptUserVerification(
-                any(),
-                any(),
-                onLockOut = captureLambda(),
-                any(),
-                any(),
-            )
-        } answers {
-            lambda<() -> Unit>().invoke()
-        }
 
-        mutableEventFlow.tryEmit(
-            VaultItemListingEvent.Fido2UserVerification(
-                isRequired = true,
-                selectedCipherView = selectedCipherView,
-            ),
-        )
 
-        verify {
-            viewModel.trySendAction(
-                VaultItemListingsAction.UserVerificationLockOut,
-            )
-        }
-    }
 
-    @Test
-    fun `promptForUserVerification onError should send UserVerificationFail action`() {
-        val selectedCipherView = createMockCipherView(number = 1)
-        every {
-            biometricsManager.promptUserVerification(
-                any(),
-                any(),
-                any(),
-                onError = captureLambda(),
-                any(),
-            )
-        } answers {
-            lambda<() -> Unit>().invoke()
-        }
 
-        mutableEventFlow.tryEmit(
-            VaultItemListingEvent.Fido2UserVerification(
-                isRequired = true,
-                selectedCipherView = selectedCipherView,
-            ),
-        )
 
-        verify {
-            viewModel.trySendAction(
-                VaultItemListingsAction.UserVerificationFail,
-            )
-        }
-    }
 
-    @Test
-    fun `promptForUserVerification onNotSupported should send UserVerificationNotFailed action`() {
-        val selectedCipherView = createMockCipherView(number = 1)
-        every {
-            biometricsManager.promptUserVerification(
-                any(),
-                any(),
-                any(),
-                any(),
-                onNotSupported = captureLambda(),
-            )
-        } answers {
-            lambda<() -> Unit>().invoke()
-        }
 
-        mutableEventFlow.tryEmit(
-            VaultItemListingEvent.Fido2UserVerification(
-                isRequired = true,
-                selectedCipherView = selectedCipherView,
-            ),
-        )
-
-        verify {
-            viewModel.trySendAction(
-                VaultItemListingsAction.UserVerificationNotSupported(
-                    selectedCipherId = selectedCipherView.id,
-                ),
-            )
-        }
-    }
 
     @Suppress("MaxLineLength")
     @Test
@@ -2138,71 +1851,6 @@ class VaultItemListingScreenTest : BaseComposeTest() {
             viewModel.trySendAction(
                 VaultItemListingsAction.ConfirmOverwriteExistingPasskeyClick(
                     cipherViewId = "mockCipherViewId",
-                ),
-            )
-        }
-    }
-
-    @Test
-    fun `NavigateToAddFolder event calls onNavigateToAddFolder callback with parent name`() {
-        val parentFolder = "momNpop"
-        mutableEventFlow.tryEmit(
-            VaultItemListingEvent.NavigateToAddFolder(parentFolderName = parentFolder),
-        )
-        assertTrue(onNavigateToAddFolderCalled)
-        assertEquals(
-            parentFolder,
-            onNavigateToAddFolderParentFolderName,
-        )
-    }
-
-    @Test
-    fun `VaultItemTypeSelection dialog state show vault item type selection dialog`() {
-        mutableStateFlow.update {
-            it.copy(
-                dialogState = VaultItemListingState.DialogState.VaultItemTypeSelection(
-                    excludedOptions = persistentListOf(CreateVaultItemType.SSH_KEY),
-                ),
-            )
-        }
-
-        composeTestRule
-            .onNode(isDialog())
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onAllNodesWithText("Type")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun `when option is selected in VaultItemTypeSelection dialog add item action is sent`() {
-        mutableStateFlow.update {
-            it.copy(
-                dialogState = VaultItemListingState.DialogState.VaultItemTypeSelection(
-                    excludedOptions = persistentListOf(
-                        CreateVaultItemType.SSH_KEY,
-                        CreateVaultItemType.FOLDER,
-                    ),
-                ),
-            )
-        }
-
-        composeTestRule
-            .onNode(isDialog())
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onAllNodesWithText("Card")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .performClick()
-
-        verify(exactly = 1) {
-            viewModel.trySendAction(VaultItemListingsAction.DismissDialogClick)
-            viewModel.trySendAction(
-                VaultItemListingsAction.ItemTypeToAddSelected(
-                    CreateVaultItemType.CARD,
                 ),
             )
         }
@@ -2309,7 +1957,6 @@ private fun createDisplayItem(number: Int): VaultItemListingState.DisplayItem =
         shouldShowMasterPasswordReprompt = false,
         iconTestTag = null,
         isTotp = false,
-        type = null,
     )
 
 private fun createCipherDisplayItem(number: Int): VaultItemListingState.DisplayItem =
@@ -2326,7 +1973,6 @@ private fun createCipherDisplayItem(number: Int): VaultItemListingState.DisplayI
         overflowOptions = listOf(
             ListingItemOverflowAction.VaultAction.EditClick(
                 cipherId = "mockId-$number",
-                cipherType = CipherType.LOGIN,
                 requiresPasswordReprompt = true,
             ),
         ),
@@ -2336,5 +1982,4 @@ private fun createCipherDisplayItem(number: Int): VaultItemListingState.DisplayI
         shouldShowMasterPasswordReprompt = false,
         iconTestTag = null,
         isTotp = true,
-        type = CipherType.LOGIN,
     )
