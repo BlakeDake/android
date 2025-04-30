@@ -333,6 +333,8 @@ afterEvaluate {
         filter {
             tests.forEach { includeTestsMatching(it) }
         }
+
+        outputs.upToDateWhen { false }  // comment this out to use the cache
     }
 }
 
