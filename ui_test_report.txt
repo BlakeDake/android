@@ -1,0 +1,1203 @@
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/accountsetup/SetupAutofillScreenTest.kt", "SetupAutofillScreenTest.kt (12)")
+Turning on autofill should send AutofillServiceChanged with value of true
+Turning off autofill should send AutofillServiceChanged with value of false
+Continue click should send correct action
+Turn on later click should send correct action
+Turn on later component should not be displayed when not in initial setup
+Show autofill fallback dialog when dialog state is AutoFillFallbackDialog
+When autofill fallback dialog is dismissed, sends action to dismiss dialog and is removed when state is null
+Show turn on later dialog when dialog state is TurnOnLaterDialog
+On confirm click on TurnOnLaterDialog, sends action to turn on later
+When turn on later dialog is dismissed, sends action to dismiss dialog and is removed when state is null
+close icon should not show when in initial setup
+close icon should show when not initial setup and send action when clicked
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/accountsetup/SetupCompleteScreenTest.kt", "SetupCompleteScreenTest.kt (1)")
+When continue button clicked sends CompleteSetup action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/accountsetup/SetupUnlockScreenTest.kt", "SetupUnlockScreenTest.kt (27)")
+header should display in landscape mode
+on unlock with biometrics should be toggled on or off according to state
+on unlock with biometrics toggle should send EnableBiometricsClick when isUnlockWithBiometricsEnabled is false
+on unlock with biometrics toggle should send UnlockWithBiometricToggleDisabled
+on unlock with biometrics toggle should un-toggle on cancel
+on unlock with biometrics toggle should un-toggle on error
+on unlock with biometrics toggle should un-toggle on lock out
+on unlock with biometrics toggle should send UnlockWithBiometricToggleEnabled on success
+on unlock with pin code should be toggled on or off according to state
+on unlock with pin toggle when enabled should send UnlockWithPinToggle Disabled
+on unlock with pin toggle when disabled should show the PIN input dialog and send UnlockWithPinToggle PendingEnabled
+PIN input dialog Cancel click should clear the dialog and send UnlockWithPinToggle Disabled
+PIN input dialog Submit click with empty pin should clear the dialog and send UnlockWithPinToggle Disabled
+PIN input dialog Submit click with non-empty pin and isUnlockWithPasswordEnabled true should show a confirmation dialog and send UnlockWithPinToggle PendingEnabled
+PIN input dialog Submit click with non-empty pin and isUnlockWithPasswordEnabled false should show a confirmation dialog and send UnlockWithPinToggle Enabled
+PIN confirmation dialog No click should send UnlockWithPinToggle Enabled and close the dialog
+PIN confirmation dialog Yes click should send UnlockWithPinToggle Enabled and close the dialog
+on Continue click should send ContinueClick when disabled
+on Continue click should send ContinueClick when enabled
+on Set up later component should not be displayed when not in initial setup
+on Set up later click should display confirmation dialog
+on Set up later dialog cancel click should dismiss the dialog
+on Set up later dialog confirm click should dismiss the dialog and send SetUpLaterClick
+Loading Dialog should be displayed according to state
+Error Dialog should be displayed according to state and send DismissDialog action on click
+close icon should not show when in initial setup
+close icon should show when not initial setup and send action when clicked
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/checkemail/CheckEmailScreenTest.kt", "CheckEmailScreenTest.kt (5)")
+close button click should send BackClick action
+open email app button click should send OpenEmailClcik action
+go back and update email text click should send ChangeEmailClick action
+already have account text click should send ChangeEmailClick action
+change email button click should send ChangeEmailClick action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/completeregistration/CompleteRegistrationScreenTest.kt", "CompleteRegistrationScreenTest.kt (19)")
+determine if using the old ui by title text
+call to action with valid input click should send CreateAccountClick action
+close click should send CloseClick action
+check data breaches click should send CheckDataBreachesToggle action
+password input change should send PasswordInputChange action
+confirm password input change should send ConfirmPasswordInputChange action
+password hint input change should send PasswordHintChange action
+clicking OK on the error dialog should send ErrorDialogDismiss action
+clicking No on the HIBP dialog should send ErrorDialogDismiss action
+clicking Yes on the HIBP dialog should send ContinueWithBreachedPasswordClick action
+when BasicDialogState is Shown should show dialog
+password strength should change as state changes
+toggling one password field visibility should toggle the other
+determine if using the new ui by title text
+call to action state should update with input based on if both fields are populated
+Click on action card should send MakePasswordStrongClick action
+Click on prevent account lockout should send LearnToPreventLockoutClick action
+Header should be displayed in portrait mode
+Header should be displayed in landscape mode
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/completeregistration/PasswordStrengthIndicatorTest.kt", "PasswordStrengthIndicatorTest.kt (2)")
+PasswordStrengthIndicator with minimum character count met displays minimum character count
+PasswordStrengthIndicator with no minimum character count met does not minimum character count
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/createaccount/CreateAccountScreenTest.kt", "CreateAccountScreenTest.kt (17)")
+app bar submit click should send SubmitClick action
+close click should send CloseClick action
+check data breaches click should send CheckDataBreachesToggle action
+accept policies should be toggled on or off according to the state
+accept policies click should send AcceptPoliciesToggle action
+email input change should send EmailInputChange action
+password input change should send PasswordInputChange action
+confirm password input change should send ConfirmPasswordInputChange action
+password hint input change should send PasswordHintChange action
+clicking OK on the error dialog should send ErrorDialogDismiss action
+clicking No on the HIBP dialog should send ErrorDialogDismiss action
+clicking Yes on the HIBP dialog should send ContinueWithBreachedPasswordClick action
+when BasicDialogState is Shown should show dialog
+password strength should change as state changes
+toggling one password field visibility should toggle the other
+terms of service click should send TermsClick action
+privacy policy click should send PrivacyPolicyClick action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/enterprisesignon/EnterpriseSignOnScreenTest.kt", "EnterpriseSignOnScreenTest.kt (7)")
+app bar log in click should send LogInClick action
+close button click should send CloseButtonClick action
+organization identifier input change should send OrgIdentifierInputChange action
+organization identifier should change according to state
+error dialog should be shown or hidden according to the state
+loading dialog should be displayed according to state
+error dialog OK click should send DialogDismiss action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/environment/EnvironmentScreenTest.kt", "EnvironmentScreenTest.kt (14)")
+close click should send CloseClick
+save click should send SaveClick
+error dialog should be shown or hidden according to the state
+error dialog OK click should send ErrorDialogDismiss action
+server URL should change according to the state
+server URL change should send ServerUrlChange
+web vault URL should change according to the state
+web vault server URL change should send WebVaultServerUrlChange
+API server URL should change according to the state
+API server URL change should send ApiServerUrlChange
+identity server URL should change according to the state
+identity server URL change should send IdentityServerUrlChange
+icons server URL should change according to the state
+icons server URL change should send IconsServerUrlChange
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/expiredregistrationlink/ExpiredRegistrationLinkScreenTest.kt", "ExpiredRegistrationLinkScreenTest.kt (3)")
+CloseClicked sends NavigateBack action
+RestartRegistrationClicked sends RestartRegistrationClicked action
+GoToLoginClicked sends GoToLoginClicked action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/landing/LandingScreenTest.kt", "LandingScreenTest.kt (22)")
+account menu icon is present according to the state
+account menu icon click should show the account switcher
+account click in the account switcher should send SwitchAccountClick and close switcher
+account long click in the account switcher should show the lock-or-logout dialog and close the switcher
+lock button click in the lock-or-logout dialog should send LockAccountClick action and close the dialog
+logout button click in the lock-or-logout dialog should show the logout confirmation dialog and hide the lock-or-logout dialog
+logout button click in the logout confirmation dialog should send LogoutAccountClick action and close the dialog
+remove account button click in the lock-or-logout dialog should show the remove account confirmation dialog and hide the lock-or-logout dialog
+remove account button click in the remove account confirmation dialog should send LogoutAccountClick action and close the dialog
+continue button should be enabled or disabled according to the state
+continue button click should send ContinueButtonClick action
+remember me should be toggled on or off according to the state
+remember me click should send RememberMeToggle action
+create account click should send CreateAccountClick action
+email address should change according to state
+email address change should send EmailInputChanged action
+selecting environment should send EnvironmentOptionSelect action
+error dialog should be shown or hidden according to the state
+error dialog OK click should send DialogDismiss action
+account already added dialog should be shown or hidden according to the state
+account already added dialog Cancel click should send DialogDismiss action
+account already added dialog Yes click should send ConfirmSwitchToMatchingAccountClick action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/login/LoginScreenTest.kt", "LoginScreenTest.kt (16)")
+account menu icon is present according to the state
+account menu icon click should show the account switcher
+account click in the account switcher should send SwitchAccountClick and close switcher
+add account click in the account switcher should send AddAccountClick and close switcher
+account long click in the account switcher should show the lock-or-logout dialog and close the switcher
+lock button click in the lock-or-logout dialog should send LockAccountClick action and close the dialog
+logout button click in the lock-or-logout dialog should show the logout confirmation dialog and hide the lock-or-logout dialog
+logout button click in the logout confirmation dialog should send LogoutAccountClick action and close the dialog
+remove account button click in the lock-or-logout dialog should show the remove account confirmation dialog and hide the lock-or-logout dialog
+remove account button click in the remove account confirmation dialog should send LogoutAccountClick action and close the dialog
+log in with device button visibility should update according to state
+close button click should send CloseButtonClick action
+Not you text click should send NotYouButtonClick action
+master password hint text click should send MasterPasswordHintClick action
+master password hint option menu click should send MasterPasswordHintClick action
+password input change should send PasswordInputChanged action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/loginwithdevice/LoginWithDeviceScreenTest.kt", "LoginWithDeviceScreenTest.kt (7)")
+close button click should send CloseButtonClick action
+dismissing dialog should send DismissDialog
+resend notification click should send ResendNotificationClick action
+view all log in options click should send ViewAllLogInOptionsClick action
+progress bar should be displayed according to state
+progress dialog should be displayed according to state
+error dialog should be displayed according to state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/masterpasswordgenerator/MasterPasswordGeneratorScreenTest.kt", "MasterPasswordGeneratorScreenTest.kt (5)")
+Generated password field state should update with ViewModel state
+Verify clicking the back navigation button sends correct action
+Verify clicking the save text button sends correct action
+Verify clicking the generate button sends correct action
+Verify clicking the learn to prevent lockout text sends correct action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/masterpasswordguidance/MasterPasswordGuidanceScreenTest.kt", "MasterPasswordGuidanceScreenTest.kt (2)")
+Close button click should invoke send of CloseAction
+Generator card click should invoke send of TryPasswordGeneratorAction
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/masterpasswordhint/MasterPasswordHintScreenTest.kt", "MasterPasswordHintScreenTest.kt (5)")
+email input change should send EmailInputChange action
+should show success dialog when PasswordHintSent state is set
+should show error dialog when Error state is set
+should show loading dialog when Loading state is set
+clicking ok in dialog should send DismissDialog action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/newdevicenotice/NewDeviceNoticeEmailAccessScreenTest.kt", "NewDeviceNoticeEmailAccessScreenTest.kt (3)")
+Do you have reliable access to your email should be toggled on or off according to the state
+Do you have reliable access to your email click should send EmailAccessToggle action
+Continue button click should send ContinueButtonClick action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/newdevicenotice/NewDeviceNoticeTwoFactorScreenTest.kt", "NewDeviceNoticeTwoFactorScreenTest.kt (8)")
+onNavigateBack should send action to viewModel
+Turn on two-step verification click should send TurnOnTwoFactorClick action
+Change account email click should send ChangeAccountEmailClick action
+Remind me later click should send RemindMeLaterClick action
+remind me later button visibility should update according to state
+turn on two factor dialog should be shown or hidden according to the state
+change account email dialog should be shown or hidden according to the state
+dialog should be hidden according to the state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/preventaccountlockout/PreventAccountLockoutScreenTest.kt", "PreventAccountLockoutScreenTest.kt (1)")
+When navigation button is clicked CloseClickAction is sent
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/removepassword/RemovePasswordScreenTest.kt", "RemovePasswordScreenTest.kt (4)")
+dialog should update according to state
+description should update according to state
+continue button should update according to state
+continue button click should emit ContinueClick
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/resetPassword/ResetPasswordScreenTest.kt", "ResetPasswordScreenTest.kt (12)")
+basicDialog should update according to state
+loadingDialog should update according to state
+logout button click should display confirmation dialog and emit ConfirmLogoutClick
+submit button click should emit SubmitClick
+instructions text should update according to state
+detailed instructions should update according to state
+current password input change should send CurrentPasswordInputChanged action
+current password field should update according to state
+password input change should send PasswordInputChange action
+retype password input change should send RetypePasswordInputChanged action
+password hint input change should send PasswordHintInputChanged action
+toggling one password field visibility should toggle the other
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/setpassword/SetPasswordScreenTest.kt", "SetPasswordScreenTest.kt (8)")
+basicDialog should update according to state
+loadingDialog should update according to state
+cancel button click should emit CancelClick
+submit button click should emit SubmitClick
+password input change should send PasswordInputChange action
+retype password input change should send RetypePasswordInputChanged action
+password hint input change should send PasswordHintInputChanged action
+toggling one password field visibility should toggle the other
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/startregistration/StartRegistrationScreenTest.kt", "StartRegistrationScreenTest.kt (12)")
+close click should send BackClick action
+email input change should send EmailInputChange action
+name input change should send NameInputChange action
+clicking OK on the error dialog should send ErrorDialogDismiss action
+when BasicDialogState is Shown should show dialog
+clicking the server tool tip should send ServerGeologyHelpClickAction
+server tool tip should not exist if not in new onboarding ui
+when environment selected in dialog should send EnvironmentTypeSelect action
+when continue button clicked should send ContinueClick action
+when unsubscribe custom action invoked should send UnsubscribeMarketingEmailsClick
+when terms and conditions custom action invoked should send TermsClick
+when privacy policy custom action invoked should send TermsClick
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/trusteddevice/TrustedDeviceScreenTest.kt", "TrustedDeviceScreenTest.kt (14)")
+on back click should send BackClick
+on remember toggle changed should send RememberToggle
+continue button should be displayed according to state
+on continue clicked should send ContinueClick
+other device button should be displayed according to state
+on approve with device clicked should send ApproveWithDeviceClick
+admin approval button should be displayed according to state
+on approve with admin clicked should send ApproveWithAdminClick
+master password button should be displayed according to state
+on approve with master password clicked should send ApproveWithPasswordClick
+on not you clicked should send NotYouClick
+remember this device toggle should update according to state
+email and environment label should update according to state
+dialog should update according to state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/twofactorlogin/TwoFactorLoginScreenTest.kt", "TwoFactorLoginScreenTest.kt (16)")
+basicDialog should update according to state
+close button click should send CloseButtonClick action
+code input change should send CodeInputChanged action
+continue button click should send ContinueButtonClick action
+continue button enabled state should update according to the state
+continue button text should update according to the state
+description text should update according to state
+loadingOverlay should update according to state
+remember me click should send RememberMeToggle action
+remember me should be toggled on or off according to the state
+resend email button click should send ResendEmailClick action
+resend email button visibility should update according to state
+input field visibility should update according to state
+options menu icon click should show the auth method options
+options menu option click should should send SelectAuthMethod and close the menu
+title text should update according to state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/vaultunlock/VaultUnlockScreenTest.kt", "VaultUnlockScreenTest.kt (28)")
+account icon click should show the account switcher
+account click in the account switcher should send AccountSwitchClick and close switcher
+add account click in the account switcher should send AddAccountClick and close switcher
+account long click in the account switcher should show the lock-or-logout dialog and close the switcher
+title should change according to state
+message should change according to state
+input label should change according to state
+lock button click in the lock-or-logout dialog should send LockAccountClick action and close the dialog
+logout button click in the lock-or-logout dialog should show the logout confirmation dialog and hide the lock-or-logout dialog
+logout button click in the logout confirmation dialog should send LogoutAccountClick action and close the dialog
+remove account button click in the lock-or-logout dialog should show the remove account confirmation dialog and hide the lock-or-logout dialog
+remove account button click in the remove account confirmation dialog should send LogoutAccountClick action and close the dialog
+logout click in the overflow menu should show the logout confirmation dialog
+Yes click in the logout confirmation dialog should send the ConfirmLogoutClick action
+email state change should update logged in as text
+environment url state change should update logged in as text
+input state change should update unlock button enabled
+unlock click should send UnlockClick action
+keyboard Done event should send UnlockClick action
+state with input and without biometrics should request focus on input field
+input change should send InputChanged action
+unlock with biometrics click should send BiometricsUnlockClick
+biometric invalidated message should display according to state
+account button should update according to state
+input field and unlock button should update according to state
+biometrics not supported dialog shows correctly
+DismissBiometricsNoLongerSupportedDialog should be sent when dialog is dismissed
+when biometric is needed but no longer supported BiometricsNoLongerSupported action is sent
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/auth/feature/welcome/WelcomeScreenTest.kt", "WelcomeScreenTest.kt (4)")
+pages should display and update according to state
+pages should display and update according to state in landscape mode
+create account button click should send CreateAccountClick action
+login button click should send LoginClick action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/base/util/StringRestExtensionsTest.kt", "StringRestExtensionsTest.kt (6)")
+toAnnotatedString should add Clickable LinkAnnotation to highlighted string
+toAnnotatedString should add multiple Clickable LinkAnnotations to highlighted string
+no link annotations should be applied to non annotated string resource
+string with args should only use the arguments available in the string
+string with arg annotations but no passed in args should just append empty string
+string with no annotations with args should just be handled as normal annotated string
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/debugmenu/DebugMenuScreenTest.kt", "DebugMenuScreenTest.kt (9)")
+onNavigateBack should send action to viewModel
+feature flag content should not display if the state is empty
+feature flag content should display if the state is not empty
+boolean feature flag content should send action when clicked
+reset feature flag values should send action when clicked
+restart onboarding should send action when enabled and clicked
+restart onboarding should not send action when not enabled
+Show onboarding carousel should send action when enabled and clicked
+show onboarding carousel should not send action when not enabled
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/search/SearchScreenTest.kt", "SearchScreenTest.kt (27)")
+clicking back button should send BackClick action
+progressbar should be displayed according to state
+error text and retry should be displayed according to state
+empty text should be displayed according to state
+display items text should be displayed according to state
+clicking on a display item should send ItemClick action
+clicking on a display item with autofill options should open the autofill option selection dialog
+clicking on cancel in selection dialog should close dialog
+clicking on autofill option in selection dialog when no reprompt required should send AutofillItemClick and close dialog
+clicking on autofill option in selection dialog when reprompt is required should show master password dialog
+clicking on autofill-and-save option in selection dialog when no reprompt required should send AutofillAndSaveItemClick and close dialog
+clicking on autofill-and-save option in selection dialog when reprompt is required should show master password dialog
+clicking on view option in selection dialog when no reprompt required should send ItemClick and close dialog
+clicking on totp when reprompt is required should show master password dialog
+clicking cancel on the master password dialog should close the dialog
+clicking submit on the master password dialog for autofill should close the dialog and send MasterPasswordRepromptSubmit
+clicking submit on the master password dialog for autofill-and-save should close the dialog and send MasterPasswordRepromptSubmit
+topBar search placeholder should be displayed according to state
+on cipher item overflow click should display options dialog
+on cipher item overflow option click should emit the appropriate action
+on cipher item overflow item click when reprompt required should show the master password dialog
+clicking submit on the master password dialog for overflow item should close the dialog and send MasterPasswordRepromptSubmit
+on send item overflow click should display dialog
+on send item overflow option click should emit the appropriate action
+on send item delete overflow option click should display delete confirmation dialog and emits DeleteSendConfirmClick on confirmation
+error dialog should be displayed according to state
+loading dialog should be displayed according to state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/about/AboutScreenTest.kt", "AboutScreenTest.kt (11)")
+on back click should send BackClick
+on give feedback click should display confirmation dialog and confirm click should emit GiveFeedbackClick
+on bitwarden help center click should display confirmation dialog and confirm click should emit HelpCenterClick
+on privacy policy click should display confirmation dialog and confirm click should emit PrivacyPolicyClick
+on bitwarden web vault click should display confirmation dialog and confirm click should emit WebVaultClick
+on learn about organizations click should display confirmation dialog and confirm click should emit LearnAboutOrganizationsClick
+submit crash logs switch should be displayed according to state
+on submit crash logs toggle should send SubmitCrashLogsClick
+on version info click should send VersionClick
+version should update according to the state
+copyright info should update according to the state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/AccountSecurityScreenTest.kt", "AccountSecurityScreenTest.kt (60)")
+on Log out click should send LogoutClick
+on pending login requests click should send PendingLoginRequestsClick
+on unlock with biometrics toggle should send EnableBiometricsClick when isUnlockWithBiometricsEnabled is false
+on unlock with biometrics toggle should send UnlockWithBiometricToggleDisabled
+on unlock with biometrics toggle should un-toggle on cancel
+on unlock with biometrics toggle should un-toggle on error
+on unlock with biometrics toggle should un-toggle on lock out
+on unlock with biometrics toggle should send UnlockWithBiometricToggleEnabled on success
+on unlock with biometrics should be toggled on or off according to state
+on unlock with pin toggle when enabled should send UnlockWithPinToggle Disabled
+on unlock with pin toggle when disabled should show the PIN input dialog and send UnlockWithPinToggle PendingEnabled
+PIN input dialog Cancel click should clear the dialog and send UnlockWithPinToggle Disabled
+PIN input dialog Submit click with empty pin should clear the dialog and send UnlockWithPinToggle Disabled
+PIN input dialog Submit click with non-empty pin and isUnlockWithPasswordEnabled true should show a confirmation dialog and send UnlockWithPinToggle PendingEnabled
+PIN input dialog Submit click with non-empty pin and isUnlockWithPasswordEnabled false should show a confirmation dialog and send UnlockWithPinToggle Enabled
+PIN confirmation dialog No click should send UnlockWithPinToggle Enabled and close the dialog
+PIN confirmation dialog Yes click should send UnlockWithPinToggle Enabled and close the dialog
+on unlock with pin code should be toggled on or off according to state
+session timeout policy warning should update according to state
+session timeout should be updated on or off according to state
+on session timeout click should show a selection dialog
+on session timeout click should update according to state
+on session timeout selection dialog cancel click should close the dialog
+on session timeout selection non-Never timeout type click should send VaultTimeoutTypeSelect and close the dialog
+on session timeout selection Never timeout type click should show a confirmation dialog
+on session timeout Never confirmation dialog Cancel click should close the dialog
+on session timeout Never confirmation dialog Ok click should close the dialog and emit VaultTimeoutTypeSelect
+custom session timeout should update according to state
+custom session timeout click should show a time-picker dialog
+custom session timeout dialog Cancel click should dismiss the dialog
+custom session timeout dialog Ok click should dismiss the dialog and send CustomVaultTimeoutSelect
+custom session timeout dialog Ok click should dismiss the dialog and show an error if value exceeds policy limit
+on session timeout action click should show a selection dialog
+on session timeout action dialog Lock click should close the dialog and send VaultTimeoutActionSelect
+on session timeout action dialog Logout click should open a confirmation dialog
+on session timeout action Logout confirmation dialog cancel click should dismiss the dialog
+on session timeout action Logout confirmation dialog Yes click should dismiss the dialog and send VaultTimeoutActionSelect
+on session timeout action dialog cancel click should close the dialog
+session timeout action should be updated according to state
+on two-step login click should display confirmation dialog and confirm click should send TwoStepLoginClick
+on change master password click should display confirmation dialog and confirm should send ChangeMasterPasswordClick
+on Lock now click should send LockNowClick
+on delete account click should send DeleteAccountClick
+on back click should send BackClick
+confirm dialog be shown or hidden according to the state
+on confirm logout click should send ConfirmLogoutClick
+on cancel click should send DismissDialog
+Error dialog should be shown or hidden according to state
+Error dialog dismiss should send DismissDialog
+fingerprint phrase dialog should be shown or hidden according to the state
+on close click should send DismissDialog
+on learn more click should send FingerPrintLearnMoreClick
+loading dialog should be displayed according to state
+change master password row should be displayed according to state
+lock now row should be displayed according to state
+sync with Bitwarden authenticator UI should be displayed according to state
+sync with Bitwarden authenticator click should send AuthenticatorSyncToggle action
+unlock action card should show when state is true and hide when false
+when unlock action card is visible clicking the cta button should send correct action
+when unlock action card is visible clicking dismissing should send correct action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/deleteaccount/DeleteAccountScreenTest.kt", "DeleteAccountScreenTest.kt (7)")
+cancel click should emit CancelClick
+loading dialog presence should update with dialog state
+error dialog presence should update with dialog state
+delete success dialog presence should update with dialog state
+delete success dialog dismiss should emit DeleteAccountAction
+delete account dialog should dismiss on cancel click
+delete account dialog should emit DeleteAccountClick on submit click
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/deleteaccountconfirmation/DeleteAccountConfirmationScreenTest.kt", "DeleteAccountConfirmationScreenTest.kt (7)")
+loading dialog presence should update with dialog state
+error dialog presence should update with dialog state
+delete success dialog presence should update with dialog state
+delete success dialog dismiss should emit DeleteAccountAction
+Delete account button click should emit DeleteAccountClick
+Resend code button click should emit ResendCodeClick
+Verification code text input should emit VerificationCodeTextChange
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/loginapproval/LoginApprovalScreenTest.kt", "LoginApprovalScreenTest.kt (5)")
+on Confirm login should send ApproveRequestClick
+on Deny login should send DeclineRequestClick
+on error dialog dismiss click should send ErrorDialogDismiss
+on change account dialog confirm click should send ApproveAccountChangeClick
+on change account dialog dismiss click should send CancelAccountChangeClick
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/accountsecurity/pendingrequests/PendingRequestsScreenTest.kt", "PendingRequestsScreenTest.kt (4)")
+on decline all requests confirmation should send DeclineAllRequestsConfirm
+on decline all requests cancel should hide confirmation dialog
+on skip for now click should emit HideBottomSheet
+on Enable notifications click should emit HideBottomSheet
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/appearance/AppearanceScreenTest.kt", "AppearanceScreenTest.kt (8)")
+on back click should send BackClick
+on language row click should display language selection dialog
+on language selection dialog item click should send LanguageChange and show dialog
+on language selection dialog cancel click should dismiss dialog
+on theme row click should display theme selection dialog
+on theme selection dialog item click should send ThemeChange
+on theme selection dialog cancel click should dismiss dialog
+on show website icons row click should send ShowWebsiteIconsToggled
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/autofill/AutoFillScreenTest.kt", "AutoFillScreenTest.kt (28)")
+on NavigateToAutofillSettings should attempt to navigate to system settings and not show the fallback dialog when result is a success
+on NavigateToAutofillSettings should attempt to navigate to system settings and show the fallback dialog when result is not a success
+on NavigateToSettings should attempt to navigate to credential manager settings
+on use accessibility click with accessibility already enabled should emit UseAccessibilityAutofillClick
+on use accessibility click with accessibility already disabled should display disclosure dialog and declining closes the dialog
+on use accessibility click with accessibility already disabled should display disclosure dialog and accepting closes the dialog and emits UseAccessibilityAutofillClick
+on autofill settings fallback dialog Ok click should dismiss the dialog
+on auto fill services toggle should send AutoFillServicesClick
+auto fill services should be toggled on or off according to state
+on use inline auto fill toggle should send UseInlineAutofillClick
+use inline autofill should be toggled on or off according to state
+use inline autofill should be disabled or enabled according to state
+on passkey management click should display confirmation dialog and confirm click should emit PasskeyManagementClick
+passkey management row should not appear according to state
+use inline autofill should be displayed according to state
+on copy TOTP automatically toggle should send CopyTotpAutomaticallyClick
+copy TOTP automatically should be toggled on or off according to state
+on ask to add login toggle should send AskToAddLoginClick
+ask to add login should be toggled on or off according to state
+on default URI match type click should display dialog
+on default URI match type dialog item click should send DefaultUriMatchTypeSelect and close the dialog
+on default URI match type dialog cancel click should close the dialog
+default URI match type should update according to state
+on back click should send BackClick
+on block auto fill click should send BlockAutoFillClick
+autofill action card should show when state is true and hide when false
+when autofill card is visible clicking the cta button should send correct action
+when autofill action card is visible clicking dismissing should send correct action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/autofill/blockautofill/BlockAutoFillScreenTest.kt", "BlockAutoFillScreenTest.kt (13)")
+on back click should send BackClick
+Screen should display empty state view when in ViewState Empty
+Screen should display content state view when in ViewState Content
+empty state should display 'New blocked URI' button
+on add URI button click should send AddUriClick
+on FAB button click should send AddUriClick
+on URI item click should send EditUriClick
+should show add URI dialog according to state
+clicking a uri from the list should send EditUriClick action
+should display error message in dialog when there is a error in the dialog state
+clicking save in dialog should send SaveUri action
+clicking cancel in dialog should send DismissDialog action
+clicking remove in dialog should send RemoveUriClick action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/exportvault/ExportVaultScreenTest.kt", "ExportVaultScreenTest.kt (16)")
+basicDialog should update according to state
+progress dialog should be displayed according to state
+close button click should send CloseButtonClick action
+export vault button click should display confirmation dialog
+confirm export vault button click should send ConfirmExportClick action
+policy text should update according to state
+file format selection button should send ExportFormatOptionSelect action
+file format selection button should update according to state
+loadingDialog should update according to state
+confirm file password input change should send ConfirmFilePasswordInputChange action
+file password input change should send FilePasswordInputChange action
+send code click should send SendCodeClick action
+verification code input change should send PasswordInputChange action
+send code button and verification input field should appear based on state
+master password field should appear based on state
+password input change should send PasswordInputChange action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/folders/addedit/FolderAddEditScreenTest.kt", "FolderAddEditScreenTest.kt (8)")
+clicking save button should send SaveClick action
+overflow menu should only be displayed in edit mode
+clicking overflow menu and delete, and cancel should dismiss the dialog
+clicking overflow menu and delete, and delete confirmation again should send a DeleteClick Action
+error text should display according to state
+error dialog should display according to state
+loading dialog should display according to state
+content should be displayed according to the state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/folders/FoldersScreenTest.kt", "FoldersScreenTest.kt (5)")
+close button click should send CloseButtonClick
+add folder button click should send AddFolderButtonClick
+error text should display according to state
+folders should be displayed according to state
+clicking on a folder should send FolderClick action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/other/OtherScreenTest.kt", "OtherScreenTest.kt (10)")
+on allow screen capture confirm should send AllowScreenCaptureToggle
+on allow screen capture cancel should dismiss dialog
+on allow screen capture row click should display confirm enable screen capture dialog
+on allow sync toggle should send AllowSyncToggle
+on back click should send BackClick
+on clear clipboard row click should show show clipboard selection dialog
+on clear clipboard dialog item click should send ClearClipboardFrequencyChange
+on clear clipboard dialog cancel should dismiss dialog
+on sync now button click should send SyncNowButtonClick
+loading dialog should be displayed according to state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/SettingsScreenTest.kt", "SettingsScreenTest.kt (14)")
+on about row click should emit SettingsClick
+on account security row click should emit SettingsClick
+on appearance row click should emit SettingsClick
+on auto-fill row click should emit SettingsClick
+on other row click should emit SettingsClick
+on vault row click should emit SettingsClick
+on NavigateAbout should call onNavigateToAbout
+on NavigateAccountSecurity should call onNavigateToAccountSecurity
+on NavigateAccountSecurity should call NavigateAppearance
+on NavigateAccountSecurity should call onNavigateToAutoFill
+on NavigateAccountSecurity should call onNavigateToOther
+on NavigateAccountSecurity should call NavigateVault
+on NavigateAccountSecurityShortcut should call onNavigateToAccountSecurity
+Settings screen should show correct number of notification badges based on state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/settings/vault/VaultSettingsScreenTest.kt", "VaultSettingsScreenTest.kt (11)")
+on back click should send BackClick
+export vault click should send ExportVaultClick
+import items click should display dialog and confirming should send ImportItemsClick
+import items click should display dialog & canceling should not send ImportItemsClick
+import items click should display dialog with importUrl
+when new logins feature flag is enabled send action right when import items is clicked
+when new show action card is true the import logins card should show
+when action card is visible clicking the close icon should send correct action
+when action card is visible get started button should send correct action
+when ShowSnackbar is sent snackbar should be displayed
+when snackbar is displayed clicking on it should dismiss
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/platform/feature/vaultunlockednavbar/VaultUnlockedNavBarScreenTest.kt", "VaultUnlockedNavBarScreenTest.kt (13)")
+vault tab click should send VaultTabClick action
+NavigateToVaultScreen should navigate to VaultScreen
+NavigateToVaultScreen shortcut event should navigate to VaultScreen
+NavigateToSettingsScreen shortcut event should navigate to SettingsScreen
+send tab click should send SendTabClick action
+NavigateToSendScreen should navigate to SendScreen
+generator tab click should send GeneratorTabClick action
+NavigateToGeneratorScreen should navigate to GeneratorScreen
+NavigateToGeneratorScreen  shortcut event should navigate to GeneratorScreen
+settings tab click should send SendTabClick action
+NavigateToSettingsScreen should navigate to SettingsScreen
+vault nav bar should update according to state
+settings tab notification count should update according to state and show correct count
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/generator/GeneratorScreenTest.kt", "GeneratorScreenTest.kt (55)")
+ModalAppBar should be displayed for Password Mode
+ModalAppBar should be displayed for Username Mode
+on close click should send CloseClick
+on select click should send SelectClick
+DefaultAppBar should be displayed for Default Mode
+MainTypeOption select control should be hidden for password mode
+MainTypeOption select control should be hidden for username mode
+Snackbar should be displayed with correct message on ShowSnackbar event
+clicking the Regenerate button should send RegenerateClick action
+clicking the Copy button should send CopyClick action
+clicking a MainStateOption should send MainTypeOptionSelect action
+clicking a UsernameOption should send UsernameTypeOption action
+in Password state, the ViewModel state should update the UI correctly
+in Password state, adjusting the slider should send SliderLengthChange action with length not equal to default
+in Password state, toggling the capital letters toggle should send ToggleCapitalLettersChange action
+in Password state, toggling the use lowercase toggle should send ToggleLowercaseLettersChange action
+in Password state, toggling the use numbers toggle should send ToggleNumbersChange action
+in Password state, toggling the use special characters toggle should send ToggleSpecialCharactersChange action
+in Password state, decrementing the minimum numbers counter should send MinNumbersCounterChange action
+in Password state, incrementing the minimum numbers counter should send MinNumbersCounterChange action
+in Password state, decrementing the minimum numbers counter below 0 should do nothing
+in Password state, incrementing the minimum numbers counter above 9 should do nothing
+in Password state, decrementing the minimum special characters counter should send MinSpecialCharactersChange action
+in Password state, incrementing the minimum special characters counter should send MinSpecialCharactersChange action
+in Password state, decrementing the minimum special characters below 0 should do nothing
+in Password state, decrementing the minimum special characters above 9 should do nothing
+in Password state, toggling the use avoid ambiguous characters toggle should send ToggleSpecialCharactersChange action
+in Password state, disabled elements should not send events
+in Password state, minimum numbers cannot go below minimum threshold
+in Password state, maximum numbers should match minimum if lower
+in Password state, minimum special characters cannot go below minimum threshold
+in Password state, maximum special should match minimum if lower 
+in Passphrase state, disabled elements should not send events
+in Passphrase state, minimum number of words cannot go below minimum threshold
+in Passphrase state, decrementing number of words should send NumWordsCounterChange action with decremented value
+in Passphrase state, decrementing number of words under 3 should do nothing
+in Passphrase state, incrementing number of words over 20 should do nothing
+in Passphrase state, incrementing number of words should send NumWordsCounterChange action with incremented value
+in Passphrase state, toggling capitalize should send ToggleCapitalizeChange action
+in Passphrase state, toggling the include number toggle should send ToggleIncludeNumberChange action
+in Passphrase state, updating text in word separator should send WordSeparatorTextChange action
+in Username_ForwardedEmailAlias state, updating the service type should send ServiceTypeOptionSelect action
+in Username_ForwardedEmailAlias_AddyIo state, updating access token text input should send AccessTokenTextChange action
+in Username_ForwardedEmailAlias_AddyIo state, updating domain name text input should send DomainTextChange action
+in Username_ForwardedEmailAlias_DuckDuckGo state, updating api key text input should send ApiKeyTextChange action
+in Username_ForwardedEmailAlias_FastMail state, updating api key text input should send ApiKeyTextChange action
+in Username_ForwardedEmailAlias_FirefoxRelay state, updating access token text input should send AccessTokenTextChange action
+in Username_ForwardedEmailAlias_SimpleLogin state, updating api key text input should send ApiKeyTextChange action
+in Username_ForwardedEmailAlias_ForwardEmail state, updating api key text input should send ApiKeyTextChange action
+in Username_ForwardedEmailAlias_ForwardEmail state, updating domain name text input should send DomainNameChange action
+in Username state, clicking the tooltip icon should send the TooltipClick action
+in Username_PlusAddressedEmail state, updating text in email field should send EmailTextChange action
+in Username_CatchAllEmail state, updating text in email field should send EmailTextChange action
+in Username_RandomWord state, toggling capitalize should send ToggleCapitalizeChange action
+in Username_RandomWord state, toggling the include number toggle should send ToggleIncludeNumberChange action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/generator/passwordhistory/PasswordHistoryScreenTest.kt", "PasswordHistoryScreenTest.kt (7)")
+Empty state should display no passwords message
+Error state should display error message
+navigation icon click should trigger navigate back
+clicking the Copy button should send PasswordCopyClick action
+clicking the Clear button in the overflow menu should send PasswordClearClick action
+Clear button should depend on state
+Content state should display list of passwords
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/send/addsend/AddSendScreenTest.kt", "AddSendScreenTest.kt (40)")
+on close icon click should send CloseClick
+display navigation icon according to state
+on save click should send SaveClick
+on overflow button click should display overflow menu
+on overflow button click should only display delete when policy disables send
+overflow remove password button should be hidden when hasPassword is false
+on overflow remove password button click should send RemovePasswordClick
+on overflow remove Share link button click should send ShareLinkClick
+on overflow Delete button click should Display delete confirmation dialog
+on delete confirmation dialog yes click should send DeleteClick
+on overflow remove Copy link button click should send CopyLinkClick
+policy warning should update according to state
+on name input change should send NameChange
+name input should change according to the state
+segmented buttons should appear based on state
+File segmented button click should send FileTypeClick
+Text segmented button click should send TextTypeClick
+Choose file button click with permission should send ChooseFileClick
+Choose file button click without permission should request permission and send ChooseFileClick
+text input change should send TextChange
+text input should change according to the state
+hide by default toggle should send HideByDefaultToggle
+hide text toggle should change according to the state
+options sections should start hidden and show after options clicked
+max access count decrement should be disabled when max access count is null
+max access count decrement should send MaxAccessCountChange
+on max access count increment should send MaxAccessCountChange
+on password input change should send PasswordChange
+password input should change according to the state
+on notes input change should send NoteChange
+note input should change according to the state
+on hide email toggle should send HideMyEmailToggle
+hide email toggle should change according to the state
+hide email toggle should be disabled according to state
+progressbar should be displayed according to state
+error should be displayed according to state
+error dialog should be displayed according to state
+error dialog Ok click should send DismissDialogClick
+loading dialog should be displayed according to state
+policy send options text should be displayed based on state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/tools/feature/send/SendScreenTest.kt", "SendScreenTest.kt (28)")
+on overflow item click should display menu
+on sync click should send SyncClick
+on lock click should send LockClick
+on about send click should send AboutSendClick
+policy warning should update according to state
+fab should be displayed according to state
+on add item FAB click should send AddItemClick
+on add item click should send AddItemClick
+on search click should send SearchClick
+progressbar should be displayed according to state
+error should be displayed according to state
+on try again click should send send RefreshClick
+text type count should be updated according to state
+text type row click should send TextTypeClick
+file type count should be updated according to state
+file type row click should send FileTypeClick
+on send item click should send SendClick
+send item overflow button should update according to state
+on send item overflow click should display dialog
+on send item overflow dialog edit click should send SendClick
+on send item overflow dialog copy click should send CopyClick
+on send item overflow dialog share link click should send ShareClick
+on send item overflow dialog remove password click should send RemovePasswordClick
+on send item overflow dialog delete click should show confirmation dialog
+on delete confirmation dialog yes click should send DeleteSendClick
+on send item overflow dialog cancel click should close the dialog
+error dialog should be displayed according to state
+loading dialog should be displayed according to state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/addedit/VaultAddEditScreenTest.kt", "VaultAddEditScreenTest.kt (143)")
+Fido2Error dialog should display based on state
+fido2 master password prompt dialog should display based on state
+fido2 master password error dialog should display based on state
+fido2 pin prompt dialog should display based on state
+fido2 pin error dialog should display based on state
+fido2 pin set up prompt dialog should display based on state
+fido2 pin set up error dialog should display based on state
+clicking dismiss dialog on Fido2Error dialog should send Fido2ErrorDialogDismissed action
+close button should update according to state
+clicking close button should send CloseClick action
+clicking save button should send SaveClick action
+clicking dismiss dialog button on InitialAutofillPrompt should send InitialAutofillDialogDismissed action
+InitialAutofillPrompt is shown according to state
+clicking dismiss dialog button should send DismissDialog action
+dialog should display when state is updated to do so
+error text and retry should be displayed according to state
+progressbar should be displayed according to state
+clicking a Type Option should send TypeOptionSelect action
+the Type Option field should display the text of the selected item type
+in ItemType_Login state the password should change according to state
+in ItemType_Login state changing password visibility state should send PasswordVisibilityChange
+in ItemType_Login state changing Username text field should trigger UsernameTextChange
+in ItemType_Login the Username control should display the text provided by the state
+in ItemType_Login state clicking Username text field generator action with non empty username should open dialog that triggers OpenUsernameGeneratorClick
+in ItemType_Login state clicking Username generator icon with empty username field should trigger OpenPasswordGeneratorClick
+in ItemType_Login state clicking Password checker action should trigger PasswordCheckerClick
+in ItemType_Login state clicking Password text field generator action with non empty password field should open dialog that triggers OpenPasswordGeneratorClick
+in ItemType_Login state clicking Password generator icon with empty password field should trigger OpenPasswordGeneratorClick
+in ItemType_Login state changing Password text field should trigger PasswordTextChange
+in ItemType_Login the Password control should display the text provided by the state
+in ItemType_Login state the Passkey should change according to state
+in ItemType_Login state the totp text field should be present based on state
+in ItemType_Login state the totp text field click on trailing icon should call ClearTotpKeyClick
+in ItemType_Login state clicking the copy totp code button should trigger CopyTotpKeyClick
+in ItemType_Login state clicking the camera totp code button should trigger SetupTotpClick with result
+in ItemType_Login state SetupTOTP button should be present based on state
+in ItemType_Login state clicking SetupTOTP button with a positive result should send true if permission check returns true
+in ItemType_Login state clicking SetupTOTP button with a positive result should send true
+in ItemType_Login state clicking Set up TOTP button with a negative result should send false
+in ItemType_Login state changing URI text field should trigger UriValueChange
+in ItemType_Login the URI control should display the text provided by the state
+in ItemType_Login Uri settings dialog should be dismissed on cancel click
+in ItemType_Login Uri settings dialog should send RemoveUriClick action if remove is clicked
+in ItemType_Login Uri settings dialog with open match detection click should open list of options
+in ItemType_Login on URI settings click and on match detection click and option click should emit UriValueChange action
+in ItemType_Login on URI settings click and on match detection click and cancel click should dismiss the dialog
+in ItemType_Login state clicking the New URI button should trigger AddNewUriClick
+in ItemType_Identity selecting a title should trigger TitleSelected
+in ItemType_Identity the Title should display the selected title from the state
+in ItemType_Identity changing the first name text field should trigger FirstNameTextChange
+in ItemType_Identity the first name text field should display the text provided by the state
+in ItemType_Identity changing the middle name text field should trigger MiddleNameTextChange
+in ItemType_Identity the middle name text field should display the text provided by the state
+in ItemType_Identity changing the last name text field should trigger LastNameTextChange
+in ItemType_Identity the last name text field should display the text provided by the state
+in ItemType_Identity changing username text field should trigger UsernameTextChange
+in ItemType_Identity the username text field should display the text provided by the state
+in ItemType_Identity changing company text field should trigger CompanyTextChange
+in ItemType_Identity the company text field should display the text provided by the state
+in ItemType_Identity changing SSN text field should trigger CompanyTextChange
+in ItemType_Identity the SSN text field should display the text provided by the state
+in ItemType_Identity changing passport number text field should trigger PassportNumberTextChange
+in ItemType_Identity the passport number text field should display the text provided by the state
+in ItemType_Identity changing license number text field should trigger LicenseNumberTextChange
+in ItemType_Identity the license number text field should display the text provided by the state
+in ItemType_Identity changing email text field should trigger EmailTextChange
+in ItemType_Identity the email text field should display the text provided by the state
+in ItemType_Identity changing address1 text field should trigger Address1TextChange
+in ItemType_Identity the address1 text field should display the text provided by the state
+in ItemType_Identity changing address2 text field should trigger Address2TextChange
+in ItemType_Identity the address2 text field should display the text provided by the state
+in ItemType_Identity changing address3 text field should trigger Address3TextChange
+in ItemType_Identity the address3 text field should display the text provided by the state
+in ItemType_Identity changing city text field should trigger CityTextChange
+in ItemType_Identity the city text field should display the text provided by the state
+in ItemType_Identity changing zip text field should trigger ZipTextChange
+in ItemType_Identity the zip text field should display the text provided by the state
+in ItemType_Identity changing country text field should trigger CountryTextChange
+in ItemType_Identity changing state text field should trigger CityTextChange
+in ItemType_Identity the state province text field should display the text provided by the state
+in ItemType_Identity the country text field should display the text provided by the state
+in ItemType_Card changing the card holder name text field should trigger CardHolderNameTextChange
+in ItemType_Card the card holder name text field should display the text provided by the state
+in ItemType_Card changing the number text field should trigger NumberTextChange
+in ItemType_Card changing number visibility should trigger NumberVisibilityChange
+in ItemType_Card the number text field should display the text provided by the state
+in ItemType_Card selecting a brand should trigger BrandSelected
+in ItemType_Card the Brand should display the selected brand from the state
+in ItemType_Card selecting an expiration month should trigger ExpirationMonthSelected
+in ItemType_Card the Expiration month should display the selected expiration month from the state
+in ItemType_Card changing the expiration year text field should trigger ExpirationYearTextChange
+in ItemType_Card the expiration year text field should display the text provided by the state
+in ItemType_Card changing the security code text field should trigger SecurityCodeTextChange
+in ItemType_Card changing code visibility should trigger SecurityCodeVisibilityChange
+in ItemType_Card the security code text field should display the text provided by the state
+clicking New Custom Field button should allow creation of Linked type
+clicking a Ownership option should send OwnershipChange action
+the Ownership control should display the text provided by the state
+clicking a Collection should send CollectionSelect action
+ownership section should not be displayed when no organizations present
+Collection list should display according to state
+changing Name text field should trigger NameTextChange
+the name control should display the text provided by the state
+clicking a Folder Option should send FolderChange action
+the folder control should display the text provided by the state
+toggling the favorite toggle should send ToggleFavorite action
+the favorite toggle should be enabled or disabled according to state
+toggling the Master password re-prompt toggle should send ToggleMasterPasswordReprompt action
+re-prompt toggle should display according to state
+the master password re-prompt toggle should be enabled or disabled according to state
+toggling the Master password re-prompt tooltip button should send TooltipClick action
+changing Notes text field should trigger NotesTextChange
+the Notes control should display the text provided by the state
+Ownership option should send OwnershipChange action
+in ItemType_SecureNotes the Ownership control should display the text provided by the state
+clicking New Custom Field button should allow creation of Text type
+clicking New Custom Field button should not display linked type
+clicking New Custom Field button should allow creation of Boolean type
+clicking New Custom Field button should allow creation of Hidden type
+changing hidden field visibility state should send HiddenFieldVisibilityChange
+clicking and changing the custom text field will send a CustomFieldValueChange event
+clicking and changing the custom hidden field will send a CustomFieldValueChange event
+clicking and changing the custom boolean field will send a CustomFieldValueChange event
+clicking custom field edit icon and Edit option sends a CustomFieldValueChange action
+clicking custom field edit icon and Remove option sends a CustomFieldActionSelect remove action
+clicking custom field edit icon and Move down option sends a CustomFieldActionSelect move down action
+clicking custom field edit icon and Move Up options sends a CustomFieldActionSelect move up action
+Menu should display correct items when cipher is in a collection
+Menu Collections should display correctly according to state
+Menu should display correct items when cipher is not in a collection
+should display policy warning when personal vault is disabled for add item type
+should not display policy warning when personal vault is disabled for edit item type
+Delete dialog ok click should send ConfirmDeleteClick
+Delete dialog cancel click should dismiss the dialog
+OverwritePasskeyConfirmationPrompt should display based on dialog state and send ConfirmOverwriteExistingPasskeyClick on Ok click
+in ItemType_SshKeys the public key field should be read only
+in ItemType_SshKeys the private key field should be read only
+in ItemType_SshKeys the fingerprint field should be read only
+in ItemType_SshKeys changing the private key visibility should trigger PrivateKeyVisibilityChange
+CoachMark tour starts when StartAddLoginItemCoachMarkTour event received
+CoachMark tour able to move forward and backward between coach marks
+Clicking close on a coach mark should end the tour
+CoachMark tour is closed when user clicks done on final coach mark
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/attachments/AttachmentsScreenTest.kt", "AttachmentsScreenTest.kt (11)")
+on back click should send BackClick
+on save click should send SaveClick
+on choose file click should send ChooseFileClick
+progressbar should be displayed according to state
+error should be displayed according to state
+content with no items should be displayed according to state
+content with items should be displayed according to state
+on delete click should display confirmation dialog
+on confirm delete click should send DeleteClick
+error dialog should be displayed according to state
+loading dialog should be displayed according to state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/importlogins/ImportLoginsScreenTest.kt", "ImportLoginsScreenTest.kt (19)")
+when close icon clicked, CloseClick action is sent
+when get started clicked, GetStartedClick action is sent
+when import later clicked, ImportLaterClick action is sent
+dialog content is shown when state updates and is hidden when null
+when dialog state is GetStarted, GetStarted dialog is shown and sends correct actions when clicked
+when dialog state is ImportLater, ImportLater dialog is shown and sends correct actions when clicked
+Step one content is displayed when view state is ImportStepOne
+while on step one correct actions are sent when buttons are clicked
+Step two content is displayed when view state is ImportStepTwo
+Step two content shows correct vault url when vault url is set
+while on step two correct actions are sent when buttons are clicked
+Step three content is displayed when view state is ImportStepThree
+while on step three correct actions are sent when buttons are clicked
+Loading content is displayed when dialog state is syncing
+Error dialog is displayed when dialog state is Error
+Error dialog is displayed when dialog state is Error for no logins
+Success bottom sheet is shown when state is updated
+SuccessfulSyncAcknowledged action is sent when bottom sheet CTA is clicked
+SuccessfulSyncAcknowledged action is sent when bottom sheet is closed
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/item/VaultItemScreenTest.kt", "VaultItemScreenTest.kt (98)")
+on close click should send CloseClick
+basic dialog should be displayed according to state
+Ok click on generic dialog should emit DismissDialogClick
+loading dialog should be displayed according to state
+MasterPassword dialog should be displayed according to state
+Ok click on master password dialog should emit DismissDialogClick
+name should be displayed according to state
+lastUpdated should be displayed according to state
+notes should be displayed according to state
+custom views should be displayed according to state
+attachments should be displayed according to state
+attachment download click for non-premium users should show an error dialog
+attachment download click for large downloads should show a prompt and dismiss when clicking No
+attachment download click for large downloads should show a prompt and emit AttachmentDownloadClick
+attachment download click for smaller downloads should emit AttachmentDownloadClick
+on show hidden field click should send HiddenFieldVisibilityClicked
+copy hidden field button should be displayed according to state
+on copy hidden field click should send CopyCustomHiddenFieldClick
+on copy text field click should send CopyCustomTextFieldClick
+text field copy button should be displayed according to state
+in login state the password should change according to state
+menu Delete option should be displayed based on state
+Delete dialog ok click should send ConfirmDeleteClick
+Delete Confirmation dialog text should display according to state
+Clicking Restore should send RestoreVaultItemClick ViewModel action
+Restore dialog should display correctly when dialog state changes
+Restore dialog should hide restore confirmation menu if dialog state changes
+Restore dialog ok click should send ConfirmRestoreClick
+Restore dialog cancel click should send DismissDialogClick
+Attachments option menu click should send AttachmentsClick action
+Clone option menu click should send CloneClick action
+Move to organization option menu click should send MoveToOrganizationClick action
+menu Collection option should be displayed based on state
+Collections menu click should send CollectionsClick action
+Menu should display correct items when cipher is in a collection
+Menu should display correct items when cipher is not in a collection
+on login copy notes field click should send CopyNotesClick
+on identity copy notes field click should send CopyNotesClick
+on card copy notes field click should send CopyNotesClick
+on secure note copy notes field click should send CopyNotesClick
+on ssh key copy notes field click should send CopyNotesClick
+in login state, linked custom fields should be displayed according to state
+in login state, on username copy click should send CopyUsernameClick
+in login state, on breach check click should send CheckForBreachClick
+in login state, on show password click should send PasswordVisibilityClicked
+in login state, on copy password click should send CopyPasswordClick
+in login state, the Passkey field should exist based on the state
+in login state, the Passkey field should not exist based on state
+in login state, the Passkey field text should display creation date
+in login state, the TOTP field should exist based on the state
+in login state, TOTP item should be displayed according to state
+in login state, on copy totp click should send CopyTotpClick
+in login state, launch uri button should be displayed according to state
+in login state, copy uri button should be displayed according to state
+in login state, on launch URI click should send LaunchClick
+in login state, on copy URI click should send CopyUriClick
+in login state, on password history click should send PasswordHistoryClick
+fab should be displayed according state
+error text and retry should be displayed according to state
+progressbar should be displayed according to state
+in login state, username should be displayed according to state
+in login state, uris should be displayed according to state
+in login state, password updated should be displayed according to state
+in login state, password history should be displayed according to state
+in identity state, identityName should be displayed according to state
+in identity state, username should be displayed according to state
+in identity state, company should be displayed according to state
+in identity state, ssn should be displayed according to state
+in identity state, passportNumber should be displayed according to state
+in identity state, licenseNumber should be displayed according to state
+in identity state, email should be displayed according to state
+in identity state, phone should be displayed according to state
+in identity state, address should be displayed according to state
+in identity state, on copy identity name field click should send CopyIdentityNameClick
+in identity state, on copy username field click should send CopyUsernameClick
+in identity state, on copy company field click should send CopyCompanyClick
+in identity state, on copy SSN field click should send CopySsnClick
+in identity state, on copy passport number field click should send CopyPassportNumberClick
+in identity state, on copy license number field click should send CopyLicenseNumberClick
+in identity state, on copy email field click should send CopyEmailClick
+in identity state, on copy phone field click should send CopyPhoneClick
+in identity state, on copy address field click should send CopyAddressClick
+in card state, cardholderName should be displayed according to state
+in card state, on show number click should send NumberVisibilityClick
+in card state the number should be displayed according to state
+in card state, on copy number click should send CopyNumberClick
+in card state, brand should be displayed according to state
+in card state, expiration should be displayed according to state
+in card state, on show code click should send CodeVisibilityClick
+in card state the security code should be displayed according to state
+in card state, on copy security code click should send CopySecurityCodeClick
+in ssh key state, public key should be displayed according to state
+in ssh key state, on copy public key click should send CopyPublicKeyClick
+in ssh key state, private key should be displayed according to state
+in ssh key state, on show private key click should send ShowPrivateKeyClick
+in ssh key state, on copy private key click should send CopyPrivateKeyClick
+in ssh key state, fingerprint should be displayed according to state
+in ssh key state, on copy fingerprint click should send CopyFingerprintClick
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/itemlisting/VaultItemListingScreenTest.kt", "VaultItemListingScreenTest.kt (57)")
+the app bar title should update according to state
+back button should update according to state
+overflow menu should update according to state
+account icon should update according to state
+account icon click should show the account switcher
+account click in the account switcher should send AccountSwitchClick and close switcher
+account long click in the account switcher should show the lock-or-logout dialog and close the switcher
+lock button click in the lock-or-logout dialog should send LockAccountClick action and close the dialog
+logout button click in the lock-or-logout dialog should show the logout confirmation dialog and hide the lock-or-logout dialog
+logout button click in the logout confirmation dialog should send LogoutAccountClick action and close the dialog
+remove account button click in the lock-or-logout dialog should show the remove account confirmation dialog and hide the lock-or-logout dialog
+remove account button click in the remove account confirmation dialog should send LogoutAccountClick action and close the dialog
+clicking back button should send BackClick action
+search icon click should send SearchIconClick action
+policy warning should update according to state
+floating action button click should send AddItemClick action
+Add an Item button click should send AddItemClick action
+refresh button click should send RefreshClick action
+progressbar should be displayed according to state
+error text and retry should be displayed according to state
+Add an Item button should be displayed according to state
+empty text should be displayed according to state
+floating action button should be displayed according to state
+Folders text should be displayed according to state
+Folders text count should be displayed according to state
+folderDisplayItems should be displayed according to state
+Collections text should be displayed according to state
+Collection text count should be displayed according to state
+collectionDisplayItems should be displayed according to state
+Items text should be displayed according to state
+Items text count should be displayed according to state
+displayItems should be displayed according to state
+clicking on a display item when master password reprompt is not required should send ItemClick action
+clicking on a display item when master password reprompt is required for autofill should show the master password dialog
+clicking on a display item when master password reprompt is required for totp flow should show the master password dialog
+clicking cancel on the master password dialog should close the dialog
+clicking submit on the master password dialog should close the dialog and send MasterPasswordRepromptSubmit
+topBar title should be displayed according to state
+on overflow item click should display menu
+on sync click should send SyncClick
+on lock click should send LockClick
+on cipher item overflow option click should emit the appropriate action
+on cipher item overflow option click when reprompt is required should show the master password dialog
+send item overflow item button should update according to state
+on send item overflow click should display dialog
+on send item overflow option click should emit the appropriate action
+on send item delete overflow option click should display delete confirmation dialog and emits DeleteSendConfirmClick on confirmation
+error dialog should be displayed according to state
+loading dialog should be displayed according to state
+fido2 master password prompt dialog should display and function according to state
+fido2 master password error dialog should display and function according to state
+fido2 pin prompt dialog should display and function according to state
+fido2 pin error dialog should display and function according to state
+fido2 pin set up dialog should display and function according to state
+fido2 pin set up error dialog should display and function according to state
+fido2 error dialog should display and function according to state
+OverwritePasskeyConfirmationPrompt should display based on dialog state and send ConfirmOverwriteExistingPasskeyClick on Ok click
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/manualcodeentry/ManualCodeEntryScreenTests.kt", "ManualCodeEntryScreenTests.kt (8)")
+clicking on manual text should send ScanQrCodeTextClick if camera permission is granted
+dialog should be dismissed on dismiss click in settings dialog
+error dialog should be updated according to state
+error dialog Ok click should emit DialogDismiss
+settings dialog should call SettingsClick action on confirm click
+CodeTextChanged will be sent when text for code is updated
+Authenticator key text should display the text provided by the state
+clicking Add TOTP button should send CodeSubmit action
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/movetoorganization/VaultMoveToOrganizationScreenTest.kt", "VaultMoveToOrganizationScreenTest.kt (12)")
+the app bar title should display according to state
+the app bar button text should display according to state
+the organization option field should update according to state
+the organization option field description should update according to state
+clicking close button should send BackClick action
+clicking move button should send MoveClick action
+selecting an organization should send OrganizationSelect action
+the organization option field should display according to state
+selecting a collection should send CollectionSelect action
+the collection list should display according to state
+loading dialog should display according to state
+error dialog should display according to state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/qrcodescan/QrCodeScanScreenTest.kt", "QrCodeScanScreenTest.kt (2)")
+clicking on manual text should send ManualEntryTextClick in landscape mode
+clicking on manual text should send ManualEntryTextClick
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/vault/VaultScreenTest.kt", "VaultScreenTest.kt (53)")
+app bar title should update according to state
+vault filter should update according to state
+vault filter menu click should display the filter selection dialog
+cancel click in the filter selection dialog should close the dialog
+vault filter click in the filter selection dialog should send VaultFilterTypeSelect and close the dialog
+account icon click should show the account switcher and trigger the nav bar dim request
+account click in the account switcher should send SwitchAccountClick and close switcher
+Add Account click in the account switcher should send AddAccountClick and close switcher
+account long click in the account switcher should show the lock-or-logout dialog and close the switcher
+lock button click in the lock-or-logout dialog should send LockAccountClick action and close the dialog
+logout button click in the lock-or-logout dialog should show the logout confirmation dialog and hide the lock-or-logout dialog
+logout button click in the logout confirmation dialog should send LogoutAccountClick action and close the dialog
+remove account button click in the lock-or-logout dialog should show the remove account confirmation dialog and hide the lock-or-logout dialog
+remove account button click in the remove account confirmation dialog should send LogoutAccountClick action and close the dialog
+overflow button click should show the overflow menu
+sync click in the overflow menu should send SyncClick
+lock click in the overflow menu should send LockClick
+exit click in the overflow menu should show a confirmation dialog
+yes click in exit confirmation dialog should send ExitConfirmationClick
+floating action button should be shown or hidden according to the state
+error dialog should be shown or hidden according to the state
+OK button click in error dialog should send DialogDismiss
+syncing dialog should be displayed according to state
+Error screen should be shown according to the state
+try again button click on the Error screen should send TryAgainClick
+verification code click should call VerificationCodesClick 
+search icon click should send SearchIconClick action
+floating action button click should send AddItemClick action
+add an item button click should send AddItemClick action
+totp section should be visible based on state
+clicking totp section should emit VerificationCodesClick action
+clicking a favorite item should send VaultItemClick with the correct item
+clicking a folder item should send FolderClick with the correct item
+collection data should update according to the state
+clicking a collection item should send CollectionClick with the correct item
+clicking a no folder item should send VaultItemClick with the correct item
+login item count should update according to state
+clicking a login item should send LoginGroupClick action
+card item count should update according to state
+clicking a card item should send CardGroupClick action
+identity item count should update according to state
+clicking an identity item should send IdentityGroupClick action
+secure note item count should update according to state
+clicking a secure note item should send SecureNoteGroupClick action
+trash count should update according to state
+clicking trash item should send TrashClick action
+action card for importing logins should show based on state
+when import action card is showing, clicking it should send ImportLoginsClick action
+when import action card is showing, dismissing it should send DismissImportActionCard action
+when ShowSnackbar is sent snackbar should be displayed
+when snackbar is displayed clicking on it should dismiss
+SSH key group header should display correctly based on state
+SSH key vault items should display correctly based on state
+
+=HYPERLINK("https://github.com/BlakeDake/android/tree/de0ce5e979a592ca410f5b379464538e0dbb5c9a/app/src/test/java/com/x8bit/bitwarden/ui/vault/feature/verificationcode/VerificationCodeScreenTest.kt", "VerificationCodeScreenTest.kt (14)")
+clicking back button should send BackClick action
+search icon click should send SearchIconClick action
+refresh button click should send RefreshClick action
+error text and retry should be displayed according to state
+auth code and copy button should be displayed according to state
+Items text should be displayed according to state
+Items text count should be displayed according to state
+displayItems should be displayed according to state
+clicking on a display item should send ItemClick action
+clicking on copy button should send CopyClick action
+on overflow item click should display menu
+on sync click should send SyncClick
+on lock click should send LockClick
+loading dialog should be displayed according to state
+

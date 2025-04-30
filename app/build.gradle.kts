@@ -393,6 +393,35 @@ sonar {
     }
 }
 
+afterEvaluate {
+    tasks.register<Test>("runSelectedTests") {
+        group = "verification"
+        description = "Runs only the tests listed in ui_test_fqns.txt"
+        useJUnitPlatform()
+
+        // locate the existing debug‑unit test task
+        val debugTestName = tasks.withType<Test>()
+            .find { it.name.endsWith("DebugUnitTest") }
+            ?.name
+            ?: throw GradleException("No debug unit‑test task found")
+        val debugTest = tasks.named<Test>(debugTestName)
+
+        // inherit its classpath and compiled test classes, but do NOT depend on its execution
+        testClassesDirs = debugTest.get().testClassesDirs
+        classpath = debugTest.get().classpath
+
+        // read fully‑qualified test names and include only those
+        val tests = file("ui_test_fqns.txt")
+            .readLines()
+            .filter { it.isNotBlank() }
+        filter {
+            tests.forEach { includeTestsMatching(it) }
+        }
+
+        outputs.upToDateWhen { false }  // comment this out to use the cache
+    }
+}
+
 private fun renameFile(path: String, newName: String) {
     val originalFile = File(path)
     if (!originalFile.exists()) {
