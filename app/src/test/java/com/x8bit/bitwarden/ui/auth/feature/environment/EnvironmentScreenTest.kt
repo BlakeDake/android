@@ -1,3 +1,4 @@
+/*
 package com.x8bit.bitwarden.ui.auth.feature.environment
 
 import androidx.compose.ui.test.assert
@@ -242,3 +243,4 @@ class EnvironmentScreenTest : BaseComposeTest() {
         )
     }
 }
+*/

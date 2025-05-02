@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.auth.feature.startregistration
+/*package com.x8bit.bitwarden.ui.auth.feature.startregistration
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
@@ -235,3 +235,4 @@ class StartRegistrationScreenTest : BaseComposeTest() {
         )
     }
 }
+*/

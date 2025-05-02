@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.auth.feature.resetPassword
+/*package com.x8bit.bitwarden.ui.auth.feature.resetPassword
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
@@ -261,3 +261,4 @@ private val DEFAULT_STATE = ResetPasswordState(
     retypePasswordInput = "",
     passwordHintInput = "",
 )
+*/

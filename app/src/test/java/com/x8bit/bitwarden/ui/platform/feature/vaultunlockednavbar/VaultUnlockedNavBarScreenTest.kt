@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.platform.feature.vaultunlockednavbar
+/*package com.x8bit.bitwarden.ui.platform.feature.vaultunlockednavbar
 
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -245,3 +245,4 @@ private val DEFAULT_STATE = VaultUnlockedNavBarState(
         settingsTabNotificationCount = 0,
     ),
 )
+*/

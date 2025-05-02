@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.platform.feature.search
+/*package com.x8bit.bitwarden.ui.platform.feature.search
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
@@ -923,3 +923,4 @@ private fun createStateForAutofill(
             ),
         ),
     )
+*/

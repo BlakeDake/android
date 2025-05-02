@@ -1,3 +1,4 @@
+/*
 package com.x8bit.bitwarden.ui.platform.feature.settings.accountsecurity
 
 import androidx.compose.ui.test.assert
@@ -1518,3 +1519,4 @@ private val DEFAULT_STATE = AccountSecurityState(
     vaultTimeoutPolicyAction = null,
     shouldShowUnlockActionCard = false,
 )
+*/

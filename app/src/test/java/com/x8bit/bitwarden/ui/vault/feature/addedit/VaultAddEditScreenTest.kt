@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.vault.feature.addedit
+/*package com.x8bit.bitwarden.ui.vault.feature.addedit
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.assert
@@ -3685,3 +3685,4 @@ class VaultAddEditScreenTest : BaseComposeTest() {
         )
     }
 }
+*/

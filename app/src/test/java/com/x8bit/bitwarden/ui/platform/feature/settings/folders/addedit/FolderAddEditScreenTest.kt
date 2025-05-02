@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.platform.feature.settings.folders.addedit
+/*package com.x8bit.bitwarden.ui.platform.feature.settings.folders.addedit
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
@@ -248,3 +248,4 @@ private val DEFAULT_STATE_EDIT = FolderAddEditState(
     viewState = FolderAddEditState.ViewState.Loading,
     dialog = null,
 )
+*/

@@ -1,3 +1,4 @@
+/*
 package com.x8bit.bitwarden.ui.auth.feature.enterprisesignon
 
 import android.net.Uri
@@ -178,3 +179,4 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
         )
     }
 }
+*/

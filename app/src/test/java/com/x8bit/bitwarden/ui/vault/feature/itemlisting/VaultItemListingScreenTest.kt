@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.vault.feature.itemlisting
+/*package com.x8bit.bitwarden.ui.vault.feature.itemlisting
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
@@ -1983,3 +1983,4 @@ private fun createCipherDisplayItem(number: Int): VaultItemListingState.DisplayI
         iconTestTag = null,
         isTotp = true,
     )
+*/

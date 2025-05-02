@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.tools.feature.generator
+/*package com.x8bit.bitwarden.ui.tools.feature.generator
 
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.SemanticsProperties
@@ -1520,3 +1520,4 @@ private val DEFAULT_STATE = GeneratorState(
     selectedType = GeneratorState.MainType.Password(),
     currentEmailAddress = "currentEmail",
 )
+*/

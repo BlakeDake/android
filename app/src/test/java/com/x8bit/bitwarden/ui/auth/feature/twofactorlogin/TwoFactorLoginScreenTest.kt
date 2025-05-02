@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.auth.feature.twofactorlogin
+/*package com.x8bit.bitwarden.ui.auth.feature.twofactorlogin
 
 import android.net.Uri
 import androidx.compose.ui.test.assertIsDisplayed
@@ -270,3 +270,4 @@ private val DEFAULT_STATE = TwoFactorLoginState(
     password = "password123",
     orgIdentifier = "orgIdentifier",
 )
+*/

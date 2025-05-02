@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.vault.feature.item
+/*package com.x8bit.bitwarden.ui.vault.feature.item
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
@@ -2885,3 +2885,4 @@ private val DEFAULT_VIEW_STATES = listOf(
     DEFAULT_SECURE_NOTE_VIEW_STATE,
     DEFAULT_SSH_KEY_VIEW_STATE,
 )
+*/

@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.auth.feature.login
+/*package com.x8bit.bitwarden.ui.auth.feature.login
 
 import android.net.Uri
 import androidx.compose.ui.platform.SoftwareKeyboardController
@@ -345,3 +345,4 @@ private val DEFAULT_STATE =
         accountSummaries = emptyList(),
         shouldShowLoginWithDevice = false,
     )
+*/

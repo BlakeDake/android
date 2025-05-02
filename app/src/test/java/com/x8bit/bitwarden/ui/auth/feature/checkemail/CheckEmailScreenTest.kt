@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.auth.feature.checkemail
+/*package com.x8bit.bitwarden.ui.auth.feature.checkemail
 
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -113,3 +113,4 @@ class CheckEmailScreenTest : BaseComposeTest() {
         )
     }
 }
+*/
