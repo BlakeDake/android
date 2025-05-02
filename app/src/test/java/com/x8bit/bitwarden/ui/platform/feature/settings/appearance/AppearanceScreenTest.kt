@@ -7,6 +7,7 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
@@ -50,7 +51,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on language row click should display language selection dialog`() {
-        composeTestRule.onNodeWithText("Language").performClick()
+        composeTestRule.onNodeWithTag("LanguageChooser").performClick()
         composeTestRule
             .onAllNodesWithText("Language")
             .filterToOne(hasAnyAncestor(isDialog()))
