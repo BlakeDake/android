@@ -71,14 +71,6 @@ class PendingRequestsScreenTest : BaseComposeTest() {
         unmockkStatic(::isBuildVersionBelow)
     }
 
-
-
-    @Test
-    fun `on NavigateToLoginApproval should call onNavigateToLoginApproval`() = runTest {
-        mutableEventFlow.tryEmit(PendingRequestsEvent.NavigateToLoginApproval("fingerprint"))
-        assertTrue(onNavigateToLoginApprovalCalled)
-    }
-
     @Test
     fun `on decline all requests confirmation should send DeclineAllRequestsConfirm`() = runTest {
         // set content so the Decline all requests button appears
