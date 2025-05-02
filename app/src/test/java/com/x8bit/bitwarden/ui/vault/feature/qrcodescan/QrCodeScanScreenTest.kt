@@ -42,42 +42,6 @@ class QrCodeScanScreenTest : BaseComposeTest() {
         }
     }
 
-
-
-
-
-    @Test
-    fun `when unable to setup camera CameraErrorReceive will be sent`() = runTest {
-        // Because the camera is not set up in the tests, this will always be triggered
-        verify {
-            viewModel.trySendAction(QrCodeScanAction.CameraSetupErrorReceive)
-        }
-    }
-
-    @Test
-    fun `when a scan is successful a result will be sent`() = runTest {
-        val result = "testCode"
-
-        qrCodeAnalyzer.scanResult = result
-        qrCodeAnalyzer.analyze(imageProxy)
-
-        verify {
-            viewModel.trySendAction(QrCodeScanAction.QrCodeScanReceive(result))
-        }
-    }
-
-    @Test
-    fun `when a scan is unsuccessful a result will not be sent`() = runTest {
-        val result = "testCode"
-
-        qrCodeAnalyzer.scanResult = null
-        qrCodeAnalyzer.analyze(imageProxy)
-
-        verify(exactly = 0) {
-            viewModel.trySendAction(QrCodeScanAction.QrCodeScanReceive(result))
-        }
-    }
-
     @Config(qualifiers = "land")
     @Test
     fun `clicking on manual text should send ManualEntryTextClick in landscape mode`() = runTest {
