@@ -7,6 +7,7 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -78,8 +79,13 @@ class StartRegistrationScreenTest : BaseComposeTest() {
 
     @Test
     fun `email input change should send EmailInputChange action`() {
-        composeTestRule.onNodeWithText("Email address").performTextInput(TEST_INPUT)
-        verify { viewModel.trySendAction(EmailInputChange(TEST_INPUT)) }
+        // Instead of trying to find by text content
+        // composeTestRule.onNodeWithText("Email address").performTextInput("test@example.com")
+
+        // Use the test tag instead
+        composeTestRule.onNodeWithTag("EmailAddressEntry").performTextInput("test@example.com")
+
+        verify { viewModel.trySendAction(EmailInputChange("test@example.com")) }
     }
 
     @Test
