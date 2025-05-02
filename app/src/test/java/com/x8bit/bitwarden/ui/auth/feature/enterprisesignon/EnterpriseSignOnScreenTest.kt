@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.auth.feature.enterprisesignon
 
 import android.net.Uri
@@ -98,42 +97,34 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
     }
 
 
+    /*
+        @Test
+        fun `error dialog should be shown or hidden according to the state`() {
+            composeTestRule.onNode(isDialog()).assertDoesNotExist()
 
+            mutableStateFlow.update {
+                it.copy(
+                    dialogState = EnterpriseSignOnState.DialogState.Error(
+                        message = "Error dialog message".asText(),
+                    ),
+                )
+            }
 
+            composeTestRule.onNode(isDialog()).assertIsDisplayed()
 
-
-
-
-
-
-
-    @Test
-    fun `error dialog should be shown or hidden according to the state`() {
-        composeTestRule.onNode(isDialog()).assertDoesNotExist()
-
-        mutableStateFlow.update {
-            it.copy(
-                dialogState = EnterpriseSignOnState.DialogState.Error(
-                    message = "Error dialog message".asText(),
-                ),
-            )
-        }
-
-        composeTestRule.onNode(isDialog()).assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithText("An error has occurred.")
-            .assert(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onNodeWithText("Error dialog message")
-            .assert(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onNodeWithText("Ok")
-            .assert(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-    }
+            composeTestRule
+                .onNodeWithText("An error has occurred.")
+                .assert(hasAnyAncestor(isDialog()))
+                .assertIsDisplayed()
+            composeTestRule
+                .onNodeWithText("Error dialog message")
+                .assert(hasAnyAncestor(isDialog()))
+                .assertIsDisplayed()
+            composeTestRule
+                .onNodeWithText("Ok")
+                .assert(hasAnyAncestor(isDialog()))
+                .assertIsDisplayed()
+        }*/
 
     @Test
     fun `loading dialog should be displayed according to state`() {
@@ -154,6 +145,7 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
             .assert(hasAnyAncestor(isPopup()))
     }
 
+    /*
     @Test
     fun `error dialog OK click should send DialogDismiss action`() {
         mutableStateFlow.update {
@@ -169,7 +161,7 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
             .filterToOne(hasAnyAncestor(isDialog()))
             .performClick()
         verify { viewModel.trySendAction(EnterpriseSignOnAction.DialogDismiss) }
-    }
+    }*/
 
     companion object {
         private val DEFAULT_STATE = EnterpriseSignOnState(
@@ -179,4 +171,3 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
         )
     }
 }
-*/
