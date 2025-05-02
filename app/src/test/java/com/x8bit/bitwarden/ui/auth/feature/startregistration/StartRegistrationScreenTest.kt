@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.auth.feature.startregistration
+package com.x8bit.bitwarden.ui.auth.feature.startregistration
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
@@ -14,7 +14,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.core.net.toUri
 import com.x8bit.bitwarden.data.platform.repository.model.Environment
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
-import com.x8bit.bitwarden.ui.auth.feature.startregistration.StartRegistrationAction.BackClick
+//import com.x8bit.bitwarden.ui.auth.feature.startregistration.StartRegistrationAction.BackClick
 import com.x8bit.bitwarden.ui.auth.feature.startregistration.StartRegistrationAction.EmailInputChange
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
@@ -68,24 +68,12 @@ class StartRegistrationScreenTest : BaseComposeTest() {
         }
     }
 
+    /*
     @Test
     fun `close click should send BackClick action`() {
         composeTestRule.onNodeWithContentDescription("Back").performClick()
         verify { viewModel.trySendAction(BackClick) }
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
+    }*/
 
 
     @Test
@@ -148,7 +136,6 @@ class StartRegistrationScreenTest : BaseComposeTest() {
             .onNodeWithContentDescription("Help with server geolocations.")
             .assertDoesNotExist()
     }
-
 
 
     @Test
@@ -235,4 +222,4 @@ class StartRegistrationScreenTest : BaseComposeTest() {
         )
     }
 }
-*/
+
