@@ -265,7 +265,7 @@ class CreateAccountScreenTest : BaseComposeTest() {
     @Test
     fun `privacy policy click should send PrivacyPolicyClick action`() {
         composeTestRule
-            .onNodeWithText("Privacy Policy")
+            .onNodeWithText("Privacy Policy", substring = true)
             .performScrollTo()
             .performClick()
         verify { viewModel.trySendAction(CreateAccountAction.PrivacyPolicyClick) }
