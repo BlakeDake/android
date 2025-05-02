@@ -86,7 +86,8 @@ class SetupUnlockScreenTest : BaseComposeTest() {
         @Suppress("MaxLineLength")
         composeTestRule
             .onNodeWithText(
-                text = "Set up biometrics or choose a PIN code to quickly access your vault and AutoFill your logins.",
+                text = "Set up biometrics or choose a PIN code to quickly access your vault and Autofill your logins.",
+                //text = "Set up biometrics or choose a PIN code to quickly access your vault and AutoFill your logins.",
             )
             .performScrollTo()
             .assertExists()
@@ -626,7 +627,6 @@ class SetupUnlockScreenTest : BaseComposeTest() {
         mutableStateFlow.update { it.copy(dialogState = null) }
         composeTestRule.assertNoDialogExists()
     }
-
 
 
     @Test
