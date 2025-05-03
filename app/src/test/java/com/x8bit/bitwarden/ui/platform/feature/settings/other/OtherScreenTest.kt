@@ -115,7 +115,7 @@ class OtherScreenTest : BaseComposeTest() {
 
     @Test
     fun `on clear clipboard dialog cancel should dismiss dialog`() {
-        composeTestRule.onNodeWithText("Clear clipboard").performClick()
+        composeTestRule.onNodeWithText("Clear clipboard", useUnmergedTree = true).performClick()
         composeTestRule.onNodeWithText("Cancel").performClick()
         composeTestRule.assertNoDialogExists()
     }
