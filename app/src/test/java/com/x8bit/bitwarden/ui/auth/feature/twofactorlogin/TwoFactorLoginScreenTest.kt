@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.auth.feature.twofactorlogin
+package com.x8bit.bitwarden.ui.auth.feature.twofactorlogin
 
 import android.net.Uri
 import androidx.compose.ui.test.assertIsDisplayed
@@ -165,7 +165,7 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
     fun `remember me should be toggled on or off according to the state`() {
         composeTestRule.onNodeWithText("Remember me").assertIsOff()
 
-        mutableStateFlow.update { it.copy(isRememberMeEnabled = true) }
+        mutableStateFlow.update { it.copy(isRememberEnabled = true) }
 
         composeTestRule.onNodeWithText("Remember me").assertIsOn()
     }
@@ -244,14 +244,6 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
     }
 
 
-
-
-
-
-
-
-
-
 }
 
 private val DEFAULT_STATE = TwoFactorLoginState(
@@ -264,10 +256,10 @@ private val DEFAULT_STATE = TwoFactorLoginState(
     displayEmail = "ex***@email.com",
     dialogState = null,
     isContinueButtonEnabled = false,
-    isRememberMeEnabled = false,
+    isRememberEnabled = true,
     captchaToken = null,
     email = "example@email.com",
     password = "password123",
     orgIdentifier = "orgIdentifier",
+    isNewDeviceVerification = false,
 )
-*/
