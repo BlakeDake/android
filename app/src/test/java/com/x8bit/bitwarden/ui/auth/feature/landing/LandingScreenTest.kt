@@ -245,7 +245,7 @@ class LandingScreenTest : BaseComposeTest() {
 
     @Test
     fun `remember me should be toggled on or off according to the state`() {
-        composeTestRule.onNodeWithText("Remember me").assertIsOff()
+        composeTestRule.onNodeWithText("Remember this device").assertIsOff()
 
         mutableStateFlow.update { it.copy(isRememberEmailEnabled = true) }
 
