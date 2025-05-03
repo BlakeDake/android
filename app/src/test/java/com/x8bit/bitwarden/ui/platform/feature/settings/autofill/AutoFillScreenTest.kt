@@ -396,7 +396,7 @@ class AutoFillScreenTest : BaseComposeTest() {
     @Test
     fun `on default URI match type dialog cancel click should close the dialog`() {
         composeTestRule
-            .onNodeWithText("Default URI match detection")
+            .onNodeWithText("Default URI match detection", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
