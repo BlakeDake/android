@@ -134,7 +134,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on theme selection dialog cancel click should dismiss dialog`() {
-        composeTestRule.onNodeWithText("Theme").performClick()
+        composeTestRule.onNodeWithText("Theme", useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("Cancel")
             .filterToOne(hasAnyAncestor(isDialog()))
