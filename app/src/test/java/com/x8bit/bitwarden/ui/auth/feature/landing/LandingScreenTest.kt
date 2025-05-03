@@ -9,9 +9,12 @@ import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasContentDescription
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -255,7 +258,10 @@ class LandingScreenTest : BaseComposeTest() {
     @Test
     fun `remember me click should send RememberMeToggle action`() {
         composeTestRule
-            .onNodeWithText("Remember me")
+            .onNode(
+                hasContentDescription("Remember me") or
+                    hasText("Remember me", ignoreCase = true)
+            )
             .performClick()
         verify {
             viewModel.trySendAction(LandingAction.RememberMeToggle(true))
