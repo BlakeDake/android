@@ -63,7 +63,6 @@ class AutoFillScreenTest : BaseComposeTest() {
     }
 
 
-
     @Suppress("MaxLineLength")
     @Test
     fun `on NavigateToAutofillSettings should attempt to navigate to system settings and not show the fallback dialog when result is a success`() {
@@ -361,9 +360,7 @@ class AutoFillScreenTest : BaseComposeTest() {
     @Test
     fun `on default URI match type click should display dialog`() {
         composeTestRule.assertNoDialogExists()
-        composeTestRule
-            .onNodeWithText("Default URI match detection")
-            .performScrollTo()
+        composeTestRule.onNodeWithText("Default URI match detection", useUnmergedTree = true).performScrollTo()
             .assert(!hasAnyAncestor(isDialog()))
             .performClick()
         composeTestRule
@@ -438,7 +435,6 @@ class AutoFillScreenTest : BaseComposeTest() {
     }
 
 
-
     @Test
     fun `on block auto fill click should send BlockAutoFillClick`() {
         composeTestRule
@@ -447,7 +443,6 @@ class AutoFillScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(AutoFillAction.BlockAutoFillClick) }
     }
-
 
 
     @Test
