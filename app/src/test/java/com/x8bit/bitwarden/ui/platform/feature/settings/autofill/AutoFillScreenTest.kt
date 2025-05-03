@@ -8,6 +8,7 @@ import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -411,9 +412,7 @@ class AutoFillScreenTest : BaseComposeTest() {
 
     @Test
     fun `default URI match type should update according to state`() {
-        composeTestRule
-            .onNodeWithText("Base domain")
-            .assertExists()
+        composeTestRule.onNode(hasText("Base domain"), useUnmergedTree = true).assertExists()
         composeTestRule
             .onNodeWithText("Starts with")
             .assertDoesNotExist()
@@ -424,8 +423,8 @@ class AutoFillScreenTest : BaseComposeTest() {
             .onNodeWithText("Base domain")
             .assertDoesNotExist()
         composeTestRule
-            .onNodeWithText("Starts with")
-            .assertExists()
+            .onNode(hasText("Starts with"), useUnmergedTree = true).assertExists()
+
     }
 
     @Test
