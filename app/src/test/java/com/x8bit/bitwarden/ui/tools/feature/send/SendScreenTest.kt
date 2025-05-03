@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.tools.feature.send
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -22,9 +23,11 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import androidx.core.net.toUri
+import com.x8bit.bitwarden.data.platform.manager.util.AppResumeStateManager
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalAppResumeStateManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
@@ -63,31 +66,22 @@ class SendScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
+        val appResumeStateManager = mockk<AppResumeStateManager>(relaxed = true)
+
         composeTestRule.setContent {
-            SendScreen(
-                viewModel = viewModel,
-                onNavigateToAddSend = { onNavigateToNewSendCalled = true },
-                onNavigateToEditSend = { onNavigateToEditSendId = it },
-                onNavigateToSendFilesList = { onNavigateToSendFilesListCalled = true },
-                onNavigateToSendTextList = { onNavigateToSendTextListCalled = true },
-                onNavigateToSearchSend = { onNavigateToSendSearchCalled = true },
-                intentManager = intentManager,
-            )
+            CompositionLocalProvider(LocalAppResumeStateManager provides appResumeStateManager) {
+                SendScreen(
+                    viewModel = viewModel,
+                    onNavigateToAddSend = { onNavigateToNewSendCalled = true },
+                    onNavigateToEditSend = { onNavigateToEditSendId = it },
+                    onNavigateToSendFilesList = { onNavigateToSendFilesListCalled = true },
+                    onNavigateToSendTextList = { onNavigateToSendTextListCalled = true },
+                    onNavigateToSearchSend = { onNavigateToSendSearchCalled = true },
+                    intentManager = intentManager,
+                )
+            }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
