@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.auth.feature.landing
+package com.x8bit.bitwarden.ui.auth.feature.landing
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
@@ -247,7 +247,7 @@ class LandingScreenTest : BaseComposeTest() {
     fun `remember me should be toggled on or off according to the state`() {
         composeTestRule.onNodeWithText("Remember me").assertIsOff()
 
-        mutableStateFlow.update { it.copy(isRememberMeEnabled = true) }
+        mutableStateFlow.update { it.copy(isRememberEmailEnabled = true) }
 
         composeTestRule.onNodeWithText("Remember me").assertIsOn()
     }
@@ -291,11 +291,6 @@ class LandingScreenTest : BaseComposeTest() {
             viewModel.trySendAction(LandingAction.EmailInputChanged(input))
         }
     }
-
-
-
-
-
 
 
     @Test
@@ -457,10 +452,9 @@ private val ACTIVE_ACCOUNT_SUMMARY = AccountSummary(
 private val DEFAULT_STATE = LandingState(
     emailInput = "",
     isContinueButtonEnabled = true,
-    isRememberMeEnabled = false,
+    isRememberEmailEnabled = false,
     selectedEnvironmentType = Environment.Type.US,
     selectedEnvironmentLabel = Environment.Us.label,
     dialog = null,
     accountSummaries = emptyList(),
 )
-*/
