@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.auth.feature.login
+package com.x8bit.bitwarden.ui.auth.feature.login
 
 import android.net.Uri
 import androidx.compose.ui.platform.SoftwareKeyboardController
@@ -70,7 +70,7 @@ class LoginScreenTest : BaseComposeTest() {
                 onNavigateToMasterPasswordHint = { onNavigateToMasterPasswordHintCalled = true },
                 onNavigateToEnterpriseSignOn = { onNavigateToEnterpriseSignOnCalled = true },
                 onNavigateToLoginWithDevice = { onNavigateToLoginWithDeviceCalled = true },
-                onNavigateToTwoFactorLogin = { _, _ -> onNavigateToTwoFactorLoginCalled = true },
+                onNavigateToTwoFactorLogin = { _, _, _ -> onNavigateToTwoFactorLoginCalled = true },
                 viewModel = viewModel,
                 intentManager = intentManager,
                 keyboardController = keyboardController,
@@ -312,14 +312,6 @@ class LoginScreenTest : BaseComposeTest() {
     }
 
 
-
-
-
-
-
-
-
-
 }
 
 private const val EMAIL = "active@bitwarden.com"
@@ -345,4 +337,3 @@ private val DEFAULT_STATE =
         accountSummaries = emptyList(),
         shouldShowLoginWithDevice = false,
     )
-*/
