@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.platform.feature.settings.accountsecurity
 
 import androidx.compose.ui.test.assert
@@ -103,7 +102,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithText("Log out").performScrollTo().performClick()
         verify { viewModel.trySendAction(AccountSecurityAction.LogoutClick) }
     }
-
 
 
     @Test
@@ -1187,7 +1185,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     }
 
 
-
     @Suppress("MaxLineLength")
     @Test
     fun `on change master password click should display confirmation dialog and confirm should send ChangeMasterPasswordClick`() {
@@ -1204,7 +1201,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.onNode(isDialog()).assertDoesNotExist()
         verify { viewModel.trySendAction(AccountSecurityAction.ChangeMasterPasswordClick) }
     }
-
 
 
     @Test
@@ -1224,11 +1220,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithContentDescription("Back").performClick()
         verify { viewModel.trySendAction(AccountSecurityAction.BackClick) }
     }
-
-
-
-
-
 
 
     @Test
@@ -1359,7 +1350,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(AccountSecurityAction.FingerPrintLearnMoreClick) }
     }
-
 
 
     @Test
@@ -1518,5 +1508,5 @@ private val DEFAULT_STATE = AccountSecurityState(
     vaultTimeoutPolicyMinutes = null,
     vaultTimeoutPolicyAction = null,
     shouldShowUnlockActionCard = false,
+    removeUnlockWithPinPolicyEnabled = false
 )
-*/
