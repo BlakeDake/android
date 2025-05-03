@@ -175,7 +175,7 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
         mutableStateFlow.update {
             it.copy(authMethod = TwoFactorAuthMethod.EMAIL)
         }
-        composeTestRule.onNodeWithText("Send verification code email again").performClick()
+        composeTestRule.onNodeWithText("Resend code").performClick()
         verify {
             viewModel.trySendAction(TwoFactorLoginAction.ResendEmailClick)
         }
