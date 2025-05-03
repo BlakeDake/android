@@ -145,12 +145,13 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
             .assert(hasAnyAncestor(isPopup()))
     }
 
-    /*
+
     @Test
     fun `error dialog OK click should send DialogDismiss action`() {
         mutableStateFlow.update {
             DEFAULT_STATE.copy(
                 dialogState = EnterpriseSignOnState.DialogState.Error(
+                    title = "Enterprise single sign-on".asText(),
                     message = "message".asText(),
                 ),
             )
@@ -161,7 +162,7 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
             .filterToOne(hasAnyAncestor(isDialog()))
             .performClick()
         verify { viewModel.trySendAction(EnterpriseSignOnAction.DialogDismiss) }
-    }*/
+    }
 
     companion object {
         private val DEFAULT_STATE = EnterpriseSignOnState(
