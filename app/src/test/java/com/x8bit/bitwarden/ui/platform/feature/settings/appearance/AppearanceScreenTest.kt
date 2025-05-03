@@ -61,7 +61,7 @@ class AppearanceScreenTest : BaseComposeTest() {
     @Test
     fun `on language selection dialog item click should send LanguageChange and show dialog`() {
         // Clicking the Language row shows the language selection dialog
-        composeTestRule.onNodeWithText("Language").performClick()
+        composeTestRule.onNodeWithTag("LanguageChooser").performClick()
         // Selecting a language dismisses this dialog and displays the confirmation
         composeTestRule
             .onAllNodesWithText("Afrikaans")
