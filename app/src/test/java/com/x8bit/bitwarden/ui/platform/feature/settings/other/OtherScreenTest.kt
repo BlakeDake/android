@@ -88,7 +88,7 @@ class OtherScreenTest : BaseComposeTest() {
 
     @Test
     fun `on clear clipboard row click should show show clipboard selection dialog`() {
-        composeTestRule.onNodeWithText("Clear clipboard").performClick()
+        composeTestRule.onNodeWithText("Clear clipboard", useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("Clear clipboard")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -125,7 +125,6 @@ class OtherScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithText("Sync now").performClick()
         verify { viewModel.trySendAction(OtherAction.SyncNowButtonClick) }
     }
-
 
 
     @Test
