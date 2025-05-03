@@ -11,6 +11,7 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onFirst
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
@@ -158,8 +159,7 @@ class ManualCodeEntryScreenTests : BaseComposeTest() {
         fakePermissionManager.checkPermissionResult = false
 
         composeTestRule
-            .onNodeWithText("Scan QR Code")
-            .performClick()
+            .onNodeWithText("Scan QR Code").performClick()
 
         composeTestRule
             .onAllNodesWithText("Enable camera permission to use the scanner")
