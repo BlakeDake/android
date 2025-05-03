@@ -4,6 +4,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -94,7 +95,8 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on language selection dialog cancel click should dismiss dialog`() {
-        composeTestRule.onNodeWithText("Language").performClick()
+        // Find the language text/button with useUnmergedTree parameter
+        composeTestRule.onNode(hasText("Language"), useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("Cancel")
             .filterToOne(hasAnyAncestor(isDialog()))
