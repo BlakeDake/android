@@ -116,7 +116,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on theme selection dialog item click should send ThemeChange`() {
-        composeTestRule.onNodeWithText("Theme").performClick()
+        composeTestRule.onNodeWithText("Theme", useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("Dark")
             .filterToOne(hasAnyAncestor(isDialog()))
