@@ -106,7 +106,8 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on theme row click should display theme selection dialog`() {
-        composeTestRule.onNodeWithText("Theme").performClick()
+        // Find the line that's trying to click on the Theme text and add useUnmergedTree
+        composeTestRule.onNodeWithText("Theme", useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("Theme")
             .filterToOne(hasAnyAncestor(isDialog()))
