@@ -373,7 +373,7 @@ class AutoFillScreenTest : BaseComposeTest() {
     @Test
     fun `on default URI match type dialog item click should send DefaultUriMatchTypeSelect and close the dialog`() {
         composeTestRule
-            .onNodeWithText("Default URI match detection")
+            .onNodeWithText("Default URI match detection", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
