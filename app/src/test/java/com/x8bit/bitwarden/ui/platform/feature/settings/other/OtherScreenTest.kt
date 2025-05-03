@@ -97,7 +97,7 @@ class OtherScreenTest : BaseComposeTest() {
 
     @Test
     fun `on clear clipboard dialog item click should send ClearClipboardFrequencyChange`() {
-        composeTestRule.onNodeWithText("Clear clipboard").performClick()
+        composeTestRule.onNodeWithText("Clear clipboard", useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("10 seconds")
             .filterToOne(hasAnyAncestor(isDialog()))
