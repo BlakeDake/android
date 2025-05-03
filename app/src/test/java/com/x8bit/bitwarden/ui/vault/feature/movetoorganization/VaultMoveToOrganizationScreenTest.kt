@@ -6,11 +6,14 @@ import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
 import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.hasAnyAncestor
+import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.isPopup
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -199,9 +202,13 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
 
     @Test
     fun `the organization option field should display according to state`() {
+        composeTestRule.onNodeWithTag("CollectionListContainer").assertExists()
+
         composeTestRule
-            .onNodeWithContentDescriptionAfterScroll(label = "mockOrganizationName-1. Organization")
-            .assertIsDisplayed()
+            .onAllNodesWithTag("OrganizationOption")
+            .filterToOne(hasContentDescription("mockOrganizationName-1. Organization"))
+            .assertExists()
+            .performClick()
 
         mutableStateFlow.update { currentState ->
             currentState.copy(
