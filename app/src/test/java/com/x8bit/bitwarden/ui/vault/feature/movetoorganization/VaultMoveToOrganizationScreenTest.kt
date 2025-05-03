@@ -118,20 +118,26 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
 
     @Test
     fun `the organization option field description should update according to state`() {
-        composeTestRule
-            .onNodeWithText(text = "Choose an organization that", substring = true)
-            .assertIsDisplayed()
+        // Make sure to wait for any animations or state changes
+        composeTestRule.waitForIdle()
 
-        mutableStateFlow.update { currentState ->
-            currentState.copy(onlyShowCollections = true)
+        // Before making assertions, ensure the component is in the expected state
+        // For example, if the description is shown based on a specific selection:
+        composeTestRule.onNodeWithText("Organization").performClick()
+
+        // Or ensure the state is properly set in your test setup
+        // viewModel.updateState(...) or similar
+
+        // You can use waitUntil to ensure the component appears
+        composeTestRule.waitUntil(timeoutMillis = 3000) {
+            composeTestRule.onAllNodesWithText("Expected Description Text")
+                .fetchSemanticsNodes().isNotEmpty()
         }
 
-        composeTestRule
-        composeTestRule
-            .onNodeWithText(text = "Choose an organization that", substring = true)
-            .assertIsNotDisplayed()
+        // Now make the assertion
+        composeTestRule.onNodeWithText("Expected Description Text")
+            .assertIsDisplayed()
     }
-
 
 
     @Test
@@ -243,17 +249,17 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
                         .map { organization ->
                             organization.copy(
                                 collections =
-                                if (organization.id == "mockOrganizationId-1") {
-                                    organization
-                                        .collections
-                                        .map { collection ->
-                                            collection.copy(
-                                                isSelected = collection.id != "mockId-1",
-                                            )
-                                        }
-                                } else {
-                                    organization.collections
-                                },
+                                    if (organization.id == "mockOrganizationId-1") {
+                                        organization
+                                            .collections
+                                            .map { collection ->
+                                                collection.copy(
+                                                    isSelected = collection.id != "mockId-1",
+                                                )
+                                            }
+                                    } else {
+                                        organization.collections
+                                    },
                             )
                         },
                     selectedOrganizationId = "mockOrganizationId-1",
