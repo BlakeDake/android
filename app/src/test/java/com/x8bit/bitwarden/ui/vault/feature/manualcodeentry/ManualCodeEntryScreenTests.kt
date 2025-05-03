@@ -65,11 +65,6 @@ class ManualCodeEntryScreenTests : BaseComposeTest() {
     }
 
 
-
-
-
-
-
     @Suppress("MaxLineLength")
     @Test
     fun `clicking on manual text should send ScanQrCodeTextClick if camera permission is granted`() {
@@ -88,9 +83,7 @@ class ManualCodeEntryScreenTests : BaseComposeTest() {
     fun `dialog should be dismissed on dismiss click in settings dialog`() {
         fakePermissionManager.checkPermissionResult = false
 
-        composeTestRule
-            .onNodeWithText("Scan QR Code")
-            .performClick()
+        composeTestRule.onNodeWithText("Scan QR Code", ignoreCase = true).performClick()
 
         composeTestRule
             .onAllNodesWithText("Enable camera permission to use the scanner")
