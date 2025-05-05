@@ -1097,8 +1097,7 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     fun `on session timeout action Logout confirmation dialog Yes click should dismiss the dialog and send VaultTimeoutActionSelect`() {
         composeTestRule.assertNoDialogExists()
         composeTestRule
-            .onNodeWithText("Session timeout action")
-            .performScrollTo()
+            .onNodeWithText("Session timeout action", useUnmergedTree = true).performScrollTo()
             .performClick()
 
         composeTestRule
