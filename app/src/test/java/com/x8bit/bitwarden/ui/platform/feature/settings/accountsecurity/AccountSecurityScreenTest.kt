@@ -1031,8 +1031,7 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     fun `on session timeout action dialog Logout click should open a confirmation dialog`() {
         composeTestRule.assertNoDialogExists()
         composeTestRule
-            .onNodeWithText("Session timeout action")
-            .performScrollTo()
+            .onNodeWithText("Session timeout action", useUnmergedTree = true).performScrollTo()
             .performClick()
 
         composeTestRule
