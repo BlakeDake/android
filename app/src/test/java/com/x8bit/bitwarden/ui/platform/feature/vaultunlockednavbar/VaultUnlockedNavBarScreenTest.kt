@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.platform.feature.vaultunlockednavbar
+package com.x8bit.bitwarden.ui.platform.feature.vaultunlockednavbar
 
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -41,7 +41,7 @@ class VaultUnlockedNavBarScreenTest : BaseComposeTest() {
                 VaultUnlockedNavBarScreen(
                     viewModel = viewModel,
                     navController = fakeNavHostController,
-                    onNavigateToVaultAddItem = { _, _, _ -> },
+                    onNavigateToVaultAddItem = { _ -> },
                     onNavigateToVaultItem = {},
                     onNavigateToVaultEditItem = {},
                     onNavigateToAddSend = {},
@@ -56,6 +56,7 @@ class VaultUnlockedNavBarScreenTest : BaseComposeTest() {
                     onNavigateToSetupAutoFillScreen = {},
                     onNavigateToSetupUnlockScreen = {},
                     onNavigateToImportLogins = {},
+                    onNavigateToAddFolderScreen = {},
                 )
             }
         }
@@ -245,4 +246,3 @@ private val DEFAULT_STATE = VaultUnlockedNavBarState(
         settingsTabNotificationCount = 0,
     ),
 )
-*/
