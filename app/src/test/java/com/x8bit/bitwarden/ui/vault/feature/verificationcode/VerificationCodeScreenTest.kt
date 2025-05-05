@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.vault.feature.verificationcode
+package com.x8bit.bitwarden.ui.vault.feature.verificationcode
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
@@ -18,6 +18,7 @@ import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFl
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
+import com.x8bit.bitwarden.ui.vault.feature.item.VaultItemArgs
 import com.x8bit.bitwarden.ui.vault.feature.vault.model.VaultFilterType
 import io.mockk.every
 import io.mockk.mockk
@@ -33,7 +34,7 @@ class VerificationCodeScreenTest : BaseComposeTest() {
 
     private var onNavigateBackCalled = false
     private var onNavigateToSearchCalled = false
-    private var onNavigateToVaultItemId: String? = null
+    private var onNavigateToVaultItemId: VaultItemArgs? = null
 
     private val mutableEventFlow = bufferedMutableSharedFlow<VerificationCodeEvent>()
     private val mutableStateFlow = MutableStateFlow(DEFAULT_STATE)
@@ -53,11 +54,6 @@ class VerificationCodeScreenTest : BaseComposeTest() {
             )
         }
     }
-
-
-
-
-
 
 
     @Test
@@ -376,4 +372,3 @@ private val DEFAULT_STATE = VerificationCodeState(
     dialogState = null,
     isRefreshing = false,
 )
-*/
