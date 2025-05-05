@@ -563,11 +563,7 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     fun `on session timeout click should show a selection dialog`() {
         composeTestRule.assertNoDialogExists()
 
-        composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
-            .performScrollTo()
-            .performClick()
+        composeTestRule.onNodeWithText("Vault timeout").performScrollTo().performClick()
 
         composeTestRule
             .onAllNodesWithText("Immediately")
