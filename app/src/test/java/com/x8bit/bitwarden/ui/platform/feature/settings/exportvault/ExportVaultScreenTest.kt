@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.platform.feature.settings.exportvault
+package com.x8bit.bitwarden.ui.platform.feature.settings.exportvault
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
@@ -294,7 +294,7 @@ class ExportVaultScreenTest : BaseComposeTest() {
 private val DEFAULT_STATE = ExportVaultState(
     confirmFilePasswordInput = "",
     dialogState = null,
-    email = "test@bitwarden.com",
+    //email = "test@bitwarden.com",
     exportFormat = ExportVaultFormat.JSON,
     filePasswordInput = "",
     passwordInput = "",
@@ -303,4 +303,3 @@ private val DEFAULT_STATE = ExportVaultState(
     policyPreventsExport = false,
     showSendCodeButton = false,
 )
-*/
