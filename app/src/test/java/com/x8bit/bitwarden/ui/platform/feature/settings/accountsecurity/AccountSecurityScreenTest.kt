@@ -976,8 +976,8 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
 
         composeTestRule
-            .onNodeWithText("Session timeout action")
-            .performScrollTo()
+            .onNode(hasText("Session timeout action"), useUnmergedTree = true).performScrollTo()
+
             .performClick()
 
         composeTestRule
