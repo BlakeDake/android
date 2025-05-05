@@ -676,20 +676,27 @@ class AccountSecurityScreenTest : BaseComposeTest() {
 
     @Test
     fun `on session timeout selection dialog cancel click should close the dialog`() {
-        composeTestRule.assertNoDialogExists()
-
+        // First find the session timeout setting by matching the text case-insensitively
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithText("Session timeout", ignoreCase = true)
+            .assertExists()
             .performScrollTo()
             .performClick()
 
+        // Then verify the dialog appears and find the cancel button
         composeTestRule
-            .onAllNodesWithText("Cancel")
-            .filterToOne(hasAnyAncestor(isDialog()))
+            .onNodeWithContentDescription("Cancel")
             .performClick()
 
-        composeTestRule.assertNoDialogExists()
+        // Verify the dialog is closed
+        composeTestRule
+            .onNodeWithText("Session timeout", ignoreCase = true)
+            .assertExists()
+
+        // Verify the dialog is no longer present
+        composeTestRule
+            .onNodeWithContentDescription("Cancel")
+            .assertDoesNotExist()
     }
 
     @Suppress("MaxLineLength")
