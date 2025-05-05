@@ -17,6 +17,7 @@ import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
@@ -546,8 +547,8 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     @Test
     fun `session timeout should be updated on or off according to state`() {
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithText("Session timeout")
+            .onParent()
             .performScrollTo()
             .assertTextEquals("Session timeout", "30 minutes")
         mutableStateFlow.update { it.copy(vaultTimeout = VaultTimeout.FourHours) }
