@@ -704,11 +704,7 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     fun `on session timeout selection non-Never timeout type click should send VaultTimeoutTypeSelect and close the dialog`() {
         composeTestRule.assertNoDialogExists()
 
-        composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
-            .performScrollTo()
-            .performClick()
+        composeTestRule.onNodeWithText("Vault timeout").performScrollTo().performClick()
 
         composeTestRule
             .onAllNodesWithText("4 hours")
