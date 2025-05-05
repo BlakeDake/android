@@ -9,6 +9,8 @@ import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasScrollToNodeAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.hasTextExactly
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.isDisplayed
@@ -20,6 +22,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.core.net.toUri
 import com.x8bit.bitwarden.data.platform.repository.model.VaultTimeout
@@ -792,11 +795,9 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     fun `on session timeout Never confirmation dialog Ok click should close the dialog and emit VaultTimeoutTypeSelect`() {
         composeTestRule.assertNoDialogExists()
 
-        composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
-            .performScrollTo()
-            .performClick()
+        composeTestRule.onNodeWithText("Session timeout").assertExists() // First check if it exists
+        composeTestRule.onNode(hasScrollToNodeAction()).performScrollToNode(hasText("Session timeout"))
+        composeTestRule.onNodeWithText("Session timeout").performClick()
 
         composeTestRule
             .onAllNodesWithText("Never")
