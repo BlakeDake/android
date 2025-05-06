@@ -1868,7 +1868,7 @@ class VaultItemScreenTest : BaseComposeTest() {
     fun `in login state, uris should be displayed according to state`() {
         mutableStateFlow.update { it.copy(viewState = DEFAULT_LOGIN_VIEW_STATE) }
         composeTestRule.onNodeWithTextAfterScroll("AUTOFILL OPTIONS").assertIsDisplayed()
-        composeTestRule.onNodeWithTextAfterScroll("URI").assertIsDisplayed()
+        composeTestRule.onNodeWithTextAfterScroll("Website").assertIsDisplayed()
         composeTestRule.onNodeWithTextAfterScroll("www.example.com").assertIsDisplayed()
 
         mutableStateFlow.update { currentState ->
