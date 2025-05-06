@@ -23,6 +23,7 @@ import androidx.compose.ui.test.onLast
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.onSiblings
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -2247,6 +2248,11 @@ class VaultItemScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
         composeTestRule
             .onNodeWithContentDescription("Show")
+            .performScrollTo()
+            .assertIsDisplayed()
+            .onParent()
+            .onChildren()
+            .filterToOne(hasContentDescription("Show"))
             .assertIsDisplayed()
 
         mutableStateFlow.update {
