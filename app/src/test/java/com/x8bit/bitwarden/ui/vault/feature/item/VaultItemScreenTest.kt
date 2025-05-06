@@ -1606,7 +1606,7 @@ class VaultItemScreenTest : BaseComposeTest() {
             )
         }
 
-        composeTestRule.onNodeWithTextAfterScroll("Verification code (TOTP)")
+        composeTestRule.onNodeWithTextAfterScroll("TOTP").assertIsDisplayed()
         // There are 2 because of the pull-to-refresh
         composeTestRule.onAllNodes(isProgressBar).assertCountEquals(2)
 
