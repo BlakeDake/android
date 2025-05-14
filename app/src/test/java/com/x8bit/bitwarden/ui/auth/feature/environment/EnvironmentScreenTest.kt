@@ -1,6 +1,5 @@
 /*package com.x8bit.bitwarden.ui.auth.feature.environment
 
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
@@ -14,7 +13,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
-import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -36,18 +34,13 @@ class EnvironmentScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            // Create a mock/fake intent manager
-            val mockIntentManager = FakeIntentManager() // or a mocked implementation
-
-            // Provide the mock intent manager to the composition
-            CompositionLocalProvider(LocalIntentManager provides mockIntentManager) {
-                EnvironmentScreen(
-                    onNavigateBack = { onNavigateBackCalled = true },
-                    viewModel = viewModel,
-                )
-            }
+            EnvironmentScreen(
+                onNavigateBack = { onNavigateBackCalled = true },
+                viewModel = viewModel,
+            )
         }
     }
+
 
 
     @Test
@@ -72,10 +65,7 @@ class EnvironmentScreenTest : BaseComposeTest() {
 
         mutableStateFlow.update {
             it.copy(
-                dialog = null, // or appropriate dialog state
-                keyAlias = "", // or appropriate keyAlias value
-                keyHost = null, // or appropriate keyHost value
-                showMutualTlsOptions = false, // or appropriate boolean value
+                shouldShowErrorDialog = true,
             )
         }
 
@@ -102,10 +92,7 @@ class EnvironmentScreenTest : BaseComposeTest() {
     fun `error dialog OK click should send ErrorDialogDismiss action`() {
         mutableStateFlow.update {
             it.copy(
-                dialog = null, // or appropriate dialog state
-                keyAlias = "", // or appropriate keyAlias value
-                keyHost = null, // or appropriate keyHost value
-                showMutualTlsOptions = false, // or appropriate boolean value
+                shouldShowErrorDialog = true,
             )
         }
         composeTestRule
@@ -251,10 +238,7 @@ class EnvironmentScreenTest : BaseComposeTest() {
             apiServerUrl = "",
             identityServerUrl = "",
             iconsServerUrl = "",
-            dialog = null,
-            keyAlias = "",
-            keyHost = null,
-            showMutualTlsOptions = false,
+            shouldShowErrorDialog = false,
         )
     }
 }
