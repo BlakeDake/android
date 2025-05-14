@@ -161,7 +161,7 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
             viewModel.trySendAction(TwoFactorLoginAction.RememberMeToggle(true))
         }
     }
-    
+
     @Test
     fun `remember me should be toggled on or off according to the state`() {
         // Check if "Remember me" exists first
@@ -182,6 +182,8 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
 
             // Rest of your test for the ON state
             // ...
+            mutableStateFlow.update { it.copy(isRememberEnabled = true) }
+            composeTestRule.onNodeWithText("Remember me").assertIsOn()
         } else {
             // Skip this test or mark it as passed since the feature might have been removed
             println("Note: 'Remember me' toggle not found in the UI - feature may have been removed")
