@@ -59,6 +59,7 @@ class CreateAccountScreenTest : BaseComposeTest() {
         every { eventFlow } returns mutableEventFlow
         every { trySendAction(any()) } just runs
     }
+    private val mockActionHandler: (CreateAccountAction) -> Unit = mockk(relaxed = true)
 
     @Before
     fun setup() {
@@ -249,7 +250,7 @@ class CreateAccountScreenTest : BaseComposeTest() {
             .assertCountEquals(2)
     }
 
-    /*@Test
+    @Test
     fun `terms of service click should send TermsClick action`() {
         // Instead of looking for the exact "Terms of Service" text
         // Use a matcher that looks for text with the termsOfService link annotation
@@ -260,7 +261,7 @@ class CreateAccountScreenTest : BaseComposeTest() {
 
         // Verify your action was sent
         verify { mockActionHandler(CreateAccountAction.TermsClick) }
-    }*/
+    }
 
     @Test
     fun `privacy policy click should send PrivacyPolicyClick action`() {
