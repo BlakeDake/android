@@ -97,34 +97,34 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
     }
 
 
-    /*
-        @Test
-        fun `error dialog should be shown or hidden according to the state`() {
-            composeTestRule.onNode(isDialog()).assertDoesNotExist()
+    @Test
+    fun `error dialog should be shown or hidden according to the state`() {
+        composeTestRule.onNode(isDialog()).assertDoesNotExist()
 
-            mutableStateFlow.update {
-                it.copy(
-                    dialogState = EnterpriseSignOnState.DialogState.Error(
-                        message = "Error dialog message".asText(),
-                    ),
-                )
-            }
+        mutableStateFlow.update {
+            it.copy(
+                dialogState = EnterpriseSignOnState.DialogState.Error(
+                    message = "Error dialog message".asText(),
+                    title = "Error dialog title".asText(),
+                ),
+            )
+        }
 
-            composeTestRule.onNode(isDialog()).assertIsDisplayed()
+        composeTestRule.onNode(isDialog()).assertIsDisplayed()
 
-            composeTestRule
-                .onNodeWithText("An error has occurred.")
-                .assert(hasAnyAncestor(isDialog()))
-                .assertIsDisplayed()
-            composeTestRule
-                .onNodeWithText("Error dialog message")
-                .assert(hasAnyAncestor(isDialog()))
-                .assertIsDisplayed()
-            composeTestRule
-                .onNodeWithText("Ok")
-                .assert(hasAnyAncestor(isDialog()))
-                .assertIsDisplayed()
-        }*/
+        composeTestRule
+            .onNodeWithText("An error has occurred.")
+            .assert(hasAnyAncestor(isDialog()))
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithText("Error dialog message")
+            .assert(hasAnyAncestor(isDialog()))
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithText("Ok")
+            .assert(hasAnyAncestor(isDialog()))
+            .assertIsDisplayed()
+    }
 
     @Test
     fun `loading dialog should be displayed according to state`() {
