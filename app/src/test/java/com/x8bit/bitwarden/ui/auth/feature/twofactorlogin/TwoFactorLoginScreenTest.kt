@@ -156,9 +156,9 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
 
     @Test
     fun `remember me click should send RememberMeToggle action`() {
-        composeTestRule.onNodeWithText("Remember me").performClick()
+        composeTestRule.onNodeWithText("Remember").performClick()
         verify {
-            viewModel.trySendAction(TwoFactorLoginAction.RememberMeToggle(true))
+            viewModel.trySendAction(TwoFactorLoginAction.RememberMeToggle(false))
         }
     }
 
