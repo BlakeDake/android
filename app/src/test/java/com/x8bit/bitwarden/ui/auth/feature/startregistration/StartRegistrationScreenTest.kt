@@ -69,12 +69,11 @@ class StartRegistrationScreenTest : BaseComposeTest() {
         }
     }
 
-    /*
     @Test
-    fun `close click should send BackClick action`() {
-        composeTestRule.onNodeWithContentDescription("Back").performClick()
-        verify { viewModel.trySendAction(BackClick) }
-    }*/
+    fun `close click should send CloseClick action`() {
+        composeTestRule.onNodeWithContentDescription("Close").performClick()
+        verify { viewModel.trySendAction(StartRegistrationAction.CloseClick) }
+    }
 
 
     @Test
