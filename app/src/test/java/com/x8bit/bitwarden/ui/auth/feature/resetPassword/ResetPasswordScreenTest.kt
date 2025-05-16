@@ -223,7 +223,7 @@ class ResetPasswordScreenTest : BaseComposeTest() {
     @Test
     fun `password hint input change should send PasswordHintInputChanged action`() {
         val input = "Test123"
-        composeTestRule.onNodeWithText("Master password hint (optional)").performTextInput(input)
+        composeTestRule.onNodeWithText("New master password hint").performTextInput(input)
         verify {
             viewModel.trySendAction(ResetPasswordAction.PasswordHintInputChanged("Test123"))
         }
