@@ -178,7 +178,8 @@ class ResetPasswordScreenTest : BaseComposeTest() {
     @Test
     fun `current password input change should send CurrentPasswordInputChanged action`() {
         val input = "Test123"
-        composeTestRule.onNodeWithText("Current master password").performTextInput(input)
+        composeTestRule.onNodeWithText("Current master password", substring = true)
+            .performTextInput(input)
         verify {
             viewModel.trySendAction(ResetPasswordAction.CurrentPasswordInputChanged("Test123"))
         }
