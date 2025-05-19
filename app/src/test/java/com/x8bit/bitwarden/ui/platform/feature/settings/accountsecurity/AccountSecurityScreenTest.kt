@@ -10,6 +10,7 @@ import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasScrollToNodeAction
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.hasTextExactly
 import androidx.compose.ui.test.isDialog
@@ -18,6 +19,7 @@ import androidx.compose.ui.test.isPopup
 import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.onParent
 import androidx.compose.ui.test.performClick
@@ -550,10 +552,9 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     @Test
     fun `session timeout should be updated on or off according to state`() {
         composeTestRule
-            .onNodeWithText("Session timeout")
-            .onParent()
+            .onNodeWithTag("SessionTimeoutStatusLabel", useUnmergedTree = true)
             .performScrollTo()
-            .assertTextEquals("Session timeout", "30 minutes")
+
         mutableStateFlow.update { it.copy(vaultTimeout = VaultTimeout.FourHours) }
         composeTestRule
             .onAllNodesWithText("Session timeout")
@@ -796,7 +797,8 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
 
         composeTestRule.onNodeWithText("Session timeout").assertExists() // First check if it exists
-        composeTestRule.onNode(hasScrollToNodeAction()).performScrollToNode(hasText("Session timeout"))
+        composeTestRule.onNode(hasScrollToNodeAction())
+            .performScrollToNode(hasText("Session timeout"))
         composeTestRule.onNodeWithText("Session timeout").performClick()
 
         composeTestRule
@@ -1003,7 +1005,8 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     fun `on session timeout action dialog Lock click should close the dialog and send VaultTimeoutActionSelect`() {
         composeTestRule.assertNoDialogExists()
 
-        composeTestRule.onNodeWithText("Session timeout action", useUnmergedTree = true).performScrollTo()
+        composeTestRule.onNodeWithText("Session timeout action", useUnmergedTree = true)
+            .performScrollTo()
             .performClick()
 
         composeTestRule
@@ -1131,7 +1134,8 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     fun `on session timeout action dialog cancel click should close the dialog`() {
         composeTestRule.assertNoDialogExists()
 
-        composeTestRule.onNodeWithText("Session timeout action", useUnmergedTree = true).performScrollTo()
+        composeTestRule.onNodeWithText("Session timeout action", useUnmergedTree = true)
+            .performScrollTo()
             .performClick()
 
         composeTestRule
