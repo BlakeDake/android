@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.tools.feature.generator
+package com.x8bit.bitwarden.ui.tools.feature.generator
 
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
@@ -28,6 +28,7 @@ import androidx.compose.ui.test.performTouchInput
 import androidx.compose.ui.test.swipeRight
 import androidx.compose.ui.text.AnnotatedString
 import androidx.core.net.toUri
+import com.x8bit.bitwarden.data.platform.manager.util.AppResumeStateManager
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
@@ -58,13 +59,15 @@ class GeneratorScreenTest : BaseComposeTest() {
     private val intentManager: IntentManager = mockk {
         every { launchUri(any()) } just runs
     }
+    private var dimNavBarCalled = false
 
     @Before
     fun setup() {
+        val mockAppResumeStateManager = mockk<AppResumeStateManager>(relaxed = true)
+
         composeTestRule.setContent {
-            // Provide a mock AppResumeStateManager
             CompositionLocalProvider(
-                LocalAppResumeStateManager provides FakeAppResumeStateManager()
+                LocalAppResumeStateManager provides mockAppResumeStateManager
             ) {
                 GeneratorScreen(
                     viewModel = viewModel,
@@ -73,7 +76,7 @@ class GeneratorScreenTest : BaseComposeTest() {
                     },
                     onNavigateBack = {},
                     intentManager = intentManager,
-                    onDimNavBarRequest = { _ -> },
+                    onDimNavBarRequest = { dimNavBarCalled = true }
                 )
             }
         }
@@ -126,22 +129,22 @@ class GeneratorScreenTest : BaseComposeTest() {
         }
     }
 
-//    @Test
-//    fun `on select click should send SelectClick`() {
-//        updateState(
-//            DEFAULT_STATE.copy(
-//                generatorMode = GeneratorMode.Modal.Username(website = null),
-//            ),
-//        )
-//
-//        composeTestRule
-//            .onNodeWithText(text = "Select")
-//            .performClick()
-//
-//        verify {
-//            viewModel.trySendAction(GeneratorAction.SelectClick)
-//        }
-//    }
+    @Test
+    fun `on select click should send SelectClick`() {
+        updateState(
+            DEFAULT_STATE.copy(
+                generatorMode = GeneratorMode.Modal.Username(website = null),
+            ),
+        )
+
+        composeTestRule
+            .onNodeWithText(text = "Select")
+            .performClick()
+
+        verify {
+            viewModel.trySendAction(GeneratorAction.SaveClick)
+        }
+    }
 
     @Test
     fun `DefaultAppBar should be displayed for Default Mode`() {
@@ -1526,9 +1529,7 @@ private val DEFAULT_STATE = GeneratorState(
     generatedText = "",
     selectedType = GeneratorState.MainType.Password(),
     currentEmailAddress = "currentEmail",
-    //onDimNavBarRequest = { _ -> },
-    shouldShowCoachMarkTour = false, // Add default value for tests
-    shouldShowAnonAddySelfHostServerUrlField = false, // Add default value for tests
-    shouldShowSimpleLoginSelfHostServerField = false // Add default value for tests
+    shouldShowCoachMarkTour = false,
+    shouldShowAnonAddySelfHostServerUrlField = false,
+    shouldShowSimpleLoginSelfHostServerField = false
 )
-*/
