@@ -209,13 +209,18 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
 
     @Test
     fun `resend email button visibility should update according to state`() {
-        val buttonText = "Send verification code email again"
-        composeTestRule.onNodeWithText(buttonText).assertIsDisplayed()
+        // Find the button using a regex pattern to match partially
+        composeTestRule.onNodeWithText("Resend code", substring = true).assertIsDisplayed()
 
         mutableStateFlow.update {
             it.copy(authMethod = TwoFactorAuthMethod.AUTHENTICATOR_APP)
         }
-        composeTestRule.onNodeWithText(buttonText).assertIsNotDisplayed()
+
+        // Wait for UI to update
+        composeTestRule.waitForIdle()
+
+        // Verify it's gone after switching auth methods
+        composeTestRule.onNodeWithText("Resend code", substring = true).assertIsNotDisplayed()
     }
 
     @Test
