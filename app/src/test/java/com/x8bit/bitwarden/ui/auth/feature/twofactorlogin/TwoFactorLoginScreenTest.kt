@@ -192,13 +192,19 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
 
     @Test
     fun `resend email button click should send ResendEmailClick action`() {
+        // First ensure the auth method is EMAIL so the button will be displayed
         mutableStateFlow.update {
             it.copy(authMethod = TwoFactorAuthMethod.EMAIL)
         }
-        composeTestRule.onNodeWithText("Resend code").performClick()
-        verify {
-            viewModel.trySendAction(TwoFactorLoginAction.ResendEmailClick)
-        }
+
+        // Wait for the UI to update with the new state
+        composeTestRule.waitForIdle()
+
+        // Now click the resend button - using the correct text
+        composeTestRule.onNodeWithText("Send verification code email again").performClick()
+
+        // Verify the action was sent
+        verify { viewModel.trySendAction(TwoFactorLoginAction.ResendEmailClick) }
     }
 
     @Test
