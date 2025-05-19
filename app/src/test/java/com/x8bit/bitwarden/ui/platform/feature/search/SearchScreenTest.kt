@@ -1,5 +1,6 @@
-/*package com.x8bit.bitwarden.ui.platform.feature.search
+package com.x8bit.bitwarden.ui.platform.feature.search
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -18,9 +19,12 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.core.net.toUri
+import com.bitwarden.vault.CipherType
+import com.x8bit.bitwarden.data.platform.manager.util.AppResumeStateManager
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalAppResumeStateManager
 import com.x8bit.bitwarden.ui.platform.feature.search.model.AutofillSelectionOption
 import com.x8bit.bitwarden.ui.platform.feature.search.util.createMockDisplayItemForCipher
 import com.x8bit.bitwarden.ui.platform.feature.search.util.createMockDisplayItemForSend
@@ -29,6 +33,8 @@ import com.x8bit.bitwarden.ui.util.assertMasterPasswordDialogDisplayed
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
 import com.x8bit.bitwarden.ui.util.isProgressBar
+import com.x8bit.bitwarden.ui.vault.feature.addedit.VaultAddEditArgs
+import com.x8bit.bitwarden.ui.vault.feature.item.VaultItemArgs
 import com.x8bit.bitwarden.ui.vault.feature.itemlisting.model.ListingItemOverflowAction
 import io.mockk.every
 import io.mockk.just
@@ -57,33 +63,31 @@ class SearchScreenTest : BaseComposeTest() {
 
     private var onNavigateBackCalled = false
     private var onNavigateToEditSendId: String? = null
-    private var onNavigateToEditCipherId: String? = null
-    private var onNavigateToViewCipherId: String? = null
+    private var onNavigateToEditCipherArgs: VaultAddEditArgs? = null
+    private var onNavigateToViewCipherArgs: VaultItemArgs? = null
 
     @Before
     fun setup() {
+        // Create a mock for AppResumeStateManager
+        val appResumeStateManager = mockk<AppResumeStateManager>(relaxed = true)
+
+        every { viewModel.stateFlow } returns mutableStateFlow
+        every { viewModel.eventFlow } returns mutableEventFlow
+
         composeTestRule.setContent {
-            SearchScreen(
-                viewModel = viewModel,
-                intentManager = intentManager,
-                onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToEditSend = { onNavigateToEditSendId = it },
-                onNavigateToEditCipher = { onNavigateToEditCipherId = it },
-                onNavigateToViewCipher = { onNavigateToViewCipherId = it },
-            )
+            CompositionLocalProvider(LocalAppResumeStateManager provides appResumeStateManager) {
+                SearchScreen(
+                    viewModel = viewModel,
+                    intentManager = intentManager,
+                    appResumeStateManager = appResumeStateManager, // Pass the mock directly
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    onNavigateToEditSend = { onNavigateToEditSendId = it },
+                    onNavigateToEditCipher = { onNavigateToEditCipherArgs = it },
+                    onNavigateToViewCipher = { onNavigateToViewCipherArgs = it },
+                )
+            }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
@@ -170,7 +174,9 @@ class SearchScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
             .performClick()
         verify {
-            viewModel.trySendAction(SearchAction.ItemClick("mockId-1"))
+            viewModel.trySendAction(
+                SearchAction.ItemClick(itemId = "mockId-1", cipherType = CipherType.LOGIN)
+            )
         }
     }
 
@@ -310,7 +316,14 @@ class SearchScreenTest : BaseComposeTest() {
             .assert(hasAnyAncestor(isDialog()))
             .performClick()
 
-        verify { viewModel.trySendAction(SearchAction.ItemClick(itemId = "mockId-1")) }
+        verify {
+            viewModel.trySendAction(
+                SearchAction.ItemClick(
+                    itemId = "mockId-1",
+                    cipherType = CipherType.LOGIN
+                )
+            )
+        }
         composeTestRule.assertNoDialogExists()
     }
 
@@ -539,6 +552,7 @@ class SearchScreenTest : BaseComposeTest() {
                 SearchAction.OverflowOptionClick(
                     overflowAction = ListingItemOverflowAction.VaultAction.ViewClick(
                         cipherId = "mockId-1",
+                        cipherType = CipherType.LOGIN
                     ),
                 ),
             )
@@ -559,6 +573,7 @@ class SearchScreenTest : BaseComposeTest() {
                     overflowAction = ListingItemOverflowAction.VaultAction.EditClick(
                         cipherId = "mockId-1",
                         requiresPasswordReprompt = true,
+                        cipherType = CipherType.LOGIN
                     ),
                 ),
             )
@@ -696,6 +711,7 @@ class SearchScreenTest : BaseComposeTest() {
                         action = ListingItemOverflowAction.VaultAction.EditClick(
                             cipherId = "mockId-1",
                             requiresPasswordReprompt = true,
+                            cipherType = CipherType.LOGIN
                         ),
                     ),
                 ),
@@ -923,4 +939,3 @@ private fun createStateForAutofill(
             ),
         ),
     )
-*/
