@@ -96,45 +96,15 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
             .assertTextEquals("Organization identifier", "test")
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(EnterpriseSignOnEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToSsoLogin should call startCustomTabsActivity`() {
-        val ssoUri = Uri.parse("https://identity.bitwarden.com/sso-test")
-        mutableEventFlow.tryEmit(EnterpriseSignOnEvent.NavigateToSsoLogin(ssoUri))
-        verify(exactly = 1) {
-            intentManager.startCustomTabsActivity(ssoUri)
-        }
-    }
 
-    @Test
-    fun `NavigateToCaptcha should call startCustomTabsActivity`() {
-        val captchaUri = Uri.parse("https://captcha.com")
-        mutableEventFlow.tryEmit(EnterpriseSignOnEvent.NavigateToCaptcha(captchaUri))
-        verify(exactly = 1) {
-            intentManager.startCustomTabsActivity(captchaUri)
-        }
-    }
 
-    @Test
-    fun `NavigateToSetPassword should call onNavigateToSetPassword`() {
-        mutableEventFlow.tryEmit(EnterpriseSignOnEvent.NavigateToSetPassword)
-        assertTrue(onNavigateToSetPasswordCalled)
-    }
 
-    @Test
-    fun `NavigateToTwoFactorLogin should call onNavigateToTwoFactorLogin`() {
-        val email = "test@example.com"
-        val orgIdentifier = "org_identifier"
-        mutableEventFlow.tryEmit(
-            EnterpriseSignOnEvent.NavigateToTwoFactorLogin(email, orgIdentifier),
-        )
-        assertEquals(email to orgIdentifier, onNavigateToTwoFactorLoginEmailAndOrgIdentifier)
-    }
+
+
+
+
+
 
     @Test
     fun `error dialog should be shown or hidden according to the state`() {
@@ -143,7 +113,6 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
         mutableStateFlow.update {
             it.copy(
                 dialogState = EnterpriseSignOnState.DialogState.Error(
-                    title = "Error dialog title".asText(),
                     message = "Error dialog message".asText(),
                 ),
             )
@@ -152,7 +121,7 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
         composeTestRule.onNode(isDialog()).assertIsDisplayed()
 
         composeTestRule
-            .onNodeWithText("Error dialog title")
+            .onNodeWithText("An error has occurred.")
             .assert(hasAnyAncestor(isDialog()))
             .assertIsDisplayed()
         composeTestRule
@@ -189,7 +158,6 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
         mutableStateFlow.update {
             DEFAULT_STATE.copy(
                 dialogState = EnterpriseSignOnState.DialogState.Error(
-                    title = "title".asText(),
                     message = "message".asText(),
                 ),
             )

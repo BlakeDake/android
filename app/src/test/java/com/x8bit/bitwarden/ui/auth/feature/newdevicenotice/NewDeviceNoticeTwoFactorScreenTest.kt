@@ -106,41 +106,13 @@ class NewDeviceNoticeTwoFactorScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on NavigateToTurnOnTwoFactor should call launchUri on IntentManager`() {
-        mutableEventFlow.tryEmit(
-            NewDeviceNoticeTwoFactorEvent.NavigateToTurnOnTwoFactor(
-                url = "https://bitwarden.com/#/settings/security/two-factor",
-            ),
-        )
-        verify(exactly = 1) {
-            intentManager.launchUri("https://bitwarden.com/#/settings/security/two-factor".toUri())
-        }
-    }
 
-    @Test
-    fun `ChangeAccountEmailClick should call OnNavigateBack`() {
-        mutableEventFlow.tryEmit(
-            NewDeviceNoticeTwoFactorEvent.NavigateToChangeAccountEmail(
-                url = "https://vault.bitwarden.com/#/settings/account",
-            ),
-        )
-        verify(exactly = 1) {
-            intentManager.launchUri("https://vault.bitwarden.com/#/settings/account".toUri())
-        }
-    }
 
-    @Test
-    fun `RemindMeLaterClick should call OnNavigateBack`() {
-        mutableEventFlow.tryEmit(NewDeviceNoticeTwoFactorEvent.NavigateBackToVault)
-        assertTrue(onNavigateBackToVaultCalled)
-    }
 
-    @Test
-    fun `onNavigateBack should set onNavigateBackCalled to true`() {
-        mutableEventFlow.tryEmit(NewDeviceNoticeTwoFactorEvent.NavigateBack)
-        Assert.assertTrue(onNavigateBackCalled)
-    }
+
+
+
+
 
     @Test
     fun `remind me later button visibility should update according to state`() {

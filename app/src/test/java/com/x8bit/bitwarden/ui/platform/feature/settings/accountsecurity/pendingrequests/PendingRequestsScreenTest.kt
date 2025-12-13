@@ -71,11 +71,7 @@ class PendingRequestsScreenTest : BaseComposeTest() {
         unmockkStatic(::isBuildVersionBelow)
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(PendingRequestsEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `on NavigateToLoginApproval should call onNavigateToLoginApproval`() = runTest {

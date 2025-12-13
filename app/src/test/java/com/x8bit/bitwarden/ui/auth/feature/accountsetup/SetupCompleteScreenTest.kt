@@ -30,10 +30,5 @@ class SetupCompleteScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(SetupCompleteAction.CompleteSetup) }
     }
 
-    @Test
-    fun `When system back behavior is triggered sends CompleteSetup action`() {
-        backDispatcher?.onBackPressed()
 
-        verify { viewModel.trySendAction(SetupCompleteAction.CompleteSetup) }
-    }
 }

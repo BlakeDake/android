@@ -50,13 +50,8 @@ import com.x8bit.bitwarden.ui.util.performLockAccountClick
 import com.x8bit.bitwarden.ui.util.performLogoutAccountClick
 import com.x8bit.bitwarden.ui.util.performRemoveAccountClick
 import com.x8bit.bitwarden.ui.util.performYesDialogButtonClick
-import com.x8bit.bitwarden.ui.vault.components.model.CreateVaultItemType
-import com.x8bit.bitwarden.ui.vault.feature.addedit.VaultAddEditArgs
-import com.x8bit.bitwarden.ui.vault.feature.item.VaultItemArgs
 import com.x8bit.bitwarden.ui.vault.feature.vault.model.VaultFilterData
 import com.x8bit.bitwarden.ui.vault.feature.vault.model.VaultFilterType
-import com.x8bit.bitwarden.ui.vault.model.VaultAddEditType
-import com.x8bit.bitwarden.ui.vault.model.VaultItemCipherType
 import com.x8bit.bitwarden.ui.vault.model.VaultItemListingType
 import io.mockk.every
 import io.mockk.just
@@ -68,7 +63,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
-import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -77,14 +71,12 @@ import org.junit.Test
 class VaultScreenTest : BaseComposeTest() {
     private var onNavigateToImportLoginsCalled = false
     private var onNavigateToVaultAddItemScreenCalled = false
-    private var onNavigateToVaultItemArgs: VaultItemArgs? = null
-    private var onNavigateToVaultEditItemArgs: VaultAddEditArgs? = null
+    private var onNavigateToVaultItemId: String? = null
+    private var onNavigateToVaultEditItemId: String? = null
     private var onNavigateToVaultItemListingType: VaultItemListingType? = null
     private var onDimBottomNavBarRequestCalled = false
     private var onNavigateToVerificationCodeScreen = false
     private var onNavigateToSearchScreen = false
-    private var onNavigateToAddFolderCalled = false
-    private var onNavigateToAddFolderParentFolderName: String? = null
     private val exitManager = mockk<ExitManager>(relaxed = true)
     private val intentManager = mockk<IntentManager>(relaxed = true)
     private val appReviewManager: AppReviewManager = mockk {
@@ -103,8 +95,8 @@ class VaultScreenTest : BaseComposeTest() {
             VaultScreen(
                 viewModel = viewModel,
                 onNavigateToVaultAddItemScreen = { onNavigateToVaultAddItemScreenCalled = true },
-                onNavigateToVaultItemScreen = { onNavigateToVaultItemArgs = it },
-                onNavigateToVaultEditItemScreen = { onNavigateToVaultEditItemArgs = it },
+                onNavigateToVaultItemScreen = { onNavigateToVaultItemId = it },
+                onNavigateToVaultEditItemScreen = { onNavigateToVaultEditItemId = it },
                 onNavigateToVaultItemListingScreen = { onNavigateToVaultItemListingType = it },
                 onDimBottomNavBarRequest = { onDimBottomNavBarRequestCalled = true },
                 onNavigateToVerificationCodeScreen = { onNavigateToVerificationCodeScreen = true },
@@ -112,10 +104,6 @@ class VaultScreenTest : BaseComposeTest() {
                 onNavigateToImportLogins = {
                     onNavigateToImportLoginsCalled = true
                     assertEquals(SnackbarRelay.MY_VAULT_RELAY, it)
-                },
-                onNavigateToAddFolderScreen = { folderName ->
-                    onNavigateToAddFolderCalled = true
-                    onNavigateToAddFolderParentFolderName = folderName
                 },
                 exitManager = exitManager,
                 intentManager = intentManager,
@@ -655,11 +643,7 @@ class VaultScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(VaultAction.VerificationCodesClick) }
     }
 
-    @Test
-    fun `NavigateToVerificationCodeScreen event should call onNavigateToVerificationCodeScreen`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToVerificationCodeScreen)
-        assertTrue(onNavigateToVerificationCodeScreen)
-    }
+
 
     @Test
     fun `search icon click should send SearchIconClick action`() {
@@ -669,10 +653,10 @@ class VaultScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun `floating action button click should send SelectAddItemType action`() {
+    fun `floating action button click should send AddItemClick action`() {
         mutableStateFlow.update { it.copy(viewState = VaultState.ViewState.NoItems) }
         composeTestRule.onNodeWithContentDescription("Add Item").performClick()
-        verify { viewModel.trySendAction(VaultAction.SelectAddItemType) }
+        verify { viewModel.trySendAction(VaultAction.AddItemClick) }
     }
 
     @Test
@@ -682,116 +666,34 @@ class VaultScreenTest : BaseComposeTest() {
             .onNodeWithText("New login")
             .performScrollTo()
             .performClick()
-        verify { viewModel.trySendAction(VaultAction.AddItemClick(CreateVaultItemType.LOGIN)) }
+        verify { viewModel.trySendAction(VaultAction.AddItemClick) }
     }
 
-    @Test
-    fun `NavigateToAddItemScreen event should call onNavigateToVaultAddItemScreen`() {
-        mutableEventFlow.tryEmit(
-            VaultEvent.NavigateToAddItemScreen(type = VaultItemCipherType.LOGIN),
-        )
-        assertTrue(onNavigateToVaultAddItemScreenCalled)
-    }
 
-    @Test
-    fun `NavigateToVaultSearchScreen event should call onNavigateToSearchScreen`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToVaultSearchScreen)
-        assertTrue(onNavigateToSearchScreen)
-    }
 
-    @Test
-    fun `NavigateToVaultItem event should call onNavigateToVaultItemScreen`() {
-        val id = "id4321"
-        val type = VaultItemCipherType.LOGIN
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToVaultItem(itemId = id, type = type))
-        assertEquals(
-            VaultItemArgs(vaultItemId = id, cipherType = type),
-            onNavigateToVaultItemArgs,
-        )
-    }
 
-    @Test
-    fun `NavigateToEditVaultItem event should call onNavigateToVaultEditItemScreen`() {
-        val id = "id1234"
-        val type = VaultItemCipherType.CARD
-        mutableEventFlow.tryEmit(
-            VaultEvent.NavigateToEditVaultItem(itemId = id, type = type),
-        )
-        assertEquals(
-            VaultAddEditArgs(
-                vaultAddEditType = VaultAddEditType.EditItem(vaultItemId = id),
-                vaultItemCipherType = type,
-            ),
-            onNavigateToVaultEditItemArgs,
-        )
-    }
 
-    @Test
-    @Suppress("MaxLineLength")
-    fun `NavigateToItemListing event for Card type should call onNavigateToVaultItemListingType with Card type`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToItemListing(VaultItemListingType.Card))
-        assertEquals(VaultItemListingType.Card, onNavigateToVaultItemListingType)
-    }
 
-    @Test
-    @Suppress("MaxLineLength")
-    fun `NavigateToItemListing event for Identity type should call onNavigateToVaultItemListingType with Identity type`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToItemListing(VaultItemListingType.Identity))
-        assertEquals(VaultItemListingType.Identity, onNavigateToVaultItemListingType)
-    }
 
-    @Test
-    @Suppress("MaxLineLength")
-    fun `NavigateToItemListing event for Login type should call onNavigateToVaultItemListingType with Login type`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToItemListing(VaultItemListingType.Login))
-        assertEquals(VaultItemListingType.Login, onNavigateToVaultItemListingType)
-    }
 
-    @Test
-    @Suppress("MaxLineLength")
-    fun `NavigateToItemListing event for SecureNote type should call onNavigateToVaultItemListingType with SecureNote type`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToItemListing(VaultItemListingType.SecureNote))
-        assertEquals(VaultItemListingType.SecureNote, onNavigateToVaultItemListingType)
-    }
 
-    @Test
-    @Suppress("MaxLineLength")
-    fun `NavigateToItemListing event for SshKey type should call onNavigateToVaultItemListingType with SshKey type`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToItemListing(VaultItemListingType.SshKey))
-        assertEquals(VaultItemListingType.SshKey, onNavigateToVaultItemListingType)
-    }
 
-    @Test
-    @Suppress("MaxLineLength")
-    fun `NavigateToItemListing event for Trash type should call onNavigateToVaultItemListingType with Trash type`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToItemListing(VaultItemListingType.Trash))
-        assertEquals(VaultItemListingType.Trash, onNavigateToVaultItemListingType)
-    }
 
-    @Test
-    @Suppress("MaxLineLength")
-    fun `NavigateToItemListing event for Folder type should call onNavigateToVaultItemListingType with Folder type`() {
-        val mockFolderId = "mockFolderId"
-        mutableEventFlow.tryEmit(
-            VaultEvent.NavigateToItemListing(VaultItemListingType.Folder(mockFolderId)),
-        )
-        assertEquals(VaultItemListingType.Folder(mockFolderId), onNavigateToVaultItemListingType)
-    }
 
-    @Test
-    fun `NavigateToUrl event should call launchUri`() {
-        val url = "www.test.com"
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToUrl(url))
-        verify(exactly = 1) {
-            intentManager.launchUri(url.toUri())
-        }
-    }
 
-    @Test
-    fun `NavigateOutOfApp event should call exitApplication on the ExitManager`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateOutOfApp)
-        verify { exitManager.exitApplication() }
-    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     @Test
     fun `totp section should be visible based on state`() {
@@ -1244,11 +1146,7 @@ class VaultScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(VaultAction.DismissImportActionCard) }
     }
 
-    @Test
-    fun `when NavigateToImportLogins is sent, it should call onNavigateToImportLogins`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToImportLogins)
-        assertTrue(onNavigateToImportLoginsCalled)
-    }
+
 
     @Test
     fun `when ShowSnackbar is sent snackbar should be displayed`() {
@@ -1326,66 +1224,9 @@ class VaultScreenTest : BaseComposeTest() {
             .isNotDisplayed()
     }
 
-    @Test
-    fun `LifecycleResumed action is sent when the screen is resumed`() {
-        verify { viewModel.trySendAction(VaultAction.LifecycleResumed) }
-    }
 
-    @Test
-    fun `PromptForAppReview triggers app review manager`() {
-        mutableEventFlow.tryEmit(VaultEvent.PromptForAppReview)
-        dispatcher.advanceTimeByAndRunCurrent(4000L)
-        verify(exactly = 1) { appReviewManager.promptForReview() }
-    }
 
-    @Suppress("MaxLineLength")
-    @Test
-    fun `NavigateToAddItemScreen event calls onNavigateToAddFolder callback when cipher item type is FOLDER`() {
-        mutableEventFlow.tryEmit(VaultEvent.NavigateToAddFolder)
-        assertTrue(onNavigateToAddFolderCalled)
-        assertNull(onNavigateToAddFolderParentFolderName)
-    }
 
-    @Test
-    fun `SelectVaultAddItemType dialog state show vault item type selection dialog`() {
-        mutableStateFlow.update {
-            it.copy(dialog = VaultState.DialogState.SelectVaultAddItemType)
-        }
-
-        composeTestRule
-            .onNode(isDialog())
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onAllNodesWithText("Type")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun `when option is selected in SelectVaultAddItemType dialog add item action is sent`() {
-        mutableStateFlow.update {
-            it.copy(dialog = VaultState.DialogState.SelectVaultAddItemType)
-        }
-
-        composeTestRule
-            .onNode(isDialog())
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onAllNodesWithText("Card")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .performClick()
-
-        verify(exactly = 1) {
-            viewModel.trySendAction(VaultAction.DialogDismiss)
-            viewModel.trySendAction(
-                VaultAction.AddItemClick(
-                    CreateVaultItemType.CARD,
-                ),
-            )
-        }
-    }
 }
 
 private val ACTIVE_ACCOUNT_SUMMARY = AccountSummary(

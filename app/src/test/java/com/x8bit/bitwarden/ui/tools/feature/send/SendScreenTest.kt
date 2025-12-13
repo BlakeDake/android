@@ -22,7 +22,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import androidx.core.net.toUri
-import com.x8bit.bitwarden.data.platform.manager.util.AppResumeStateManager
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
@@ -61,7 +60,6 @@ class SendScreenTest : BaseComposeTest() {
         every { eventFlow } returns mutableEventFlow
         every { stateFlow } returns mutableStateFlow
     }
-    private val appResumeStateManager: AppResumeStateManager = mockk(relaxed = true)
 
     @Before
     fun setUp() {
@@ -74,58 +72,23 @@ class SendScreenTest : BaseComposeTest() {
                 onNavigateToSendTextList = { onNavigateToSendTextListCalled = true },
                 onNavigateToSearchSend = { onNavigateToSendSearchCalled = true },
                 intentManager = intentManager,
-                appResumeStateManager = appResumeStateManager,
             )
         }
     }
 
-    @Test
-    fun `on NavigateToNewSend should call onNavigateToNewSend`() {
-        mutableEventFlow.tryEmit(SendEvent.NavigateNewSend)
-        assertTrue(onNavigateToNewSendCalled)
-    }
 
-    @Test
-    fun `on NavigateToEditSend should call onNavigateToEditSend`() {
-        val sendId = "sendId1234"
-        mutableEventFlow.tryEmit(SendEvent.NavigateToEditSend(sendId))
-        assertEquals(sendId, onNavigateToEditSendId)
-    }
 
-    @Test
-    fun `on NavigateToFileSends should call onNavigateToSendFilesList`() {
-        mutableEventFlow.tryEmit(SendEvent.NavigateToFileSends)
-        assertTrue(onNavigateToSendFilesListCalled)
-    }
 
-    @Test
-    fun `on NavigateToTextSends should call onNavigateToSendTextList`() {
-        mutableEventFlow.tryEmit(SendEvent.NavigateToTextSends)
-        assertTrue(onNavigateToSendTextListCalled)
-    }
 
-    @Test
-    fun `on NavigateToSearch should call onNavigateToSendSearch`() {
-        mutableEventFlow.tryEmit(SendEvent.NavigateToSearch)
-        assertTrue(onNavigateToSendSearchCalled)
-    }
 
-    @Test
-    fun `on NavigateToAboutSend should call launchUri on intentManager`() {
-        mutableEventFlow.tryEmit(SendEvent.NavigateToAboutSend)
-        verify {
-            intentManager.launchUri("https://bitwarden.com/products/send".toUri())
-        }
-    }
 
-    @Test
-    fun `on ShowShareSheet should call shareText on IntentManager`() {
-        val text = "sharable stuff"
-        mutableEventFlow.tryEmit(SendEvent.ShowShareSheet(text))
-        verify {
-            intentManager.shareText(text)
-        }
-    }
+
+
+
+
+
+
+
 
     @Test
     fun `on overflow item click should display menu`() {

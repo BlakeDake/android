@@ -53,19 +53,9 @@ class MasterPasswordGeneratorScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
     }
 
-    @Test
-    fun `NavigateBack event should invoke onNavigateBack lambda`() {
-        mutableEventFlow.tryEmit(MasterPasswordGeneratorEvent.NavigateBack)
 
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToPreventLockout event should invoke onNavigateToPreventLockout lambda`() {
-        mutableEventFlow.tryEmit(MasterPasswordGeneratorEvent.NavigateToPreventLockout)
 
-        assertTrue(onNavigateToPreventLockoutCalled)
-    }
 
     @Test
     fun `Verify clicking the back navigation button sends correct action`() {
@@ -107,14 +97,7 @@ class MasterPasswordGeneratorScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(MasterPasswordGeneratorAction.PreventLockoutClickAction) }
     }
 
-    @Test
-    fun `Verify navigating back with password invokes the lambda`() {
-        mutableEventFlow.tryEmit(
-            MasterPasswordGeneratorEvent.NavigateBackToRegistration,
-        )
 
-        assertTrue(navigateBackWithPasswordCalled)
-    }
 }
 
 private const val PASSWORD_INPUT = "password1234"

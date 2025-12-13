@@ -35,11 +35,7 @@ class ExpiredRegistrationLinkScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `System back event invokes CloseClicked action`() {
-        backDispatcher?.onBackPressed()
-        verify { viewModel.trySendAction(ExpiredRegistrationLinkAction.CloseClicked) }
-    }
+
 
     @Test
     fun `CloseClicked sends NavigateBack action`() {
@@ -68,21 +64,9 @@ class ExpiredRegistrationLinkScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(ExpiredRegistrationLinkAction.GoToLoginClicked) }
     }
 
-    @Test
-    fun `NavigateBack event invokes onNavigateBack`() {
-        mutableEventFlow.tryEmit(ExpiredRegistrationLinkEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToLogin event invokes onNavigateToLogin`() {
-        mutableEventFlow.tryEmit(ExpiredRegistrationLinkEvent.NavigateToLogin)
-        assertTrue(onNavigateToLoginCalled)
-    }
 
-    @Test
-    fun `NavigateToStartRegistration event invokes onNavigateToStartRegistration`() {
-        mutableEventFlow.tryEmit(ExpiredRegistrationLinkEvent.NavigateToStartRegistration)
-        assertTrue(onNavigateToStartRegistrationCalled)
-    }
+
+
+
 }

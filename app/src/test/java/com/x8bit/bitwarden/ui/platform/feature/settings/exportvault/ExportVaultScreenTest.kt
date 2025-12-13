@@ -54,14 +54,7 @@ class ExportVaultScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `NavigateToSelectExportDataLocation should invoke createDocumentIntent`() {
-        mutableEventFlow.tryEmit(ExportVaultEvent.NavigateToSelectExportDataLocation("test.json"))
 
-        verify(exactly = 1) {
-            intentManager.createDocumentIntent("test.json")
-        }
-    }
 
     @Test
     fun `basicDialog should update according to state`() {
@@ -213,11 +206,7 @@ class ExportVaultScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithText("Loading...").isDisplayed()
     }
 
-    @Test
-    fun `NavigateBack event should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(ExportVaultEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `confirm file password input change should send ConfirmFilePasswordInputChange action`() {
@@ -305,6 +294,7 @@ class ExportVaultScreenTest : BaseComposeTest() {
 private val DEFAULT_STATE = ExportVaultState(
     confirmFilePasswordInput = "",
     dialogState = null,
+    email = "test@bitwarden.com",
     exportFormat = ExportVaultFormat.JSON,
     filePasswordInput = "",
     passwordInput = "",

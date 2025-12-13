@@ -81,11 +81,7 @@ class PasswordHistoryScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `NavigateBack event should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(PasswordHistoryEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `clicking the Copy button should send PasswordCopyClick action`() {

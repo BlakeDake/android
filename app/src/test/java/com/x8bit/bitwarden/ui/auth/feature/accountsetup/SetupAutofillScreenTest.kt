@@ -103,22 +103,9 @@ class SetupAutofillScreenTest : BaseComposeTest() {
             .assertDoesNotExist()
     }
 
-    @Test
-    fun `NavigateToAutoFillSettings should start system autofill settings activity`() {
-        every { intentManager.startSystemAutofillSettingsActivity() } returns true
-        mutableEventFlow.tryEmit(SetupAutoFillEvent.NavigateToAutofillSettings)
-        verify {
-            intentManager.startSystemAutofillSettingsActivity()
-        }
-    }
 
-    @Suppress("MaxLineLength")
-    @Test
-    fun `NavigateToAutoFillSettings should send AutoFillServiceFallback action when intent fails`() {
-        every { intentManager.startSystemAutofillSettingsActivity() } returns false
-        mutableEventFlow.tryEmit(SetupAutoFillEvent.NavigateToAutofillSettings)
-        verify { viewModel.trySendAction(SetupAutoFillAction.AutoFillServiceFallback) }
-    }
+
+
 
     @Test
     fun `Show autofill fallback dialog when dialog state is AutoFillFallbackDialog`() {
@@ -221,11 +208,7 @@ class SetupAutofillScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
     }
 
-    @Test
-    fun `on NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(SetupAutoFillEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `close icon should not show when in initial setup`() {

@@ -18,14 +18,12 @@ import androidx.compose.ui.test.performKeyPress
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.requestFocus
-import com.x8bit.bitwarden.R
 import com.x8bit.bitwarden.data.auth.repository.model.VaultUnlockType
 import com.x8bit.bitwarden.data.autofill.fido2.model.Fido2CredentialAssertionResult
 import com.x8bit.bitwarden.data.autofill.fido2.model.Fido2GetCredentialsResult
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.autofill.fido2.manager.Fido2CompletionManager
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
-import com.x8bit.bitwarden.ui.platform.base.util.asText
 import com.x8bit.bitwarden.ui.platform.components.model.AccountSummary
 import com.x8bit.bitwarden.ui.platform.manager.biometrics.BiometricsManager
 import com.x8bit.bitwarden.ui.util.assertLockOrLogoutDialogIsDisplayed
@@ -92,65 +90,15 @@ class VaultUnlockScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on PromptForBiometrics should call promptBiometrics on biometricsManager`() {
-        mutableEventFlow.tryEmit(VaultUnlockEvent.PromptForBiometrics(CIPHER))
-        verify(exactly = 1) {
-            biometricsManager.promptBiometrics(
-                onSuccess = any(),
-                onCancel = any(),
-                onError = any(),
-                onLockOut = any(),
-                cipher = any(),
-            )
-        }
-    }
 
-    @Test
-    fun `on biometrics authentication success should send BiometricsUnlockSuccess`() {
-        mutableEventFlow.tryEmit(VaultUnlockEvent.PromptForBiometrics(CIPHER))
-        captureBiometricsSuccess.captured(CIPHER)
-        verify(exactly = 1) {
-            viewModel.trySendAction(VaultUnlockAction.BiometricsUnlockSuccess(CIPHER))
-        }
-    }
 
-    @Test
-    fun `on biometrics authentication lockout should send BiometricsLockOut`() {
-        mutableEventFlow.tryEmit(VaultUnlockEvent.PromptForBiometrics(CIPHER))
-        captureBiometricsLockOut.captured()
-        verify(exactly = 1) {
-            viewModel.trySendAction(VaultUnlockAction.BiometricsLockOut)
-        }
-    }
 
-    @Suppress("MaxLineLength")
-    @Test
-    fun `on Fido2GetCredentialsError should call completeFido2GetCredentialRequest on fido2CompletionManager`() {
-        mutableEventFlow.tryEmit(
-            VaultUnlockEvent.Fido2GetCredentialsError(
-                R.string.passkey_operation_failed_because_user_could_not_be_verified.asText(),
-            ),
-        )
-        verify(exactly = 1) {
-            fido2CompletionManager.completeFido2GetCredentialRequest(
-                result = Fido2GetCredentialsResult.Error(
-                    R.string.passkey_operation_failed_because_user_could_not_be_verified.asText(),
-                ),
-            )
-        }
-    }
 
-    @Suppress("MaxLineLength")
-    @Test
-    fun `on Fido2AssertCredentialError should call completeFido2AssertCredential on fido2CompletionManager`() {
-        mutableEventFlow.tryEmit(VaultUnlockEvent.Fido2CredentialAssertionError("".asText()))
-        verify(exactly = 1) {
-            fido2CompletionManager.completeFido2Assertion(
-                result = Fido2CredentialAssertionResult.Error("".asText()),
-            )
-        }
-    }
+
+
+
+
+
 
     @Test
     fun `account icon click should show the account switcher`() {

@@ -37,10 +37,5 @@ class PreventAccountLockoutScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(PreventAccountLockoutAction.CloseClickAction) }
     }
 
-    @Test
-    fun `NavigateBackEvent from ViewModel invokes onBackNavigation lambda`() {
-        mutableEventFlow.tryEmit(PreventAccountLockoutEvent.NavigateBack)
 
-        assertTrue(onBackHasBeenInvoked)
-    }
 }

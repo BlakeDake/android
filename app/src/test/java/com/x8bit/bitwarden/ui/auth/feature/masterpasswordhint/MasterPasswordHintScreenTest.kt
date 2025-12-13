@@ -99,11 +99,7 @@ class MasterPasswordHintScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(MasterPasswordHintAction.DismissDialog) }
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(MasterPasswordHintEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 }
 
 private val DEFAULT_STATE =

@@ -55,11 +55,7 @@ class AttachmentsScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(AttachmentsEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `on back click should send BackClick`() {

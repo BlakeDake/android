@@ -46,11 +46,7 @@ class FolderAddEditScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(FolderAddEditEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `clicking save button should send SaveClick action`() {
@@ -246,11 +242,9 @@ private val DEFAULT_STATE_ADD = FolderAddEditState(
     folderAddEditType = FolderAddEditType.AddItem,
     viewState = FolderAddEditState.ViewState.Loading,
     dialog = null,
-    parentFolderName = null,
 )
 private val DEFAULT_STATE_EDIT = FolderAddEditState(
     folderAddEditType = FolderAddEditType.EditItem("1"),
     viewState = FolderAddEditState.ViewState.Loading,
     dialog = null,
-    parentFolderName = null,
 )

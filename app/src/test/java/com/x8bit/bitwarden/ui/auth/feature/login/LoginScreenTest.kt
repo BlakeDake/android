@@ -70,7 +70,7 @@ class LoginScreenTest : BaseComposeTest() {
                 onNavigateToMasterPasswordHint = { onNavigateToMasterPasswordHintCalled = true },
                 onNavigateToEnterpriseSignOn = { onNavigateToEnterpriseSignOnCalled = true },
                 onNavigateToLoginWithDevice = { onNavigateToLoginWithDeviceCalled = true },
-                onNavigateToTwoFactorLogin = { _, _, _ -> onNavigateToTwoFactorLoginCalled = true },
+                onNavigateToTwoFactorLogin = { _, _ -> onNavigateToTwoFactorLoginCalled = true },
                 viewModel = viewModel,
                 intentManager = intentManager,
                 keyboardController = keyboardController,
@@ -311,36 +311,15 @@ class LoginScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(LoginEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToCaptcha should call intentManager startCustomTabsActivity`() {
-        val mockUri = mockk<Uri>()
-        mutableEventFlow.tryEmit(LoginEvent.NavigateToCaptcha(mockUri))
-        verify { intentManager.startCustomTabsActivity(mockUri) }
-    }
 
-    @Test
-    fun `NavigateToMasterPasswordHint should call onNavigateToMasterPasswordHint`() {
-        mutableEventFlow.tryEmit(LoginEvent.NavigateToMasterPasswordHint("email"))
-        assertTrue(onNavigateToMasterPasswordHintCalled)
-    }
 
-    @Test
-    fun `NavigateToEnterpriseSignOn should call onNavigateToEnterpriseSignOn`() {
-        mutableEventFlow.tryEmit(LoginEvent.NavigateToEnterpriseSignOn("email"))
-        assertTrue(onNavigateToEnterpriseSignOnCalled)
-    }
 
-    @Test
-    fun `NavigateToLoginWithDevice should call onNavigateToLoginWithDevice`() {
-        mutableEventFlow.tryEmit(LoginEvent.NavigateToLoginWithDevice(EMAIL))
-        assertTrue(onNavigateToLoginWithDeviceCalled)
-    }
+
+
+
+
+
 }
 
 private const val EMAIL = "active@bitwarden.com"

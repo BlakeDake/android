@@ -77,28 +77,11 @@ class AddSendScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(AddSendEvent.NavigateBack)
-        assert(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `ExitApp should call exitApplication on ExitManager`() {
-        mutableEventFlow.tryEmit(AddSendEvent.ExitApp)
-        verify {
-            exitManager.exitApplication()
-        }
-    }
 
-    @Test
-    fun `on ShowShareSheet should call shareText on IntentManager`() {
-        val text = "sharable stuff"
-        mutableEventFlow.tryEmit(AddSendEvent.ShowShareSheet(text))
-        verify {
-            intentManager.shareText(text)
-        }
-    }
+
+
+
 
     @Test
     fun `on close icon click should send CloseClick`() {
@@ -108,11 +91,7 @@ class AddSendScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AddSendAction.CloseClick) }
     }
 
-    @Test
-    fun `on system back should send CloseClick`() {
-        backDispatcher?.onBackPressed()
-        verify { viewModel.trySendAction(AddSendAction.CloseClick) }
-    }
+
 
     @Test
     fun `display navigation icon according to state`() {

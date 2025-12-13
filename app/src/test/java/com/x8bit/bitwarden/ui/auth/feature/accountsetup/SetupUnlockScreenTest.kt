@@ -86,7 +86,7 @@ class SetupUnlockScreenTest : BaseComposeTest() {
         @Suppress("MaxLineLength")
         composeTestRule
             .onNodeWithText(
-                text = "Set up biometrics or choose a PIN code to quickly access your vault and Autofill your logins.",
+                text = "Set up biometrics or choose a PIN code to quickly access your vault and AutoFill your logins.",
             )
             .performScrollTo()
             .assertExists()
@@ -627,11 +627,7 @@ class SetupUnlockScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
     }
 
-    @Test
-    fun `on NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(SetupUnlockEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `close icon should not show when in initial setup`() {

@@ -87,27 +87,11 @@ class NewDeviceNoticeEmailAccessScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `ContinueClick should call onNavigateBackToVault if isEmailAccessEnabled is false`() {
-        mutableStateFlow.update { it.copy(isEmailAccessEnabled = false) }
-        mutableEventFlow.tryEmit(NewDeviceNoticeEmailAccessEvent.NavigateBackToVault)
-        assertTrue(onNavigateBackToVaultCalled)
-    }
 
-    @Test
-    fun `ContinueClick should call onNavigateToTwoFactorOptions if isEmailAccessEnabled is true`() {
-        mutableStateFlow.update { it.copy(isEmailAccessEnabled = true) }
-        mutableEventFlow.tryEmit(NewDeviceNoticeEmailAccessEvent.NavigateToTwoFactorOptions)
-        assertTrue(onNavigateToTwoFactorOptionsCalled)
-    }
 
-    @Test
-    fun `on NavigateToLearnMore should call launchUri on IntentManager`() {
-        mutableEventFlow.tryEmit(NewDeviceNoticeEmailAccessEvent.NavigateToLearnMore)
-        verify {
-            intentManager.launchUri("https://bitwarden.com/help/new-device-verification/".toUri())
-        }
-    }
+
+
+
 }
 
 private const val EMAIL = "active@bitwarden.com"

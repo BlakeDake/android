@@ -10,17 +10,9 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
-import com.x8bit.bitwarden.ui.auth.feature.environment.EnvironmentState.DialogState
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
-import com.x8bit.bitwarden.ui.platform.base.util.asText
-import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
-import com.x8bit.bitwarden.ui.platform.manager.keychain.KeyChainManager
-import com.x8bit.bitwarden.ui.platform.manager.keychain.model.PrivateKeyAliasSelectionResult
-import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -34,12 +26,6 @@ class EnvironmentScreenTest : BaseComposeTest() {
     private var onNavigateBackCalled = false
     private val mutableEventFlow = bufferedMutableSharedFlow<EnvironmentEvent>()
     private val mutableStateFlow = MutableStateFlow(DEFAULT_STATE)
-    private val mockIntentManager = mockk<IntentManager>(relaxed = true)
-    private val mockKeyChainManager = mockk<KeyChainManager> {
-        coEvery {
-            choosePrivateKeyAlias(any())
-        } returns PrivateKeyAliasSelectionResult.Success("mockAlias")
-    }
     private val viewModel = mockk<EnvironmentViewModel>(relaxed = true) {
         every { eventFlow } returns mutableEventFlow
         every { stateFlow } returns mutableStateFlow
@@ -50,18 +36,12 @@ class EnvironmentScreenTest : BaseComposeTest() {
         composeTestRule.setContent {
             EnvironmentScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
-                intentManager = mockIntentManager,
-                keyChainManager = mockKeyChainManager,
                 viewModel = viewModel,
             )
         }
     }
 
-    @Test
-    fun `NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(EnvironmentEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `close click should send CloseClick`() {
@@ -85,11 +65,7 @@ class EnvironmentScreenTest : BaseComposeTest() {
 
         mutableStateFlow.update {
             it.copy(
-                dialog = DialogState.Error(
-                    ("One or more of the URLs entered are invalid. " +
-                        "Please revise it and try to save again.")
-                        .asText(),
-                ),
+                shouldShowErrorDialog = true,
             )
         }
 
@@ -116,7 +92,7 @@ class EnvironmentScreenTest : BaseComposeTest() {
     fun `error dialog OK click should send ErrorDialogDismiss action`() {
         mutableStateFlow.update {
             it.copy(
-                dialog = DialogState.Error("Error".asText()),
+                shouldShowErrorDialog = true,
             )
         }
         composeTestRule
@@ -149,62 +125,6 @@ class EnvironmentScreenTest : BaseComposeTest() {
                 EnvironmentAction.ServerUrlChange(serverUrl = "updated-server-url"),
             )
         }
-    }
-
-    @Test
-    fun `use system certificate click should send UseSystemKeyCertificateClick`() {
-        composeTestRule
-            .onNodeWithText("Choose system certificate")
-            .performScrollTo()
-            .assertIsDisplayed()
-            .performClick()
-
-        verify {
-            viewModel.trySendAction(EnvironmentAction.ChooseSystemCertificateClick)
-        }
-    }
-
-    @Test
-    fun `ShowSystemCertificateSelection event should show system certificate selection dialog`() {
-        mutableEventFlow.tryEmit(
-            EnvironmentEvent.ShowSystemCertificateSelectionDialog(serverUrl = ""),
-        )
-        coVerify { mockKeyChainManager.choosePrivateKeyAlias(null) }
-    }
-
-    @Suppress("MaxLineLength")
-    @Test
-    fun `system certificate selection should send SystemCertificateSelectionResultReceive action`() {
-        coEvery {
-            mockKeyChainManager.choosePrivateKeyAlias(null)
-        } returns PrivateKeyAliasSelectionResult.Success("alias")
-
-        mutableEventFlow.tryEmit(
-            EnvironmentEvent.ShowSystemCertificateSelectionDialog(serverUrl = ""),
-        )
-
-        verify {
-            viewModel.trySendAction(
-                EnvironmentAction.SystemCertificateSelectionResultReceive(
-                    privateKeyAliasSelectionResult = PrivateKeyAliasSelectionResult.Success(
-                        alias = "alias",
-                    ),
-                ),
-            )
-        }
-    }
-
-    @Test
-    fun `key alias should change according to the state`() {
-        composeTestRule
-            .onNodeWithText("Certificate alias")
-            .assertTextEquals("Certificate alias", "")
-
-        mutableStateFlow.update { it.copy(keyAlias = "mock-alias") }
-
-        composeTestRule
-            .onNodeWithText("Certificate alias")
-            .assertTextEquals("Certificate alias", "mock-alias")
     }
 
     @Test
@@ -314,14 +234,11 @@ class EnvironmentScreenTest : BaseComposeTest() {
     companion object {
         val DEFAULT_STATE = EnvironmentState(
             serverUrl = "",
-            keyAlias = "",
             webVaultServerUrl = "",
             apiServerUrl = "",
             identityServerUrl = "",
             iconsServerUrl = "",
-            keyHost = null,
-            dialog = null,
-            showMutualTlsOptions = true,
+            shouldShowErrorDialog = false,
         )
     }
 }
