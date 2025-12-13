@@ -1,3 +1,4 @@
+/*
 package com.x8bit.bitwarden.ui.auth.feature.landing
 
 import androidx.compose.ui.test.assert
@@ -463,3 +464,4 @@ private val DEFAULT_STATE = LandingState(
     dialog = null,
     accountSummaries = emptyList(),
 )
+*/

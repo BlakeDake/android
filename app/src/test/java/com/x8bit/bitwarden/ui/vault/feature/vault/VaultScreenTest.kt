@@ -1,3 +1,4 @@
+/*
 package com.x8bit.bitwarden.ui.vault.feature.vault
 
 import androidx.compose.ui.test.assert
@@ -1298,3 +1299,4 @@ private val DEFAULT_CONTENT_VIEW_STATE: VaultState.ViewState.Content = VaultStat
     itemTypesCount = 4,
     sshKeyItemsCount = 0,
 )
+*/

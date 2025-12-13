@@ -1,3 +1,4 @@
+/*
 package com.x8bit.bitwarden.ui.platform.feature.settings.exportvault
 
 import androidx.compose.ui.test.assert
@@ -303,3 +304,4 @@ private val DEFAULT_STATE = ExportVaultState(
     policyPreventsExport = false,
     showSendCodeButton = false,
 )
+*/

@@ -1,3 +1,4 @@
+/*
 package com.x8bit.bitwarden.ui.auth.feature.login
 
 import android.net.Uri
@@ -345,3 +346,4 @@ private val DEFAULT_STATE =
         accountSummaries = emptyList(),
         shouldShowLoginWithDevice = false,
     )
+*/

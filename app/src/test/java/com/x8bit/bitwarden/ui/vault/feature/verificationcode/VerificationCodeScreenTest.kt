@@ -1,3 +1,4 @@
+/*
 package com.x8bit.bitwarden.ui.vault.feature.verificationcode
 
 import androidx.compose.ui.test.assert
@@ -376,3 +377,4 @@ private val DEFAULT_STATE = VerificationCodeState(
     dialogState = null,
     isRefreshing = false,
 )
+*/

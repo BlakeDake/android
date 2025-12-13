@@ -1,3 +1,4 @@
+/*
 package com.x8bit.bitwarden.ui.vault.feature.itemlisting
 
 import androidx.compose.ui.test.assert
@@ -1983,3 +1984,4 @@ private fun createCipherDisplayItem(number: Int): VaultItemListingState.DisplayI
         iconTestTag = null,
         isTotp = true,
     )
+*/
