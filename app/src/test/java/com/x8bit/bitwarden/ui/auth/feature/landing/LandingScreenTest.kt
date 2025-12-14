@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.auth.feature.landing
 
 import androidx.compose.ui.test.assert
@@ -246,30 +245,33 @@ class LandingScreenTest : BaseComposeTest() {
 
     @Test
     fun `remember me should be toggled on or off according to the state`() {
-        composeTestRule.onNodeWithText("Remember me").assertIsOff()
+        composeTestRule.onNodeWithText("Remember email").assertIsOff()
 
-        mutableStateFlow.update { it.copy(isRememberMeEnabled = true) }
+        mutableStateFlow.update { it.copy(isRememberEmailEnabled = true) }
 
-        composeTestRule.onNodeWithText("Remember me").assertIsOn()
+        composeTestRule.onNodeWithText("Remember email").assertIsOn()
     }
+
 
     @Test
     fun `remember me click should send RememberMeToggle action`() {
         composeTestRule
-            .onNodeWithText("Remember me")
+            .onNodeWithText("Remember email")
             .performClick()
         verify {
             viewModel.trySendAction(LandingAction.RememberMeToggle(true))
         }
     }
 
+
     @Test
     fun `create account click should send CreateAccountClick action`() {
-        composeTestRule.onNodeWithText("Create account").performScrollTo().performClick()
+        composeTestRule.onNodeWithText("Create an account").performScrollTo().performClick()
         verify {
             viewModel.trySendAction(LandingAction.CreateAccountClick)
         }
     }
+
 
     @Test
     fun `email address should change according to state`() {
@@ -292,11 +294,6 @@ class LandingScreenTest : BaseComposeTest() {
             viewModel.trySendAction(LandingAction.EmailInputChanged(input))
         }
     }
-
-
-
-
-
 
 
     @Test
@@ -458,10 +455,10 @@ private val ACTIVE_ACCOUNT_SUMMARY = AccountSummary(
 private val DEFAULT_STATE = LandingState(
     emailInput = "",
     isContinueButtonEnabled = true,
-    isRememberMeEnabled = false,
+    isRememberEmailEnabled = false,
     selectedEnvironmentType = Environment.Type.US,
     selectedEnvironmentLabel = Environment.Us.label,
     dialog = null,
     accountSummaries = emptyList(),
 )
-*/
+
