@@ -87,11 +87,12 @@ class SetupUnlockScreenTest : BaseComposeTest() {
         composeTestRule
             .onNodeWithText(
                 text = "Set up biometrics or choose a PIN code to quickly access your vault and AutoFill your logins.",
+                useUnmergedTree = true,
             )
-            .performScrollTo()
             .assertExists()
             .assertIsDisplayed()
     }
+
 
     @Test
     fun `on unlock with biometrics should be toggled on or off according to state`() {
@@ -626,7 +627,6 @@ class SetupUnlockScreenTest : BaseComposeTest() {
         mutableStateFlow.update { it.copy(dialogState = null) }
         composeTestRule.assertNoDialogExists()
     }
-
 
 
     @Test
