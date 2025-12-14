@@ -1,6 +1,6 @@
-/*
 package com.x8bit.bitwarden.ui.auth.feature.environment
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
@@ -22,6 +22,12 @@ import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
+import com.x8bit.bitwarden.ui.platform.composition.LocalKeyChainManager
+import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
+import com.x8bit.bitwarden.ui.platform.manager.keychain.KeyChainManager
+
 
 class EnvironmentScreenTest : BaseComposeTest() {
     private var onNavigateBackCalled = false
@@ -34,14 +40,21 @@ class EnvironmentScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
+        val mockIntentManager = mockk<IntentManager>(relaxed = true)
+        val mockKeyChainManager = mockk<KeyChainManager>(relaxed = true)
+
         composeTestRule.setContent {
-            EnvironmentScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                viewModel = viewModel,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides mockIntentManager,
+                LocalKeyChainManager provides mockKeyChainManager,
+            ) {
+                EnvironmentScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    viewModel = viewModel,
+                )
+            }
         }
     }
-
 
 
     @Test
@@ -66,7 +79,10 @@ class EnvironmentScreenTest : BaseComposeTest() {
 
         mutableStateFlow.update {
             it.copy(
-                shouldShowErrorDialog = true,
+                dialog = EnvironmentState.DialogState.Error(
+                    message = ("One or more of the URLs entered are invalid. " +
+                        "Please revise it and try to save again.").asText()
+                )
             )
         }
 
@@ -89,11 +105,14 @@ class EnvironmentScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
     }
 
+
     @Test
     fun `error dialog OK click should send ErrorDialogDismiss action`() {
         mutableStateFlow.update {
             it.copy(
-                shouldShowErrorDialog = true,
+                dialog = EnvironmentState.DialogState.Error(
+                    message = "Test error".asText()
+                )
             )
         }
         composeTestRule
@@ -102,6 +121,7 @@ class EnvironmentScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(EnvironmentAction.ErrorDialogDismiss) }
     }
+
 
     @Test
     fun `server URL should change according to the state`() {
@@ -239,8 +259,10 @@ class EnvironmentScreenTest : BaseComposeTest() {
             apiServerUrl = "",
             identityServerUrl = "",
             iconsServerUrl = "",
-            shouldShowErrorDialog = false,
+            keyAlias = "",
+            dialog = null,
+            showMutualTlsOptions = false,
+            keyHost = null,
         )
     }
 }
-*/
