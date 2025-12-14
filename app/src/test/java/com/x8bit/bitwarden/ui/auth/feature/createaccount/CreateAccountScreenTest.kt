@@ -29,6 +29,7 @@ import com.x8bit.bitwarden.ui.auth.feature.createaccount.CreateAccountAction.Sub
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
+import com.x8bit.bitwarden.ui.util.performCustomAccessibilityAction
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -39,6 +40,7 @@ import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import kotlin.and
 
 class CreateAccountScreenTest : BaseComposeTest() {
 
@@ -109,7 +111,7 @@ class CreateAccountScreenTest : BaseComposeTest() {
     @Test
     fun `accept policies click should send AcceptPoliciesToggle action`() {
         composeTestRule
-            .onNodeWithText("By activating this switch you agree", substring = true)
+            .onNodeWithContentDescription("AcceptPoliciesToggle")
             .performScrollTo()
             .performClick()
         verify { viewModel.trySendAction(AcceptPoliciesToggle(true)) }
@@ -252,20 +254,22 @@ class CreateAccountScreenTest : BaseComposeTest() {
     @Test
     fun `terms of service click should send TermsClick action`() {
         composeTestRule
-            .onNodeWithText("Terms of Service")
+            .onNodeWithContentDescription("AcceptPoliciesToggle")
             .performScrollTo()
-            .performClick()
+            .performCustomAccessibilityAction("Terms of Service")
         verify { viewModel.trySendAction(CreateAccountAction.TermsClick) }
     }
+
 
     @Test
     fun `privacy policy click should send PrivacyPolicyClick action`() {
         composeTestRule
-            .onNodeWithText("Privacy Policy")
+            .onNodeWithContentDescription("AcceptPoliciesToggle")
             .performScrollTo()
-            .performClick()
+            .performCustomAccessibilityAction("Privacy Policy")
         verify { viewModel.trySendAction(CreateAccountAction.PrivacyPolicyClick) }
     }
+
 
     companion object {
         private const val TEST_INPUT = "input"
