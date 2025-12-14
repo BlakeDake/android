@@ -94,15 +94,17 @@ class CreateAccountScreenTest : BaseComposeTest() {
     @Test
     fun `accept policies should be toggled on or off according to the state`() {
         composeTestRule
-            .onNodeWithText("By activating this switch you agree", substring = true)
+            .onNodeWithContentDescription("AcceptPoliciesToggle")
+            .performScrollTo()
             .assertIsOff()
 
         mutableStateFlow.update { it.copy(isAcceptPoliciesToggled = true) }
 
         composeTestRule
-            .onNodeWithText("By activating this switch you agree", substring = true)
+            .onNodeWithContentDescription("AcceptPoliciesToggle")
             .assertIsOn()
     }
+
 
     @Test
     fun `accept policies click should send AcceptPoliciesToggle action`() {
@@ -112,15 +114,6 @@ class CreateAccountScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(AcceptPoliciesToggle(true)) }
     }
-
-
-
-
-
-
-
-
-
 
 
     @Test
