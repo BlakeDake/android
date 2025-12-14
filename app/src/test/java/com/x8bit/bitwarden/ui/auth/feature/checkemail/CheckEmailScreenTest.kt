@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.auth.feature.checkemail
 
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -8,7 +7,6 @@ import androidx.compose.ui.test.performScrollTo
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
-import com.x8bit.bitwarden.ui.util.assertLinkAnnotationIsAppliedAndInvokeClickAction
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -24,7 +22,6 @@ class CheckEmailScreenTest : BaseComposeTest() {
         every { startDefaultEmailApplication() } just runs
     }
     private var onNavigateBackCalled = false
-    private var onNavigateToLandingCalled = false
 
     private val mutableStateFlow = MutableStateFlow(DEFAULT_STATE)
     private val mutableEventFlow = bufferedMutableSharedFlow<CheckEmailEvent>()
@@ -38,7 +35,6 @@ class CheckEmailScreenTest : BaseComposeTest() {
         composeTestRule.setContent {
             CheckEmailScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateBackToLanding = { onNavigateToLandingCalled = true },
                 viewModel = viewModel,
                 intentManager = intentManager,
             )
@@ -56,7 +52,7 @@ class CheckEmailScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun `open email app button click should send OpenEmailClcik action`() {
+    fun `open email app button click should send OpenEmailClick action`() {
         composeTestRule
             .onNodeWithText("Open email app")
             .performScrollTo()
@@ -67,37 +63,8 @@ class CheckEmailScreenTest : BaseComposeTest() {
         }
     }
 
-
-
-
-
-
-
-    @Test
-    fun `go back and update email text click should send ChangeEmailClick action`() {
-        mutableStateFlow.value = DEFAULT_STATE.copy(showNewOnboardingUi = false)
-        val mainString = "No email? Go back to edit your email address."
-        composeTestRule.assertLinkAnnotationIsAppliedAndInvokeClickAction(
-            mainString = mainString,
-        )
-
-        verify { viewModel.trySendAction(CheckEmailAction.ChangeEmailClick) }
-    }
-
-    @Test
-    fun `already have account text click should send ChangeEmailClick action`() {
-        mutableStateFlow.value = DEFAULT_STATE.copy(showNewOnboardingUi = false)
-        val mainString = "Or log in, you may already have an account."
-        composeTestRule.assertLinkAnnotationIsAppliedAndInvokeClickAction(
-            mainString = mainString,
-        )
-
-        verify { viewModel.trySendAction(CheckEmailAction.LoginClick) }
-    }
-
     @Test
     fun `change email button click should send ChangeEmailClick action`() {
-        mutableStateFlow.value = DEFAULT_STATE.copy(showNewOnboardingUi = true)
         composeTestRule
             .onNodeWithText("Change email address")
             .performScrollTo()
@@ -110,8 +77,6 @@ class CheckEmailScreenTest : BaseComposeTest() {
         private const val EMAIL = "test@gmail.com"
         private val DEFAULT_STATE = CheckEmailState(
             email = EMAIL,
-            showNewOnboardingUi = false,
         )
     }
 }
-*/
