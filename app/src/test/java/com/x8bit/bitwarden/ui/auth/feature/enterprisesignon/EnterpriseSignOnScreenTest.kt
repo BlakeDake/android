@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.auth.feature.enterprisesignon
 
 import android.net.Uri
@@ -98,15 +97,6 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
     }
 
 
-
-
-
-
-
-
-
-
-
     @Test
     fun `error dialog should be shown or hidden according to the state`() {
         composeTestRule.onNode(isDialog()).assertDoesNotExist()
@@ -114,10 +104,12 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
         mutableStateFlow.update {
             it.copy(
                 dialogState = EnterpriseSignOnState.DialogState.Error(
+                    title = "An error has occurred.".asText(),
                     message = "Error dialog message".asText(),
                 ),
             )
         }
+
 
         composeTestRule.onNode(isDialog()).assertIsDisplayed()
 
@@ -159,10 +151,12 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
         mutableStateFlow.update {
             DEFAULT_STATE.copy(
                 dialogState = EnterpriseSignOnState.DialogState.Error(
+                    title = "An error has occurred.".asText(),
                     message = "message".asText(),
                 ),
             )
         }
+
 
         composeTestRule
             .onAllNodesWithText("Ok")
@@ -179,4 +173,3 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
         )
     }
 }
-*/
