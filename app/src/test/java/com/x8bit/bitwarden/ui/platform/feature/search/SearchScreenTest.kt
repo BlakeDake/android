@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.platform.feature.search
 
 import androidx.compose.ui.test.assert
@@ -30,6 +29,8 @@ import com.x8bit.bitwarden.ui.util.assertMasterPasswordDialogDisplayed
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
 import com.x8bit.bitwarden.ui.util.isProgressBar
+import com.x8bit.bitwarden.ui.vault.feature.addedit.VaultAddEditArgs
+import com.x8bit.bitwarden.ui.vault.feature.item.VaultItemArgs
 import com.x8bit.bitwarden.ui.vault.feature.itemlisting.model.ListingItemOverflowAction
 import io.mockk.every
 import io.mockk.just
@@ -58,8 +59,8 @@ class SearchScreenTest : BaseComposeTest() {
 
     private var onNavigateBackCalled = false
     private var onNavigateToEditSendId: String? = null
-    private var onNavigateToEditCipherId: String? = null
-    private var onNavigateToViewCipherId: String? = null
+    private var onNavigateToEditCipherId: VaultAddEditArgs? = null
+    private var onNavigateToViewCipherId: VaultItemArgs? = null
 
     @Before
     fun setup() {
@@ -67,6 +68,7 @@ class SearchScreenTest : BaseComposeTest() {
             SearchScreen(
                 viewModel = viewModel,
                 intentManager = intentManager,
+                appResumeStateManager = mockk(relaxed = true),
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToEditSend = { onNavigateToEditSendId = it },
                 onNavigateToEditCipher = { onNavigateToEditCipherId = it },
@@ -74,18 +76,6 @@ class SearchScreenTest : BaseComposeTest() {
             )
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     @Test
     fun `clicking back button should send BackClick action`() {
@@ -171,7 +161,7 @@ class SearchScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
             .performClick()
         verify {
-            viewModel.trySendAction(SearchAction.ItemClick("mockId-1"))
+            viewModel.trySendAction(SearchAction.ItemClick(itemId = "mockId-1", cipherType = null))
         }
     }
 
@@ -311,7 +301,14 @@ class SearchScreenTest : BaseComposeTest() {
             .assert(hasAnyAncestor(isDialog()))
             .performClick()
 
-        verify { viewModel.trySendAction(SearchAction.ItemClick(itemId = "mockId-1")) }
+        verify {
+            viewModel.trySendAction(
+                SearchAction.ItemClick(
+                    itemId = "mockId-1",
+                    cipherType = null
+                )
+            )
+        }
         composeTestRule.assertNoDialogExists()
     }
 
@@ -540,6 +537,7 @@ class SearchScreenTest : BaseComposeTest() {
                 SearchAction.OverflowOptionClick(
                     overflowAction = ListingItemOverflowAction.VaultAction.ViewClick(
                         cipherId = "mockId-1",
+                        cipherType = com.bitwarden.vault.CipherType.LOGIN,
                     ),
                 ),
             )
@@ -560,6 +558,7 @@ class SearchScreenTest : BaseComposeTest() {
                     overflowAction = ListingItemOverflowAction.VaultAction.EditClick(
                         cipherId = "mockId-1",
                         requiresPasswordReprompt = true,
+                        cipherType = com.bitwarden.vault.CipherType.LOGIN,
                     ),
                 ),
             )
@@ -697,6 +696,7 @@ class SearchScreenTest : BaseComposeTest() {
                         action = ListingItemOverflowAction.VaultAction.EditClick(
                             cipherId = "mockId-1",
                             requiresPasswordReprompt = true,
+                            cipherType = com.bitwarden.vault.CipherType.LOGIN,
                         ),
                     ),
                 ),
@@ -924,4 +924,3 @@ private fun createStateForAutofill(
             ),
         ),
     )
-*/
