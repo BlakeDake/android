@@ -50,7 +50,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on language row click should display language selection dialog`() {
-        composeTestRule.onNodeWithText("Language").performClick()
+        composeTestRule.onNodeWithText("Language", useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("Language")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -60,7 +60,7 @@ class AppearanceScreenTest : BaseComposeTest() {
     @Test
     fun `on language selection dialog item click should send LanguageChange and show dialog`() {
         // Clicking the Language row shows the language selection dialog
-        composeTestRule.onNodeWithText("Language").performClick()
+        composeTestRule.onNodeWithText("Language", useUnmergedTree = true).performClick()
         // Selecting a language dismisses this dialog and displays the confirmation
         composeTestRule
             .onAllNodesWithText("Afrikaans")
@@ -93,7 +93,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on language selection dialog cancel click should dismiss dialog`() {
-        composeTestRule.onNodeWithText("Language").performClick()
+        composeTestRule.onNodeWithText("Language", useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("Cancel")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -103,7 +103,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on theme row click should display theme selection dialog`() {
-        composeTestRule.onNodeWithText("Theme").performClick()
+        composeTestRule.onNodeWithText("Theme", useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("Theme")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -112,7 +112,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on theme selection dialog item click should send ThemeChange`() {
-        composeTestRule.onNodeWithText("Theme").performClick()
+        composeTestRule.onNodeWithText("Theme", useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("Dark")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -130,7 +130,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Test
     fun `on theme selection dialog cancel click should dismiss dialog`() {
-        composeTestRule.onNodeWithText("Theme").performClick()
+        composeTestRule.onNodeWithText("Theme", useUnmergedTree = true).performClick()
         composeTestRule
             .onAllNodesWithText("Cancel")
             .filterToOne(hasAnyAncestor(isDialog()))
