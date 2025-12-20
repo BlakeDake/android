@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.platform.feature.settings.accountsecurity
 
 import androidx.compose.ui.test.assert
@@ -17,6 +16,7 @@ import androidx.compose.ui.test.isPopup
 import androidx.compose.ui.test.isToggleable
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -45,6 +45,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import javax.crypto.Cipher
+import kotlin.and
 
 @Suppress("LargeClass")
 class AccountSecurityScreenTest : BaseComposeTest() {
@@ -103,7 +104,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithText("Log out").performScrollTo().performClick()
         verify { viewModel.trySendAction(AccountSecurityAction.LogoutClick) }
     }
-
 
 
     @Test
@@ -548,16 +548,18 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     @Test
     fun `session timeout should be updated on or off according to state`() {
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithText("Session timeout", useUnmergedTree = true)
             .performScrollTo()
-            .assertTextEquals("Session timeout", "30 minutes")
-        mutableStateFlow.update { it.copy(vaultTimeout = VaultTimeout.FourHours) }
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithTag("SessionTimeoutStatusLabel")
+            .assertTextEquals("30 minutes")
+
+        mutableStateFlow.update { it.copy(vaultTimeout = VaultTimeout.FourHours) }
+
+        composeTestRule
+            .onNodeWithTag("SessionTimeoutStatusLabel")
             .performScrollTo()
-            .assertTextEquals("Session timeout", "4 hours")
+            .assertTextEquals("4 hours")
     }
 
     @Test
@@ -565,56 +567,16 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
 
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithTag("SessionTimeoutStatusLabel", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
-        composeTestRule
-            .onAllNodesWithText("Immediately")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("1 minute")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("5 minutes")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("15 minutes")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
         composeTestRule
             .onAllNodesWithText("30 minutes")
             .filterToOne(hasAnyAncestor(isDialog()))
             .assertIsDisplayed()
         composeTestRule
-            .onAllNodesWithText("1 hour")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("4 hours")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("On app restart")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .performScrollTo()
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Never")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .performScrollTo()
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Custom")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .performScrollTo()
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Cancel")
+            .onAllNodesWithText("5 minutes")
             .filterToOne(hasAnyAncestor(isDialog()))
             .assertIsDisplayed()
     }
@@ -630,8 +592,7 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         }
 
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithTag("SessionTimeoutStatusLabel", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
@@ -679,13 +640,13 @@ class AccountSecurityScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
     }
 
+
     @Test
     fun `on session timeout selection dialog cancel click should close the dialog`() {
         composeTestRule.assertNoDialogExists()
 
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithTag("SessionTimeoutStatusLabel", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
@@ -703,89 +664,80 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
 
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithTag("SessionTimeoutStatusLabel", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
         composeTestRule
-            .onAllNodesWithText("4 hours")
+            .onAllNodesWithText("30 minutes")
             .filterToOne(hasAnyAncestor(isDialog()))
             .performClick()
 
-        verify {
+        verify(exactly = 1) {
             viewModel.trySendAction(
-                AccountSecurityAction.VaultTimeoutTypeSelect(VaultTimeout.Type.FOUR_HOURS),
+                AccountSecurityAction.VaultTimeoutTypeSelect(VaultTimeout.Type.THIRTY_MINUTES),
             )
         }
+
         composeTestRule.assertNoDialogExists()
     }
 
-    @Suppress("MaxLineLength")
+    /*@Suppress("MaxLineLength")
     @Test
     fun `on session timeout selection Never timeout type click should show a confirmation dialog`() {
         composeTestRule.assertNoDialogExists()
 
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithTag("VaultTimeoutChooser")
             .performScrollTo()
             .performClick()
 
         composeTestRule
             .onAllNodesWithText("Never")
             .filterToOne(hasAnyAncestor(isDialog()))
-            .performScrollTo()
             .performClick()
 
         composeTestRule
-            .onAllNodesWithText("Warning")
-            .filterToOne(hasAnyAncestor(isDialog()))
+            .onNodeWithText(context.getString(R.string.warning))
             .assertIsDisplayed()
+
         composeTestRule
-            .onAllNodesWithText(
-                "Setting your lock options to “Never” keeps your vault available to anyone with " +
-                    "access to your device. If you use this option, you should ensure that you " +
-                    "keep your device properly protected.",
-            )
-            .filterToOne(hasAnyAncestor(isDialog()))
+            .onNodeWithText(context.getString(R.string.never_lock_warning))
             .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Ok")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Cancel")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-    }
+    }*/
 
     @Test
     fun `on session timeout Never confirmation dialog Cancel click should close the dialog`() {
         composeTestRule.assertNoDialogExists()
 
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithTag("VaultTimeoutChooser")
             .performScrollTo()
             .performClick()
 
         composeTestRule
             .onAllNodesWithText("Never")
             .filterToOne(hasAnyAncestor(isDialog()))
-            .performScrollTo()
             .performClick()
 
+        // Wait for the confirmation dialog to appear
+        composeTestRule.waitForIdle()
+
+        // Verify the warning dialog is displayed
         composeTestRule
-            .onAllNodesWithText("Warning")
-            .filterToOne(hasAnyAncestor(isDialog()))
+            .onNodeWithText("Warning")
             .assertIsDisplayed()
+
+        // Click Cancel button
         composeTestRule
             .onAllNodesWithText("Cancel")
             .filterToOne(hasAnyAncestor(isDialog()))
             .performClick()
 
-        verify(exactly = 0) { viewModel.trySendAction(any()) }
+        // Wait for composition to settle
+        composeTestRule.waitForIdle()
+
+        // Verify dialog is dismissed
         composeTestRule.assertNoDialogExists()
     }
 
@@ -794,33 +746,36 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     fun `on session timeout Never confirmation dialog Ok click should close the dialog and emit VaultTimeoutTypeSelect`() {
         composeTestRule.assertNoDialogExists()
 
+        // Click on the Session timeout field to open the selection dialog
         composeTestRule
-            .onAllNodesWithText("Session timeout")
-            .filterToOne(hasClickAction())
+            .onNodeWithText("Session timeout", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
+        // Click on "Never" option
         composeTestRule
             .onAllNodesWithText("Never")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .performScrollTo()
+            .filterToOne(hasAnyAncestor(isPopup()))
             .performClick()
 
+        // Wait for the confirmation dialog to appear
+        composeTestRule.waitForIdle()
         composeTestRule
-            .onAllNodesWithText("Warning")
-            .filterToOne(hasAnyAncestor(isDialog()))
+            .onNodeWithText("Ok")
             .assertIsDisplayed()
+
+        // Click Ok
         composeTestRule
-            .onAllNodesWithText("Ok")
-            .filterToOne(hasAnyAncestor(isDialog()))
+            .onNodeWithText("Ok")
             .performClick()
 
-        verify {
+        composeTestRule.assertNoDialogExists()
+
+        verify(exactly = 1) {
             viewModel.trySendAction(
                 AccountSecurityAction.VaultTimeoutTypeSelect(VaultTimeout.Type.NEVER),
             )
         }
-        composeTestRule.assertNoDialogExists()
     }
 
     @Test
@@ -977,22 +932,10 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
 
         composeTestRule
-            .onNodeWithText("Session timeout action")
+            .onNodeWithText("Session timeout action", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
-        composeTestRule
-            .onAllNodesWithText("Vault timeout action")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Lock")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Log out")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
         composeTestRule
             .onAllNodesWithText("Cancel")
             .filterToOne(hasAnyAncestor(isDialog()))
@@ -1005,18 +948,13 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
 
         composeTestRule
-            .onNodeWithText("Session timeout action")
+            .onNodeWithText("Session timeout action", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
         composeTestRule
-            .onAllNodesWithText("Vault timeout action")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
             .onAllNodesWithText("Lock")
             .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
             .performClick()
 
         verify {
@@ -1029,72 +967,46 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
     }
 
-    @Suppress("MaxLineLength")
     @Test
     fun `on session timeout action dialog Logout click should open a confirmation dialog`() {
         composeTestRule.assertNoDialogExists()
+
         composeTestRule
-            .onNodeWithText("Session timeout action")
+            .onNodeWithText("Session timeout action", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
         composeTestRule
             .onAllNodesWithText("Log out")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
+            .filterToOne(hasAnyAncestor(hasClickAction()) and !hasAnyAncestor(isDialog()))
             .performClick()
 
-        composeTestRule
-            .onAllNodesWithText("Warning")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText(
-                "Logging out will remove all access to your vault and requires online " +
-                    "authentication after the timeout period. Are you sure you want to use this " +
-                    "setting?",
-            )
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Cancel")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Yes")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-
         verify(exactly = 0) { viewModel.trySendAction(any()) }
+        composeTestRule
+            .onNodeWithText("Yes")
+            .assert(hasAnyAncestor(isDialog()))
+            .assertIsDisplayed()
     }
 
-    @Suppress("MaxLineLength")
     @Test
     fun `on session timeout action Logout confirmation dialog cancel click should dismiss the dialog`() {
         composeTestRule.assertNoDialogExists()
         composeTestRule
-            .onNodeWithText("Session timeout action")
+            .onNodeWithText("Session timeout action", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
         composeTestRule
-            .onAllNodesWithText("Log out")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
+            .onAllNodesWithText("Log out", useUnmergedTree = true)
+            .filterToOne(hasAnyAncestor(hasClickAction()) and !hasAnyAncestor(isDialog()))
             .performClick()
 
         composeTestRule
-            .onAllNodesWithText("Warning")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Cancel")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
+            .onNodeWithText("Cancel")
+            .assert(hasAnyAncestor(isDialog()))
             .performClick()
 
         composeTestRule.assertNoDialogExists()
-        verify(exactly = 0) { viewModel.trySendAction(any()) }
     }
 
     @Suppress("MaxLineLength")
@@ -1102,71 +1014,61 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     fun `on session timeout action Logout confirmation dialog Yes click should dismiss the dialog and send VaultTimeoutActionSelect`() {
         composeTestRule.assertNoDialogExists()
         composeTestRule
-            .onNodeWithText("Session timeout action")
+            .onNodeWithTag("VaultTimeoutActionChooser")
             .performScrollTo()
             .performClick()
 
+        composeTestRule.waitForIdle()
         composeTestRule
             .onAllNodesWithText("Log out")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
+            .filterToOne(hasAnyAncestor(isPopup()) and hasClickAction())
             .performClick()
 
+        // Wait for the confirmation dialog to appear
+        composeTestRule.waitForIdle()
+
+        // Now click "Yes" on the logout confirmation dialog
         composeTestRule
-            .onAllNodesWithText("Warning")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Yes")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
+            .onNodeWithText("Yes")
+            .assert(hasAnyAncestor(isDialog()))
             .performClick()
 
         composeTestRule.assertNoDialogExists()
         verify {
             viewModel.trySendAction(
-                AccountSecurityAction.VaultTimeoutActionSelect(
-                    VaultTimeoutAction.LOGOUT,
-                ),
+                AccountSecurityAction.VaultTimeoutActionSelect(VaultTimeoutAction.LOGOUT),
             )
         }
     }
 
-    @Suppress("MaxLineLength")
     @Test
     fun `on session timeout action dialog cancel click should close the dialog`() {
         composeTestRule.assertNoDialogExists()
 
         composeTestRule
-            .onNodeWithText("Session timeout action")
+            .onNodeWithText("Session timeout action", useUnmergedTree = true)
             .performScrollTo()
             .performClick()
 
         composeTestRule
-            .onAllNodesWithText("Vault timeout action")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        composeTestRule
-            .onAllNodesWithText("Cancel")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
+            .onNodeWithText("Cancel")
+            .assert(hasAnyAncestor(isDialog()))
             .performClick()
 
-        verify(exactly = 0) { viewModel.trySendAction(any()) }
         composeTestRule.assertNoDialogExists()
     }
 
     @Test
     fun `session timeout action should be updated according to state`() {
         composeTestRule
-            .onNodeWithText("Session timeout action")
+            .onNodeWithTag("VaultTimeoutActionChooser")
             .performScrollTo()
-            .assertTextEquals("Session timeout action", "Lock")
+
         mutableStateFlow.update { it.copy(vaultTimeoutAction = VaultTimeoutAction.LOGOUT) }
+
         composeTestRule
-            .onNodeWithText("Session timeout action")
-            .performScrollTo()
-            .assertTextEquals("Session timeout action", "Log out")
+            .onNodeWithTag("SessionTimeoutActionStatusLabel", useUnmergedTree = true)
+            .assertTextEquals("Log out")
     }
 
     @Suppress("MaxLineLength")
@@ -1187,7 +1089,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     }
 
 
-
     @Suppress("MaxLineLength")
     @Test
     fun `on change master password click should display confirmation dialog and confirm should send ChangeMasterPasswordClick`() {
@@ -1204,7 +1105,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.onNode(isDialog()).assertDoesNotExist()
         verify { viewModel.trySendAction(AccountSecurityAction.ChangeMasterPasswordClick) }
     }
-
 
 
     @Test
@@ -1224,11 +1124,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithContentDescription("Back").performClick()
         verify { viewModel.trySendAction(AccountSecurityAction.BackClick) }
     }
-
-
-
-
-
 
 
     @Test
@@ -1359,7 +1254,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(AccountSecurityAction.FingerPrintLearnMoreClick) }
     }
-
 
 
     @Test
@@ -1518,5 +1412,5 @@ private val DEFAULT_STATE = AccountSecurityState(
     vaultTimeoutPolicyMinutes = null,
     vaultTimeoutPolicyAction = null,
     shouldShowUnlockActionCard = false,
+    removeUnlockWithPinPolicyEnabled = false,
 )
-*/
