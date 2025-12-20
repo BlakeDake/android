@@ -1,6 +1,6 @@
-/*
 package com.x8bit.bitwarden.ui.tools.feature.generator
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.test.SemanticsMatcher.Companion.expectValue
@@ -15,6 +15,7 @@ import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasProgressBarRangeInfo
 import androidx.compose.ui.test.isDialog
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onChildren
 import androidx.compose.ui.test.onLast
@@ -31,6 +32,8 @@ import androidx.core.net.toUri
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalAppResumeStateManager
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.tools.feature.generator.model.GeneratorMode
 import io.mockk.every
@@ -40,8 +43,10 @@ import io.mockk.runs
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertTrue
+
 
 @Suppress("LargeClass")
 class GeneratorScreenTest : BaseComposeTest() {
@@ -58,15 +63,27 @@ class GeneratorScreenTest : BaseComposeTest() {
         every { launchUri(any()) } just runs
     }
 
+    @get:Rule
+    val composeTestRule = createComposeRule()
+
+    private val mockIntentManager = mockk<IntentManager>(relaxed = true)
+    private val mockDimManager = mockk<DimManager>(relaxed = true)
+
+
     @Before
     fun setup() {
         composeTestRule.setContent {
-            GeneratorScreen(
-                viewModel = viewModel,
-                onNavigateToPasswordHistory = { onNavigateToPasswordHistoryScreenCalled = true },
-                onNavigateBack = {},
-                intentManager = intentManager,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides mockIntentManager,
+                LocalDimManager provides mockDimManager,
+            ) {
+                GeneratorScreen(
+                    onNavigateToPasswordHistory = {},
+                    onNavigateBack = {},
+                    viewModel = viewModel,
+                    onDimNavBarRequest = {},
+                )
+            }
         }
     }
 
@@ -130,7 +147,7 @@ class GeneratorScreenTest : BaseComposeTest() {
             .performClick()
 
         verify {
-            viewModel.trySendAction(GeneratorAction.SelectClick)
+            viewModel.trySendAction(GeneratorAction.SaveClick)
         }
     }
 
@@ -164,7 +181,6 @@ class GeneratorScreenTest : BaseComposeTest() {
             .onNodeWithContentDescription(label = "What would you like to generate?, Password")
             .assertDoesNotExist()
     }
-
 
 
     @Test
@@ -1390,7 +1406,6 @@ class GeneratorScreenTest : BaseComposeTest() {
     }
 
 
-
     //endregion Username Type Tests
 
     //region Username Plus Addressed Email Tests
@@ -1508,7 +1523,6 @@ class GeneratorScreenTest : BaseComposeTest() {
     }
 
 
-
     //endregion Random Word Tests
 
     private fun updateState(state: GeneratorState) {
@@ -1516,9 +1530,11 @@ class GeneratorScreenTest : BaseComposeTest() {
     }
 }
 
-private val DEFAULT_STATE = GeneratorState(
-    generatedText = "",
+private val DEFAULT_STATE: GeneratorState = GeneratorState(
+    generatedText = "defaultGeneratedText",
     selectedType = GeneratorState.MainType.Password(),
     currentEmailAddress = "currentEmail",
+    shouldShowCoachMarkTour = false,
+    shouldShowAnonAddySelfHostServerUrlField = false,
+    shouldShowSimpleLoginSelfHostServerField = false,
 )
-*/
