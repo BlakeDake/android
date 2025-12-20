@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.auth.feature.startregistration
 
 import androidx.compose.ui.test.assert
@@ -8,6 +7,7 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
@@ -15,7 +15,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.core.net.toUri
 import com.x8bit.bitwarden.data.platform.repository.model.Environment
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
-import com.x8bit.bitwarden.ui.auth.feature.startregistration.StartRegistrationAction.BackClick
+import com.x8bit.bitwarden.ui.auth.feature.startregistration.StartRegistrationAction.CloseClick
 import com.x8bit.bitwarden.ui.auth.feature.startregistration.StartRegistrationAction.EmailInputChange
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
@@ -70,30 +70,18 @@ class StartRegistrationScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun `close click should send BackClick action`() {
-        composeTestRule.onNodeWithContentDescription("Back").performClick()
-        verify { viewModel.trySendAction(BackClick) }
+    fun `close click should send CloseClick action`() {
+        composeTestRule.onNodeWithContentDescription("Close").performClick()
+        verify { viewModel.trySendAction(CloseClick) }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
     fun `email input change should send EmailInputChange action`() {
-        composeTestRule.onNodeWithText("Email address").performTextInput(TEST_INPUT)
+        composeTestRule.onNodeWithTag("EmailAddressEntry").performTextInput(TEST_INPUT)
         verify { viewModel.trySendAction(EmailInputChange(TEST_INPUT)) }
     }
+
 
     @Test
     fun `name input change should send NameInputChange action`() {
@@ -149,7 +137,6 @@ class StartRegistrationScreenTest : BaseComposeTest() {
             .onNodeWithContentDescription("Help with server geolocations.")
             .assertDoesNotExist()
     }
-
 
 
     @Test
@@ -236,4 +223,3 @@ class StartRegistrationScreenTest : BaseComposeTest() {
         )
     }
 }
-*/
