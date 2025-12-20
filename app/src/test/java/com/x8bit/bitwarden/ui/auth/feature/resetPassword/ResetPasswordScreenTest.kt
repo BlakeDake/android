@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.auth.feature.resetPassword
 
 import androidx.compose.ui.test.assert
@@ -8,11 +7,13 @@ import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.isDialog
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onAllNodesWithContentDescription
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTextInput
 import com.x8bit.bitwarden.data.auth.datasource.disk.model.ForcePasswordResetReason
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
+import com.x8bit.bitwarden.ui.auth.feature.completeregistration.PasswordStrengthState
 import com.x8bit.bitwarden.ui.auth.feature.resetpassword.ResetPasswordAction
 import com.x8bit.bitwarden.ui.auth.feature.resetpassword.ResetPasswordEvent
 import com.x8bit.bitwarden.ui.auth.feature.resetpassword.ResetPasswordScreen
@@ -41,6 +42,7 @@ class ResetPasswordScreenTest : BaseComposeTest() {
     fun setUp() {
         composeTestRule.setContent {
             ResetPasswordScreen(
+                onNavigateToPreventAccountLockOut = {},
                 viewModel = viewModel,
             )
         }
@@ -85,6 +87,12 @@ class ResetPasswordScreenTest : BaseComposeTest() {
 
     @Test
     fun `logout button click should display confirmation dialog and emit ConfirmLogoutClick`() {
+        // First, click the overflow menu button to reveal the "Log out" option
+        composeTestRule
+            .onNodeWithContentDescription("More")
+            .performClick()
+
+        // Now click on "Log out" in the overflow menu
         composeTestRule.onNodeWithText("Log out").performClick()
 
         composeTestRule
@@ -103,14 +111,16 @@ class ResetPasswordScreenTest : BaseComposeTest() {
         }
     }
 
+
     @Test
     fun `submit button click should emit SubmitClick`() {
-        composeTestRule.onNodeWithText("Submit").performClick()
+        composeTestRule.onNodeWithText("Save").performClick()
 
         verify {
-            viewModel.trySendAction(ResetPasswordAction.SubmitClick)
+            viewModel.trySendAction(ResetPasswordAction.SaveClick)
         }
     }
+
 
     @Test
     fun `instructions text should update according to state`() {
@@ -177,16 +187,17 @@ class ResetPasswordScreenTest : BaseComposeTest() {
     @Test
     fun `current password input change should send CurrentPasswordInputChanged action`() {
         val input = "Test123"
-        composeTestRule.onNodeWithText("Current master password").performTextInput(input)
+        composeTestRule.onNodeWithText("Current master password (required)").performTextInput(input)
         verify {
             viewModel.trySendAction(ResetPasswordAction.CurrentPasswordInputChanged("Test123"))
         }
     }
 
+
     @Test
     fun `current password field should update according to state`() {
         composeTestRule
-            .onNodeWithText("Current master password")
+            .onNodeWithText("Current master password (required)")
             .assertIsDisplayed()
 
         mutableStateFlow.update {
@@ -196,36 +207,41 @@ class ResetPasswordScreenTest : BaseComposeTest() {
         }
 
         composeTestRule
-            .onNodeWithText("Current master password")
+            .onNodeWithText("Current master password (required)")
             .assertDoesNotExist()
     }
+
 
     @Test
     fun `password input change should send PasswordInputChange action`() {
         val input = "Test123"
-        composeTestRule.onNodeWithText("Master password").performTextInput(input)
+        composeTestRule.onNodeWithText("New master password (required)").performTextInput(input)
         verify {
             viewModel.trySendAction(ResetPasswordAction.PasswordInputChanged("Test123"))
         }
     }
 
+
     @Test
     fun `retype password input change should send RetypePasswordInputChanged action`() {
         val input = "Test123"
-        composeTestRule.onNodeWithText("Re-type master password").performTextInput(input)
+        composeTestRule.onNodeWithText("Re-type new master password (required)")
+            .performTextInput(input)
         verify {
             viewModel.trySendAction(ResetPasswordAction.RetypePasswordInputChanged("Test123"))
         }
     }
 
+
     @Test
     fun `password hint input change should send PasswordHintInputChanged action`() {
         val input = "Test123"
-        composeTestRule.onNodeWithText("Master password hint (optional)").performTextInput(input)
+        composeTestRule.onNodeWithText("New master password hint").performTextInput(input)
         verify {
             viewModel.trySendAction(ResetPasswordAction.PasswordHintInputChanged("Test123"))
         }
     }
+
 
     @Test
     fun `toggling one password field visibility should toggle the other`() {
@@ -261,5 +277,6 @@ private val DEFAULT_STATE = ResetPasswordState(
     passwordInput = "",
     retypePasswordInput = "",
     passwordHintInput = "",
+    passwordStrengthState = PasswordStrengthState.NONE,
+    minimumPasswordLength = 12,
 )
-*/
