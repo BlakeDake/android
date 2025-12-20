@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.auth.feature.twofactorlogin
 
 import android.net.Uri
@@ -8,6 +7,8 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.isDisplayed
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -29,6 +30,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Test
+import kotlin.and
 
 class TwoFactorLoginScreenTest : BaseComposeTest() {
     private val intentManager = mockk<IntentManager>(relaxed = true) {
@@ -118,12 +120,22 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithText("Continue").assertIsDisplayed()
 
         mutableStateFlow.update {
-            it.copy(authMethod = TwoFactorAuthMethod.DUO)
+            it.copy(
+                authMethod = TwoFactorAuthMethod.DUO,
+                isContinueButtonEnabled = true,
+                availableAuthMethods = listOf(
+                    TwoFactorAuthMethod.EMAIL,
+                    TwoFactorAuthMethod.DUO,
+                    TwoFactorAuthMethod.RECOVERY_CODE,
+                ),
+            )
         }
 
+        composeTestRule.waitForIdle()
         composeTestRule.onNodeWithText("Launch Duo").assertIsDisplayed()
         composeTestRule.onNodeWithText("Continue").assertDoesNotExist()
     }
+
 
     @Test
     fun `description text should update according to state`() {
@@ -156,7 +168,12 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
 
     @Test
     fun `remember me click should send RememberMeToggle action`() {
-        composeTestRule.onNodeWithText("Remember me").performClick()
+        composeTestRule
+            .onNode(
+                hasText("Remember me") and
+                    hasClickAction()
+            )
+            .performClick()
         verify {
             viewModel.trySendAction(TwoFactorLoginAction.RememberMeToggle(true))
         }
@@ -164,33 +181,49 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
 
     @Test
     fun `remember me should be toggled on or off according to the state`() {
-        composeTestRule.onNodeWithText("Remember me").assertIsOff()
+        composeTestRule
+            .onNode(
+                hasText("Remember me") and
+                    hasClickAction()
+            )
+            .assertIsOff()
 
-        mutableStateFlow.update { it.copy(isRememberMeEnabled = true) }
+        mutableStateFlow.update { it.copy(isRememberEnabled = true) }
 
-        composeTestRule.onNodeWithText("Remember me").assertIsOn()
+        composeTestRule.waitForIdle()
+        composeTestRule
+            .onNode(
+                hasText("Remember me") and
+                    hasClickAction()
+            )
+            .assertIsOn()
     }
 
     @Test
     fun `resend email button click should send ResendEmailClick action`() {
-        mutableStateFlow.update {
-            it.copy(authMethod = TwoFactorAuthMethod.EMAIL)
-        }
-        composeTestRule.onNodeWithText("Send verification code email again").performClick()
+        val buttonText = "Send verification code email again"
+        composeTestRule.onNodeWithText(buttonText).performClick()
         verify {
             viewModel.trySendAction(TwoFactorLoginAction.ResendEmailClick)
         }
     }
 
+
     @Test
     fun `resend email button visibility should update according to state`() {
-        val buttonText = "Send verification code email again"
-        composeTestRule.onNodeWithText(buttonText).assertIsDisplayed()
+        composeTestRule.waitForIdle()
+        composeTestRule
+            .onNodeWithText("Send verification code again")
+            .assertIsDisplayed()
 
         mutableStateFlow.update {
             it.copy(authMethod = TwoFactorAuthMethod.AUTHENTICATOR_APP)
         }
-        composeTestRule.onNodeWithText(buttonText).assertIsNotDisplayed()
+
+        composeTestRule.waitForIdle()
+        composeTestRule
+            .onNodeWithText("Send verification code again")
+            .assertDoesNotExist()
     }
 
     @Test
@@ -245,14 +278,6 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
     }
 
 
-
-
-
-
-
-
-
-
 }
 
 private val DEFAULT_STATE = TwoFactorLoginState(
@@ -265,10 +290,11 @@ private val DEFAULT_STATE = TwoFactorLoginState(
     displayEmail = "ex***@email.com",
     dialogState = null,
     isContinueButtonEnabled = false,
-    isRememberMeEnabled = false,
+    isRememberEnabled = false,
+    isNewDeviceVerification = false,
     captchaToken = null,
     email = "example@email.com",
     password = "password123",
     orgIdentifier = "orgIdentifier",
 )
-*/
+
