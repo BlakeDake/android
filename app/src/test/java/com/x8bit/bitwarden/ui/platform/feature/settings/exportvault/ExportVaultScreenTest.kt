@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.platform.feature.settings.exportvault
 
 import androidx.compose.ui.test.assert
@@ -54,7 +53,6 @@ class ExportVaultScreenTest : BaseComposeTest() {
             )
         }
     }
-
 
 
     @Test
@@ -208,7 +206,6 @@ class ExportVaultScreenTest : BaseComposeTest() {
     }
 
 
-
     @Test
     fun `confirm file password input change should send ConfirmFilePasswordInputChange action`() {
         composeTestRule.onNodeWithText("Confirm file password").assertIsNotDisplayed()
@@ -295,7 +292,6 @@ class ExportVaultScreenTest : BaseComposeTest() {
 private val DEFAULT_STATE = ExportVaultState(
     confirmFilePasswordInput = "",
     dialogState = null,
-    email = "test@bitwarden.com",
     exportFormat = ExportVaultFormat.JSON,
     filePasswordInput = "",
     passwordInput = "",
@@ -304,4 +300,4 @@ private val DEFAULT_STATE = ExportVaultState(
     policyPreventsExport = false,
     showSendCodeButton = false,
 )
-*/
+
