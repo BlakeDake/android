@@ -1,5 +1,4 @@
-/*
-package com.x8bit.bitwarden.ui.vault.feature.addedit
+/*package com.x8bit.bitwarden.ui.vault.feature.addedit
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.test.assert
@@ -131,25 +130,6 @@ class VaultAddEditScreenTest : BaseComposeTest() {
             )
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
@@ -383,7 +363,7 @@ class VaultAddEditScreenTest : BaseComposeTest() {
             .filterToOne(hasAnyAncestor(isDialog()))
             .performClick()
 
-        verify { viewModel.trySendAction(VaultAddEditAction.Common.Fido2ErrorDialogDismissed) }
+        verify { viewModel.trySendAction(VaultAddEditAction.Common.Fido2ErrorDialogDismissed(message = "Error".asText())) }
     }
 
     @Test
@@ -547,26 +527,26 @@ class VaultAddEditScreenTest : BaseComposeTest() {
         composeTestRule.onAllNodes(isProgressBar).assertCountEquals(1)
     }
 
-    @Test
-    fun `clicking a Type Option should send TypeOptionSelect action`() {
-        // Opens the menu
-        composeTestRule
-            .onNodeWithContentDescriptionAfterScroll(label = "Login. Type")
-            .performClick()
-
-        // Choose the option from the menu
-        composeTestRule
-            .onAllNodesWithText(text = "Login")
-            .onLast()
-            .performScrollTo()
-            .performClick()
-
-        verify {
-            viewModel.trySendAction(
-                VaultAddEditAction.Common.TypeOptionSelect(VaultAddEditState.ItemTypeOption.LOGIN),
-            )
-        }
-    }
+//    @Test
+//    fun `clicking a Type Option should send TypeOptionSelect action`() {
+//        // Opens the menu
+//        composeTestRule
+//            .onNodeWithContentDescriptionAfterScroll(label = "Login. Type")
+//            .performClick()
+//
+//        // Choose the option from the menu
+//        composeTestRule
+//            .onAllNodesWithText(text = "Login")
+//            .onLast()
+//            .performScrollTo()
+//            .performClick()
+//
+//        verify {
+//            viewModel.trySendAction(
+//                VaultAddEditAction.Common.TypeOptionSelect(VaultAddEditState.ItemTypeOption.LOGIN),
+//            )
+//        }
+//    }
 
     @Test
     fun `the Type Option field should display the text of the selected item type`() {
@@ -2380,33 +2360,33 @@ class VaultAddEditScreenTest : BaseComposeTest() {
             .assertTextContains("NewName")
     }
 
-    @Test
-    fun `clicking a Folder Option should send FolderChange action`() {
-        updateStateWithFolders()
-
-        // Opens the menu
-        composeTestRule
-            .onNodeWithContentDescriptionAfterScroll(label = "No Folder. Folder")
-            .performClick()
-
-        // Choose the option from the menu
-        composeTestRule
-            .onAllNodesWithText(text = "mockFolderName-1")
-            .onLast()
-            .performScrollTo()
-            .performClick()
-
-        verify {
-            viewModel.trySendAction(
-                VaultAddEditAction.Common.FolderChange(
-                    VaultAddEditState.Folder(
-                        id = "mockFolderId-1",
-                        name = "mockFolderName-1",
-                    ),
-                ),
-            )
-        }
-    }
+//    @Test
+//    fun `clicking a Folder Option should send FolderChange action`() {
+//        updateStateWithFolders()
+//
+//        // Opens the menu
+//        composeTestRule
+//            .onNodeWithContentDescriptionAfterScroll(label = "No Folder. Folder")
+//            .performClick()
+//
+//        // Choose the option from the menu
+//        composeTestRule
+//            .onAllNodesWithText(text = "mockFolderName-1")
+//            .onLast()
+//            .performScrollTo()
+//            .performClick()
+//
+//        verify {
+//            viewModel.trySendAction(
+//                VaultAddEditAction.Common.FolderChange(
+//                    VaultAddEditState.Folder(
+//                        id = "mockFolderId-1",
+//                        name = "mockFolderName-1",
+//                    ),
+//                ),
+//            )
+//        }
+//    }
 
     @Test
     fun `the folder control should display the text provided by the state`() {
@@ -3084,27 +3064,27 @@ class VaultAddEditScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
     }
 
-    @Test
-    fun `should display policy warning when personal vault is disabled for add item type`() {
-        mutableStateFlow.update {
-            it.copy(
-                vaultAddEditType = VaultAddEditType.AddItem(VaultItemCipherType.LOGIN),
-                viewState = VaultAddEditState.ViewState.Content(
-                    common = VaultAddEditState.ViewState.Content.Common(
-                        originalCipher = createMockCipherView(1),
-                    ),
-                    type = VaultAddEditState.ViewState.Content.ItemType.SecureNotes,
-                    isIndividualVaultDisabled = true,
-                ),
-            )
-        }
-
-        composeTestRule
-            .onNodeWithTextAfterScroll(
-                text = "An organization policy is affecting your ownership options.",
-            )
-            .assertIsDisplayed()
-    }
+//    @Test
+//    fun `should display policy warning when personal vault is disabled for add item type`() {
+//        mutableStateFlow.update {
+//            it.copy(
+//                vaultAddEditType = VaultAddEditType.AddItem(VaultItemCipherType.LOGIN),
+//                viewState = VaultAddEditState.ViewState.Content(
+//                    common = VaultAddEditState.ViewState.Content.Common(
+//                        originalCipher = createMockCipherView(1),
+//                    ),
+//                    type = VaultAddEditState.ViewState.Content.ItemType.SecureNotes,
+//                    isIndividualVaultDisabled = true,
+//                ),
+//            )
+//        }
+//
+//        composeTestRule
+//            .onNodeWithTextAfterScroll(
+//                text = "An organization policy is affecting your ownership options.",
+//            )
+//            .assertIsDisplayed()
+//    }
 
     @Test
     fun `should not display policy warning when personal vault is disabled for edit item type`() {
@@ -3217,17 +3197,6 @@ class VaultAddEditScreenTest : BaseComposeTest() {
 
         composeTestRule.assertNoDialogExists()
     }
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Suppress("MaxLineLength")
@@ -3538,7 +3507,9 @@ class VaultAddEditScreenTest : BaseComposeTest() {
             ),
             dialog = VaultAddEditState.DialogState.Generic(message = "test".asText()),
             vaultAddEditType = VaultAddEditType.AddItem(VaultItemCipherType.LOGIN),
-            supportedItemTypes = VaultAddEditState.ItemTypeOption.entries,
+            cipherType = VaultItemCipherType.LOGIN,
+            shouldShowFolderSelectionBottomSheet = false,
+            shouldShowCoachMarkTour = false,
         )
 
         private val DEFAULT_STATE_LOGIN = VaultAddEditState(
@@ -3549,7 +3520,9 @@ class VaultAddEditScreenTest : BaseComposeTest() {
                 isIndividualVaultDisabled = false,
             ),
             dialog = null,
-            supportedItemTypes = VaultAddEditState.ItemTypeOption.entries,
+            cipherType = VaultItemCipherType.LOGIN,
+            shouldShowFolderSelectionBottomSheet = false,
+            shouldShowCoachMarkTour = false,
         )
 
         private val DEFAULT_STATE_IDENTITY = VaultAddEditState(
@@ -3560,7 +3533,9 @@ class VaultAddEditScreenTest : BaseComposeTest() {
                 isIndividualVaultDisabled = false,
             ),
             dialog = null,
-            supportedItemTypes = VaultAddEditState.ItemTypeOption.entries,
+            cipherType = VaultItemCipherType.IDENTITY,
+            shouldShowFolderSelectionBottomSheet = false,
+            shouldShowCoachMarkTour = false,
         )
 
         private val DEFAULT_STATE_CARD = VaultAddEditState(
@@ -3571,7 +3546,9 @@ class VaultAddEditScreenTest : BaseComposeTest() {
                 isIndividualVaultDisabled = false,
             ),
             dialog = null,
-            supportedItemTypes = VaultAddEditState.ItemTypeOption.entries,
+            cipherType = VaultItemCipherType.CARD,
+            shouldShowFolderSelectionBottomSheet = false,
+            shouldShowCoachMarkTour = false,
         )
 
         @Suppress("MaxLineLength")
@@ -3593,7 +3570,9 @@ class VaultAddEditScreenTest : BaseComposeTest() {
             ),
             dialog = null,
             vaultAddEditType = VaultAddEditType.AddItem(VaultItemCipherType.SECURE_NOTE),
-            supportedItemTypes = VaultAddEditState.ItemTypeOption.entries,
+            cipherType = VaultItemCipherType.SECURE_NOTE,
+            shouldShowFolderSelectionBottomSheet = false,
+            shouldShowCoachMarkTour = false,
         )
 
         private val DEFAULT_STATE_SECURE_NOTES = VaultAddEditState(
@@ -3604,7 +3583,9 @@ class VaultAddEditScreenTest : BaseComposeTest() {
                 isIndividualVaultDisabled = false,
             ),
             dialog = null,
-            supportedItemTypes = VaultAddEditState.ItemTypeOption.entries,
+            cipherType = VaultItemCipherType.SECURE_NOTE,
+            shouldShowFolderSelectionBottomSheet = false,
+            shouldShowCoachMarkTour = false,
         )
 
         private val DEFAULT_STATE_SSH_KEYS = VaultAddEditState(
@@ -3615,7 +3596,9 @@ class VaultAddEditScreenTest : BaseComposeTest() {
                 isIndividualVaultDisabled = false,
             ),
             dialog = null,
-            supportedItemTypes = VaultAddEditState.ItemTypeOption.entries,
+            cipherType = VaultItemCipherType.SSH_KEY,
+            shouldShowFolderSelectionBottomSheet = false,
+            shouldShowCoachMarkTour = false,
         )
 
         private val ALTERED_COLLECTIONS = listOf(
