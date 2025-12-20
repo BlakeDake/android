@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.tools.feature.generator
+/*package com.x8bit.bitwarden.ui.tools.feature.generator
 
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
@@ -1538,3 +1538,4 @@ private val DEFAULT_STATE: GeneratorState = GeneratorState(
     shouldShowAnonAddySelfHostServerUrlField = false,
     shouldShowSimpleLoginSelfHostServerField = false,
 )
+*/
