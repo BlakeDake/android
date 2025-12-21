@@ -1,5 +1,4 @@
-/*
-package com.x8bit.bitwarden.ui.vault.feature.itemlisting
+/*package com.x8bit.bitwarden.ui.vault.feature.itemlisting
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
@@ -54,6 +53,7 @@ import com.x8bit.bitwarden.ui.util.performLockAccountClick
 import com.x8bit.bitwarden.ui.util.performLogoutAccountClick
 import com.x8bit.bitwarden.ui.util.performRemoveAccountClick
 import com.x8bit.bitwarden.ui.util.performYesDialogButtonClick
+import com.x8bit.bitwarden.ui.vault.feature.addedit.VaultAddEditArgs
 import com.x8bit.bitwarden.ui.vault.feature.itemlisting.model.ListingItemOverflowAction
 import com.x8bit.bitwarden.ui.vault.feature.vault.model.VaultFilterType
 import com.x8bit.bitwarden.ui.vault.model.VaultItemCipherType
@@ -68,6 +68,8 @@ import io.mockk.unmockkStatic
 import io.mockk.verify
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
+import onNavigateToVaultItemId
+import onNavigateToVaultItemType
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -85,6 +87,8 @@ class VaultItemListingScreenTest : BaseComposeTest() {
     private var onNavigateToVaultEditItemScreenId: String? = null
     private var onNavigateToSearchType: SearchType? = null
     private var onNavigateToVaultItemListingScreenType: VaultItemListingType? = null
+    var onNavigateToVaultItemType: VaultItemCipherType? = null
+    var onNavigateToVaultAddEditArgs: VaultAddEditArgs? = null
 
     private val exitManager: ExitManager = mockk {
         every { exitApplication() } just runs
@@ -118,8 +122,11 @@ class VaultItemListingScreenTest : BaseComposeTest() {
                 fido2CompletionManager = fido2CompletionManager,
                 biometricsManager = biometricsManager,
                 onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToVaultItem = { onNavigateToVaultItemId = it },
-                onNavigateToVaultAddItemScreen = { _, _, _ ->
+                onNavigateToVaultItemScreen = { id, type ->
+                    onNavigateToVaultItemId = id
+                    onNavigateToVaultItemType = type
+                },
+                onNavigateToVaultAddItemScreen = { args ->
                     onNavigateToVaultAddItemScreenCalled = true
                 },
                 onNavigateToAddSendItem = { onNavigateToAddSendScreenCalled = true },
@@ -127,6 +134,7 @@ class VaultItemListingScreenTest : BaseComposeTest() {
                 onNavigateToSearch = { onNavigateToSearchType = it },
                 onNavigateToVaultEditItemScreen = { onNavigateToVaultEditItemScreenId = it },
                 onNavigateToVaultItemListing = { this.onNavigateToVaultItemListingScreenType = it },
+                onNavigateToAddFolder = { /* Not needed for tests */ },
             )
         }
     }
@@ -342,11 +350,6 @@ class VaultItemListingScreenTest : BaseComposeTest() {
     }
 
 
-
-
-
-
-
     @Test
     fun `clicking back button should send BackClick action`() {
         composeTestRule
@@ -429,23 +432,6 @@ class VaultItemListingScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(VaultItemListingsAction.RefreshClick) }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
@@ -1252,6 +1238,7 @@ class VaultItemListingScreenTest : BaseComposeTest() {
                     action = ListingItemOverflowAction.VaultAction.EditClick(
                         cipherId = "mockId-1",
                         requiresPasswordReprompt = true,
+                        cipherType = VaultItemCipherType.LOGIN,
                     ),
                 ),
             )
@@ -1801,26 +1788,13 @@ class VaultItemListingScreenTest : BaseComposeTest() {
             .performClick()
 
         verify {
-            viewModel.trySendAction(VaultItemListingsAction.DismissFido2ErrorDialogClick)
+            viewModel.trySendAction(
+                VaultItemListingsAction.DismissFido2ErrorDialogClick(
+                    message = dialogMessage.asText(),
+                ),
+            )
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Suppress("MaxLineLength")

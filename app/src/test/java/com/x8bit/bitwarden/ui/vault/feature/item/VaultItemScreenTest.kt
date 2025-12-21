@@ -1,5 +1,4 @@
-/*
-package com.x8bit.bitwarden.ui.vault.feature.item
+/*package com.x8bit.bitwarden.ui.vault.feature.item
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
@@ -41,6 +40,7 @@ import com.x8bit.bitwarden.ui.util.onNodeWithContentDescriptionAfterScroll
 import com.x8bit.bitwarden.ui.util.onNodeWithTextAfterScroll
 import com.x8bit.bitwarden.ui.vault.feature.item.model.TotpCodeItemData
 import com.x8bit.bitwarden.ui.vault.model.VaultCardBrand
+import com.x8bit.bitwarden.ui.vault.model.VaultItemCipherType
 import com.x8bit.bitwarden.ui.vault.model.VaultLinkedFieldType
 import io.mockk.every
 import io.mockk.just
@@ -79,7 +79,9 @@ class VaultItemScreenTest : BaseComposeTest() {
             VaultItemScreen(
                 viewModel = viewModel,
                 onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToVaultAddEditItem = { id, _ -> onNavigateToVaultEditItemId = id },
+                onNavigateToVaultAddEditItem = { args ->
+                    onNavigateToVaultEditItemId = args.vaultItemId
+                },
                 onNavigateToMoveToOrganization = { id, _ ->
                     onNavigateToMoveToOrganizationItemId = id
                 },
@@ -93,12 +95,6 @@ class VaultItemScreenTest : BaseComposeTest() {
     //region common
 
 
-
-
-
-
-
-
     @Test
     fun `on close click should send CloseClick`() {
         composeTestRule.onNodeWithContentDescription(label = "Close").performClick()
@@ -107,11 +103,6 @@ class VaultItemScreenTest : BaseComposeTest() {
             viewModel.trySendAction(VaultItemAction.Common.CloseClick)
         }
     }
-
-
-
-
-
 
 
     @Test
@@ -2638,6 +2629,7 @@ private val DEFAULT_STATE: VaultItemState = VaultItemState(
     vaultItemId = VAULT_ITEM_ID,
     viewState = VaultItemState.ViewState.Loading,
     dialog = null,
+    cipherType = VaultItemCipherType.LOGIN,
 )
 
 private val DEFAULT_COMMON: VaultItemState.ViewState.Content.Common =
@@ -2677,6 +2669,7 @@ private val DEFAULT_COMMON: VaultItemState.ViewState.Content.Common =
         canDelete = true,
         canAssignToCollections = true,
         canEdit = true,
+        favorite = false
     )
 
 private val DEFAULT_PASSKEY = R.string.created_xy.asText(
@@ -2761,6 +2754,7 @@ private val EMPTY_COMMON: VaultItemState.ViewState.Content.Common =
         canDelete = true,
         canAssignToCollections = true,
         canEdit = true,
+        favorite = false
     )
 
 private val EMPTY_LOGIN_TYPE: VaultItemState.ViewState.Content.ItemType.Login =
