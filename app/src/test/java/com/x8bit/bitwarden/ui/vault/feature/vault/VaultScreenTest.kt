@@ -1,4 +1,3 @@
-/*
 package com.x8bit.bitwarden.ui.vault.feature.vault
 
 import androidx.compose.ui.test.assert
@@ -51,6 +50,7 @@ import com.x8bit.bitwarden.ui.util.performLockAccountClick
 import com.x8bit.bitwarden.ui.util.performLogoutAccountClick
 import com.x8bit.bitwarden.ui.util.performRemoveAccountClick
 import com.x8bit.bitwarden.ui.util.performYesDialogButtonClick
+import com.x8bit.bitwarden.ui.vault.components.model.CreateVaultItemType
 import com.x8bit.bitwarden.ui.vault.feature.vault.model.VaultFilterData
 import com.x8bit.bitwarden.ui.vault.feature.vault.model.VaultFilterType
 import com.x8bit.bitwarden.ui.vault.model.VaultItemListingType
@@ -96,8 +96,8 @@ class VaultScreenTest : BaseComposeTest() {
             VaultScreen(
                 viewModel = viewModel,
                 onNavigateToVaultAddItemScreen = { onNavigateToVaultAddItemScreenCalled = true },
-                onNavigateToVaultItemScreen = { onNavigateToVaultItemId = it },
-                onNavigateToVaultEditItemScreen = { onNavigateToVaultEditItemId = it },
+                onNavigateToVaultItemScreen = { vaultItemArgs -> },
+                onNavigateToVaultEditItemScreen = { vaultAddEditArgs -> },
                 onNavigateToVaultItemListingScreen = { onNavigateToVaultItemListingType = it },
                 onDimBottomNavBarRequest = { onDimBottomNavBarRequestCalled = true },
                 onNavigateToVerificationCodeScreen = { onNavigateToVerificationCodeScreen = true },
@@ -109,6 +109,7 @@ class VaultScreenTest : BaseComposeTest() {
                 exitManager = exitManager,
                 intentManager = intentManager,
                 appReviewManager = appReviewManager,
+                onNavigateToAddFolderScreen = { },
             )
         }
     }
@@ -645,7 +646,6 @@ class VaultScreenTest : BaseComposeTest() {
     }
 
 
-
     @Test
     fun `search icon click should send SearchIconClick action`() {
         mutableStateFlow.update { it.copy(viewState = VaultState.ViewState.NoItems) }
@@ -657,7 +657,11 @@ class VaultScreenTest : BaseComposeTest() {
     fun `floating action button click should send AddItemClick action`() {
         mutableStateFlow.update { it.copy(viewState = VaultState.ViewState.NoItems) }
         composeTestRule.onNodeWithContentDescription("Add Item").performClick()
-        verify { viewModel.trySendAction(VaultAction.AddItemClick) }
+        verify {
+            viewModel.trySendAction(
+                match<VaultAction.AddItemClick> { it.type == CreateVaultItemType.LOGIN }
+            )
+        }
     }
 
     @Test
@@ -667,33 +671,12 @@ class VaultScreenTest : BaseComposeTest() {
             .onNodeWithText("New login")
             .performScrollTo()
             .performClick()
-        verify { viewModel.trySendAction(VaultAction.AddItemClick) }
+        verify {
+            viewModel.trySendAction(
+                match<VaultAction.AddItemClick> { it.type == CreateVaultItemType.LOGIN }
+            )
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
@@ -1148,7 +1131,6 @@ class VaultScreenTest : BaseComposeTest() {
     }
 
 
-
     @Test
     fun `when ShowSnackbar is sent snackbar should be displayed`() {
         val data = BitwardenSnackbarData("message".asText())
@@ -1226,8 +1208,6 @@ class VaultScreenTest : BaseComposeTest() {
     }
 
 
-
-
 }
 
 private val ACTIVE_ACCOUNT_SUMMARY = AccountSummary(
@@ -1299,4 +1279,3 @@ private val DEFAULT_CONTENT_VIEW_STATE: VaultState.ViewState.Content = VaultStat
     itemTypesCount = 4,
     sshKeyItemsCount = 0,
 )
-*/

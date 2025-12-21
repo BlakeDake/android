@@ -1,6 +1,6 @@
-/*
 package com.x8bit.bitwarden.ui.vault.feature.verificationcode
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -18,7 +18,9 @@ import com.x8bit.bitwarden.data.platform.repository.util.baseIconUrl
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalAppResumeStateManager
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
+import com.x8bit.bitwarden.ui.vault.feature.item.VaultItemArgs
 import com.x8bit.bitwarden.ui.vault.feature.vault.model.VaultFilterType
 import io.mockk.every
 import io.mockk.mockk
@@ -34,7 +36,7 @@ class VerificationCodeScreenTest : BaseComposeTest() {
 
     private var onNavigateBackCalled = false
     private var onNavigateToSearchCalled = false
-    private var onNavigateToVaultItemId: String? = null
+    private var onNavigateToVaultItemArgs: VaultItemArgs? = null
 
     private val mutableEventFlow = bufferedMutableSharedFlow<VerificationCodeEvent>()
     private val mutableStateFlow = MutableStateFlow(DEFAULT_STATE)
@@ -46,19 +48,18 @@ class VerificationCodeScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            VerificationCodeScreen(
-                viewModel = viewModel,
-                onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToVaultItemScreen = { onNavigateToVaultItemId = it },
-                onNavigateToSearch = { onNavigateToSearchCalled = true },
-            )
+            CompositionLocalProvider(
+                LocalAppResumeStateManager provides mockk(relaxed = true)
+            ) {
+                VerificationCodeScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    onNavigateToSearch = { onNavigateToSearchCalled = true },
+                    onNavigateToVaultItemScreen = { onNavigateToVaultItemArgs = it },
+                    viewModel = viewModel,
+                )
+            }
         }
     }
-
-
-
-
-
 
 
     @Test
@@ -377,4 +378,3 @@ private val DEFAULT_STATE = VerificationCodeState(
     dialogState = null,
     isRefreshing = false,
 )
-*/
