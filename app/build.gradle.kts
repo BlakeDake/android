@@ -10,6 +10,7 @@ import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
+    alias(libs.plugins.androidx.room)
     // Crashlytics is enabled for all builds initially but removed for FDroid builds in gradle and
     // standardDebug builds in the merged manifest.
     alias(libs.plugins.crashlytics)
@@ -46,26 +47,32 @@ android {
     namespace = "com.x8bit.bitwarden"
     compileSdk = libs.versions.compileSdk.get().toInt()
 
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
+
     defaultConfig {
         applicationId = "com.x8bit.bitwarden"
         minSdk = libs.versions.minSdk.get().toInt()
         targetSdk = libs.versions.targetSdk.get().toInt()
-        versionCode = 1
-        versionName = "2025.4.0"
-
-        setProperty("archivesBaseName", "com.x8bit.bitwarden")
-
-        ksp {
-            // The location in which the generated Room Database Schemas will be stored in the repo.
-            arg("room.schemaLocation", "$projectDir/schemas")
-        }
+        versionCode = libs.versions.appVersionCode.get().toInt()
+        versionName = libs.versions.appVersionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        // Set the base archive name for publishing purposes. This is used to derive the APK and AAB
+        // artifact names when uploading to Firebase and Play Store.
+        base.archivesName = "com.x8bit.bitwarden"
 
         buildConfigField(
             type = "String",
             name = "CI_INFO",
-            value = "${ciProperties.getOrDefault("ci.info", "\"local\"")}",
+            value = "${ciProperties.getOrDefault("ci.info", "\"\uD83D\uDCBB local\"")}",
+        )
+        buildConfigField(
+            type = "String",
+            name = "SDK_VERSION",
+            value = "\"${libs.versions.bitwardenSdk.get()}\"",
         )
     }
 
@@ -99,6 +106,7 @@ android {
             applicationIdSuffix = ".beta"
             isDebuggable = false
             isMinifyEnabled = true
+            isShrinkResources = true
             matchingFallbacks += listOf("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -111,6 +119,7 @@ android {
         release {
             isDebuggable = false
             isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro",
@@ -193,7 +202,7 @@ android {
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
+        jvmTarget = JvmTarget.fromTarget(libs.versions.jvmTarget.get())
     }
 }
 
@@ -211,9 +220,11 @@ dependencies {
         add("standardImplementation", dependencyNotation)
     }
 
-    implementation(files("libs/authenticatorbridge-1.0.0-release.aar"))
+    implementation(project(":authenticatorbridge"))
 
+    implementation(project(":annotation"))
     implementation(project(":core"))
+    implementation(project(":cxf"))
     implementation(project(":data"))
     implementation(project(":network"))
     implementation(project(":ui"))
@@ -224,8 +235,7 @@ dependencies {
     implementation(libs.androidx.browser)
     implementation(libs.androidx.biometrics)
     implementation(libs.androidx.camera.camera2)
-    implementation(libs.androidx.camera.lifecycle)
-    implementation(libs.androidx.camera.view)
+    implementation(libs.androidx.camera.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.animation)
     implementation(libs.androidx.compose.material3)
@@ -235,6 +245,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.credentials)
+    implementation(libs.androidx.credentials.providerevents)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.androidx.lifecycle.process)
     implementation(libs.androidx.lifecycle.runtime.compose)
@@ -248,19 +260,16 @@ dependencies {
     implementation(libs.androidx.work.runtime.ktx)
     implementation(libs.bitwarden.sdk)
     implementation(libs.bumptech.glide)
-    implementation(libs.androidx.credentials)
     implementation(libs.google.hilt.android)
     ksp(libs.google.hilt.compiler)
     implementation(libs.kotlinx.collections.immutable)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.serialization)
+    implementation(platform(libs.square.okhttp.bom))
     implementation(libs.square.okhttp)
-    implementation(libs.square.okhttp.logging)
     implementation(platform(libs.square.retrofit.bom))
     implementation(libs.square.retrofit)
-    implementation(libs.square.retrofit.kotlinx.serialization)
     implementation(libs.timber)
-    implementation(libs.zxing.zxing.core)
 
     // For now we are restricted to running Compose tests for debug builds only
     debugImplementation(libs.androidx.compose.ui.test.manifest)
@@ -273,19 +282,20 @@ dependencies {
     standardImplementation(libs.google.play.review)
 
     // Pull in test fixtures from other modules
+    testImplementation(testFixtures(project(":core")))
     testImplementation(testFixtures(project(":data")))
     testImplementation(testFixtures(project(":network")))
+    testImplementation(testFixtures(project(":ui")))
 
     testImplementation(libs.androidx.compose.ui.test)
     testImplementation(libs.google.hilt.android.testing)
     testImplementation(platform(libs.junit.bom))
     testRuntimeOnly(libs.junit.platform.launcher)
-    testImplementation(libs.junit.junit5)
+    testImplementation(libs.junit.jupiter)
     testImplementation(libs.junit.vintage)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk.mockk)
     testImplementation(libs.robolectric.robolectric)
-    testImplementation(libs.square.okhttp.mockwebserver)
     testImplementation(libs.square.turbine)
 }
 
@@ -294,8 +304,10 @@ tasks {
         useJUnitPlatform()
         maxHeapSize = "2g"
         maxParallelForks = Runtime.getRuntime().availableProcessors()
-        jvmArgs = jvmArgs.orEmpty() + "-XX:+UseParallelGC"
-        android.sourceSets["main"].res.srcDirs("src/test/res")
+        jvmArgs = jvmArgs.orEmpty() + "-XX:+UseParallelGC" +
+            // Explicitly setting the user Country and Language because tests assume en-US
+            "-Duser.country=US" +
+            "-Duser.language=en"
     }
 }
 
@@ -349,6 +361,7 @@ private fun renameFile(path: String, newName: String) {
     if (originalFile.renameTo(newFile)) {
         println("Renamed $originalFile to $newFile")
     } else {
+        @Suppress("TooGenericExceptionThrown")
         throw RuntimeException("Failed to rename $originalFile to $newFile")
     }
 }

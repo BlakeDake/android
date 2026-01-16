@@ -1,20 +1,34 @@
 package com.bitwarden.network.api
 
-import com.bitwarden.network.model.DigitalAssetLinkResponseJson
+import androidx.annotation.Keep
+import com.bitwarden.network.model.DigitalAssetLinkCheckResponseJson
 import com.bitwarden.network.model.NetworkResult
 import retrofit2.http.GET
-import retrofit2.http.Url
+import retrofit2.http.Query
 
 /**
- * Defines calls to an RP digital asset link file.
+ * Defines calls to a digital asset link file.
  */
-interface DigitalAssetLinkApi {
+@Keep
+internal interface DigitalAssetLinkApi {
 
     /**
-     * Attempts to download the asset links file from the RP.
+     * Checks if the given [relations] are declared in the digital asset link file for the given
+     * [sourceWebSite] for the given [targetPackageName] with a [targetCertificateFingerprint].
+     *
+     * @param sourceWebSite The host of the source digital asset links file.
+     * @param targetPackageName The package name of the target application.
+     * @param targetCertificateFingerprint The certificate fingerprint of the target application.
      */
-    @GET
-    suspend fun getDigitalAssetLinks(
-        @Url url: String,
-    ): NetworkResult<List<DigitalAssetLinkResponseJson>>
+    @GET("v1/assetlinks:check")
+    suspend fun checkDigitalAssetLinksRelations(
+        @Query("source.web.site")
+        sourceWebSite: String,
+        @Query("target.androidApp.packageName")
+        targetPackageName: String,
+        @Query("target.androidApp.certificate.sha256Fingerprint")
+        targetCertificateFingerprint: String,
+        @Query("relation")
+        relations: List<String>,
+    ): NetworkResult<DigitalAssetLinkCheckResponseJson>
 }

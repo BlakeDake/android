@@ -1,29 +1,34 @@
 package com.bitwarden.authenticator.ui.platform.feature.settings
 
+import android.os.Build
 import android.os.Parcelable
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.bitwarden.authenticator.BuildConfig
-import com.bitwarden.authenticator.R
+import com.bitwarden.authenticator.data.auth.repository.AuthRepository
 import com.bitwarden.authenticator.data.authenticator.repository.AuthenticatorRepository
 import com.bitwarden.authenticator.data.authenticator.repository.model.SharedVerificationCodesState
 import com.bitwarden.authenticator.data.authenticator.repository.util.isSyncWithBitwardenEnabled
-import com.bitwarden.authenticator.data.platform.manager.FeatureFlagManager
 import com.bitwarden.authenticator.data.platform.manager.clipboard.BitwardenClipboardManager
-import com.bitwarden.authenticator.data.platform.manager.model.FlagKey
 import com.bitwarden.authenticator.data.platform.repository.SettingsRepository
 import com.bitwarden.authenticator.data.platform.repository.model.BiometricsKeyResult
-import com.bitwarden.authenticator.ui.platform.base.BaseViewModel
+import com.bitwarden.authenticator.ui.platform.feature.settings.appearance.model.AppLanguage
+import com.bitwarden.authenticator.ui.platform.feature.settings.data.model.DefaultSaveOption
+import com.bitwarden.authenticator.ui.platform.model.SnackbarRelay
+import com.bitwarden.authenticatorbridge.manager.AuthenticatorBridgeManager
+import com.bitwarden.authenticatorbridge.manager.model.AccountSyncState
+import com.bitwarden.core.util.isBuildVersionAtLeast
+import com.bitwarden.ui.platform.base.BackgroundEvent
+import com.bitwarden.ui.platform.base.BaseViewModel
+import com.bitwarden.ui.platform.components.snackbar.model.BitwardenSnackbarData
+import com.bitwarden.ui.platform.feature.settings.appearance.model.AppTheme
+import com.bitwarden.ui.platform.manager.snackbar.SnackbarRelayManager
+import com.bitwarden.ui.platform.resource.BitwardenString
 import com.bitwarden.ui.util.Text
 import com.bitwarden.ui.util.asText
 import com.bitwarden.ui.util.concat
-import com.bitwarden.authenticator.ui.platform.feature.settings.appearance.model.AppLanguage
-import com.bitwarden.authenticator.ui.platform.feature.settings.appearance.model.AppTheme
-import com.bitwarden.authenticator.ui.platform.feature.settings.data.model.DefaultSaveOption
-import com.bitwarden.authenticatorbridge.manager.AuthenticatorBridgeManager
-import com.bitwarden.authenticatorbridge.manager.model.AccountSyncState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
@@ -33,6 +38,7 @@ import kotlinx.coroutines.launch
 import kotlinx.parcelize.Parcelize
 import java.time.Clock
 import java.time.Year
+import javax.crypto.Cipher
 import javax.inject.Inject
 
 private const val KEY_STATE = "state"
@@ -45,24 +51,25 @@ private const val KEY_STATE = "state"
 class SettingsViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     clock: Clock,
-    private val authenticatorRepository: AuthenticatorRepository,
+    authenticatorRepository: AuthenticatorRepository,
+    snackbarRelayManager: SnackbarRelayManager<SnackbarRelay>,
     private val authenticatorBridgeManager: AuthenticatorBridgeManager,
+    private val authRepository: AuthRepository,
     private val settingsRepository: SettingsRepository,
     private val clipboardManager: BitwardenClipboardManager,
-    featureFlagManager: FeatureFlagManager,
 ) : BaseViewModel<SettingsState, SettingsEvent, SettingsAction>(
     initialState = savedStateHandle[KEY_STATE]
         ?: createInitialState(
             clock = clock,
             appLanguage = settingsRepository.appLanguage,
             appTheme = settingsRepository.appTheme,
-            unlockWithBiometricsEnabled = settingsRepository.isUnlockWithBiometricsEnabled,
+            unlockWithBiometricsEnabled = authRepository.isUnlockWithBiometricsEnabled,
             isSubmitCrashLogsEnabled = settingsRepository.isCrashLoggingEnabled,
-            isSyncWithBitwardenFeatureEnabled =
-            featureFlagManager.getFeatureFlag(FlagKey.PasswordManagerSync),
             accountSyncState = authenticatorBridgeManager.accountSyncStateFlow.value,
             defaultSaveOption = settingsRepository.defaultSaveOption,
             sharedAccountsState = authenticatorRepository.sharedCodesStateFlow.value,
+            isScreenCaptureAllowed = settingsRepository.isScreenCaptureAllowed,
+            isDynamicColorsEnabled = settingsRepository.isDynamicColorsEnabled,
         ),
 ) {
 
@@ -70,13 +77,27 @@ class SettingsViewModel @Inject constructor(
         authenticatorRepository
             .sharedCodesStateFlow
             .map { SettingsAction.Internal.SharedAccountsStateUpdated(it) }
-            .onEach(::handleAction)
+            .onEach(::sendAction)
             .launchIn(viewModelScope)
-
+        settingsRepository
+            .isDynamicColorsEnabledFlow
+            .map { SettingsAction.Internal.DynamicColorsUpdated(it) }
+            .onEach(::sendAction)
+            .launchIn(viewModelScope)
         settingsRepository
             .defaultSaveOptionFlow
             .map { SettingsAction.Internal.DefaultSaveOptionUpdated(it) }
-            .onEach(::handleAction)
+            .onEach(::sendAction)
+            .launchIn(viewModelScope)
+        authRepository
+            .isUnlockWithBiometricsEnabledFlow
+            .map { SettingsAction.Internal.UnlockWithBiometricsUpdated(it) }
+            .onEach(::sendAction)
+            .launchIn(viewModelScope)
+        snackbarRelayManager
+            .getSnackbarDataFlow(SnackbarRelay.IMPORT_SUCCESS)
+            .map(SettingsEvent::ShowSnackbar)
+            .onEach(::sendEvent)
             .launchIn(viewModelScope)
     }
 
@@ -113,6 +134,32 @@ class SettingsViewModel @Inject constructor(
             is SettingsAction.Internal.DefaultSaveOptionUpdated -> {
                 handleDefaultSaveOptionUpdated(action)
             }
+
+            is SettingsAction.Internal.DynamicColorsUpdated -> handleDynamicColorsUpdated(action)
+
+            is SettingsAction.Internal.UnlockWithBiometricsUpdated -> {
+                handleUnlockWithBiometricsUpdated(action)
+            }
+
+            is SettingsAction.BiometricSupportChanged -> {
+                handleBiometricSupportChanged(action)
+            }
+        }
+    }
+
+    private fun handleBiometricSupportChanged(action: SettingsAction.BiometricSupportChanged) {
+        mutableStateFlow.update {
+            it.copy(hasBiometricsSupport = action.isBiometricsSupported)
+        }
+    }
+
+    private fun handleUnlockWithBiometricsUpdated(
+        action: SettingsAction.Internal.UnlockWithBiometricsUpdated,
+    ) {
+        mutableStateFlow.update {
+            it.copy(
+                isUnlockWithBiometricsEnabled = action.isEnabled,
+            )
         }
     }
 
@@ -131,6 +178,14 @@ class SettingsViewModel @Inject constructor(
             is SettingsAction.SecurityClick.UnlockWithBiometricToggle -> {
                 handleBiometricsSetupClick(action)
             }
+
+            is SettingsAction.SecurityClick.AllowScreenCaptureToggle -> {
+                handleAllowScreenCaptureToggle(action)
+            }
+
+            is SettingsAction.SecurityClick.UnlockWithBiometricToggleEnabled -> {
+                handleUnlockWithBiometricToggleEnabled(action)
+            }
         }
     }
 
@@ -138,18 +193,24 @@ class SettingsViewModel @Inject constructor(
         action: SettingsAction.SecurityClick.UnlockWithBiometricToggle,
     ) {
         if (action.enabled) {
-            mutableStateFlow.update {
-                it.copy(
-                    dialog = SettingsState.Dialog.Loading(R.string.saving.asText()),
-                    isUnlockWithBiometricsEnabled = true,
-                )
-            }
-            viewModelScope.launch {
-                val result = settingsRepository.setupBiometricsKey()
-                sendAction(SettingsAction.Internal.BiometricsKeyResultReceive(result))
-            }
+            authRepository
+                .createCipherOrNull()
+                ?.let {
+                    // Generate a new key in case the previous one was invalidated
+                    sendEvent(SettingsEvent.ShowBiometricsPrompt(cipher = it))
+                }
+                ?: run {
+                    mutableStateFlow.update {
+                        it.copy(
+                            dialog = SettingsState.Dialog.Error(
+                                title = BitwardenString.an_error_has_occurred.asText(),
+                                message = BitwardenString.generic_error_message.asText(),
+                            ),
+                        )
+                    }
+                }
         } else {
-            settingsRepository.clearBiometricsKey()
+            authRepository.clearBiometrics()
             mutableStateFlow.update { it.copy(isUnlockWithBiometricsEnabled = false) }
         }
     }
@@ -158,7 +219,7 @@ class SettingsViewModel @Inject constructor(
         action: SettingsAction.Internal.BiometricsKeyResultReceive,
     ) {
         when (action.result) {
-            BiometricsKeyResult.Error -> {
+            is BiometricsKeyResult.Error -> {
                 mutableStateFlow.update {
                     it.copy(
                         dialog = null,
@@ -178,12 +239,35 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private fun handleAllowScreenCaptureToggle(
+        action: SettingsAction.SecurityClick.AllowScreenCaptureToggle,
+    ) {
+        settingsRepository.isScreenCaptureAllowed = action.enabled
+        mutableStateFlow.update { it.copy(allowScreenCapture = action.enabled) }
+    }
+
+    private fun handleUnlockWithBiometricToggleEnabled(
+        action: SettingsAction.SecurityClick.UnlockWithBiometricToggleEnabled,
+    ) {
+        mutableStateFlow.update {
+            it.copy(
+                dialog = SettingsState.Dialog.Loading(BitwardenString.saving.asText()),
+                isUnlockWithBiometricsEnabled = true,
+            )
+        }
+        viewModelScope.launch {
+            val result = authRepository.setupBiometricsKey(cipher = action.cipher)
+            sendAction(SettingsAction.Internal.BiometricsKeyResultReceive(result = result))
+        }
+    }
+
     private fun handleVaultClick(action: SettingsAction.DataClick) {
         when (action) {
             SettingsAction.DataClick.ExportClick -> handleExportClick()
             SettingsAction.DataClick.ImportClick -> handleImportClick()
             SettingsAction.DataClick.BackupClick -> handleBackupClick()
             SettingsAction.DataClick.SyncWithBitwardenClick -> handleSyncWithBitwardenClick()
+            SettingsAction.DataClick.SyncLearnMoreClick -> handleSyncLearnMoreClick()
             is SettingsAction.DataClick.DefaultSaveOptionUpdated ->
                 handleDefaultSaveOptionChosen(action)
         }
@@ -205,6 +289,12 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    private fun handleDynamicColorsUpdated(action: SettingsAction.Internal.DynamicColorsUpdated) {
+        mutableStateFlow.update {
+            it.copy(appearance = it.appearance.copy(isDynamicColorsEnabled = action.isEnabled))
+        }
+    }
+
     private fun handleSyncWithBitwardenClick() {
         when (authenticatorBridgeManager.accountSyncStateFlow.value) {
             AccountSyncState.AppNotInstalled -> {
@@ -213,6 +303,10 @@ class SettingsViewModel @Inject constructor(
 
             else -> sendEvent(SettingsEvent.NavigateToBitwardenApp)
         }
+    }
+
+    private fun handleSyncLearnMoreClick() {
+        sendEvent(SettingsEvent.NavigateToSyncInformation)
     }
 
     private fun handleExportClick() {
@@ -229,36 +323,46 @@ class SettingsViewModel @Inject constructor(
 
     private fun handleAppearanceChange(action: SettingsAction.AppearanceChange) {
         when (action) {
+            is SettingsAction.AppearanceChange.DynamicColorChange -> {
+                handleDynamicColorChange(action)
+            }
+
             is SettingsAction.AppearanceChange.LanguageChange -> {
-                handleLanguageChange(action.language)
+                handleLanguageChange(action)
             }
 
             is SettingsAction.AppearanceChange.ThemeChange -> {
-                handleThemeChange(action.appTheme)
+                handleThemeChange(action)
             }
         }
     }
 
-    private fun handleLanguageChange(language: AppLanguage) {
+    private fun handleDynamicColorChange(
+        action: SettingsAction.AppearanceChange.DynamicColorChange,
+    ) {
+        settingsRepository.isDynamicColorsEnabled = action.isEnabled
+    }
+
+    private fun handleLanguageChange(action: SettingsAction.AppearanceChange.LanguageChange) {
         mutableStateFlow.update {
             it.copy(
-                appearance = it.appearance.copy(language = language),
+                appearance = it.appearance.copy(language = action.language),
             )
         }
-        settingsRepository.appLanguage = language
+        settingsRepository.appLanguage = action.language
         val appLocale: LocaleListCompat = LocaleListCompat.forLanguageTags(
-            language.localeName,
+            action.language.localeName,
         )
         AppCompatDelegate.setApplicationLocales(appLocale)
     }
 
-    private fun handleThemeChange(theme: AppTheme) {
+    private fun handleThemeChange(action: SettingsAction.AppearanceChange.ThemeChange) {
         mutableStateFlow.update {
             it.copy(
-                appearance = it.appearance.copy(theme = theme),
+                appearance = it.appearance.copy(theme = action.appTheme),
             )
         }
-        settingsRepository.appTheme = theme
+        settingsRepository.appTheme = action.appTheme
     }
 
     private fun handleHelpClick(action: SettingsAction.HelpClick) {
@@ -318,13 +422,14 @@ class SettingsViewModel @Inject constructor(
             unlockWithBiometricsEnabled: Boolean,
             isSubmitCrashLogsEnabled: Boolean,
             accountSyncState: AccountSyncState,
-            isSyncWithBitwardenFeatureEnabled: Boolean,
             sharedAccountsState: SharedVerificationCodesState,
+            isScreenCaptureAllowed: Boolean,
+            isDynamicColorsEnabled: Boolean,
         ): SettingsState {
             val currentYear = Year.now(clock)
             val copyrightInfo = "© Bitwarden Inc. 2015-$currentYear".asText()
-            // Show sync with Bitwarden row if feature is enabled and the OS is supported:
-            val shouldShowSyncWithBitwarden = isSyncWithBitwardenFeatureEnabled &&
+            // Show sync with Bitwarden row if the OS is supported:
+            val shouldShowSyncWithBitwarden =
                 accountSyncState != AccountSyncState.OsVersionNotSupported
             // Show default save options only if the user had enabled sync with Bitwarden:
             // (They can enable it via the "Sync with Bitwarden" row.
@@ -333,17 +438,21 @@ class SettingsViewModel @Inject constructor(
                 appearance = SettingsState.Appearance(
                     language = appLanguage,
                     theme = appTheme,
+                    isDynamicColorsSupported = isBuildVersionAtLeast(Build.VERSION_CODES.S),
+                    isDynamicColorsEnabled = isDynamicColorsEnabled,
                 ),
                 isUnlockWithBiometricsEnabled = unlockWithBiometricsEnabled,
                 isSubmitCrashLogsEnabled = isSubmitCrashLogsEnabled,
                 dialog = null,
-                version = R.string.version
+                version = BitwardenString.version
                     .asText()
                     .concat(": ${BuildConfig.VERSION_NAME} (${BuildConfig.VERSION_CODE})".asText()),
                 copyrightInfo = copyrightInfo,
                 defaultSaveOption = defaultSaveOption,
                 showSyncWithBitwarden = shouldShowSyncWithBitwarden,
                 showDefaultSaveOptionRow = shouldShowDefaultSaveOption,
+                allowScreenCapture = isScreenCaptureAllowed,
+                hasBiometricsSupport = true,
             )
         }
     }
@@ -357,12 +466,14 @@ data class SettingsState(
     val appearance: Appearance,
     val defaultSaveOption: DefaultSaveOption,
     val isUnlockWithBiometricsEnabled: Boolean,
+    val hasBiometricsSupport: Boolean,
     val isSubmitCrashLogsEnabled: Boolean,
     val showSyncWithBitwarden: Boolean,
     val showDefaultSaveOptionRow: Boolean,
     val dialog: Dialog?,
     val version: Text,
     val copyrightInfo: Text,
+    val allowScreenCapture: Boolean,
 ) : Parcelable {
 
     /**
@@ -370,6 +481,13 @@ data class SettingsState(
      */
     @Parcelize
     sealed class Dialog : Parcelable {
+        /**
+         * Displays an error dialog with a title and message.
+         */
+        data class Error(
+            val title: Text,
+            val message: Text,
+        ) : Dialog()
 
         /**
          * Displays a loading dialog with a [message].
@@ -386,6 +504,8 @@ data class SettingsState(
     data class Appearance(
         val language: AppLanguage,
         val theme: AppTheme,
+        val isDynamicColorsSupported: Boolean,
+        val isDynamicColorsEnabled: Boolean,
     ) : Parcelable
 }
 
@@ -425,6 +545,11 @@ sealed class SettingsEvent {
     data object NavigateToPrivacyPolicy : SettingsEvent()
 
     /**
+     * Navigate to the sync learn more web page.
+     */
+    data object NavigateToSyncInformation : SettingsEvent()
+
+    /**
      * Navigate to the Bitwarden account settings.
      */
     data object NavigateToBitwardenApp : SettingsEvent()
@@ -433,36 +558,65 @@ sealed class SettingsEvent {
      * Navigate to the Bitwarden Play Store listing.
      */
     data object NavigateToBitwardenPlayStoreListing : SettingsEvent()
+
+    /**
+     * Navigate to the Bitwarden Play Store listing.
+     */
+    data class ShowSnackbar(
+        val data: BitwardenSnackbarData,
+    ) : SettingsEvent(), BackgroundEvent {
+        constructor(
+            message: Text,
+            messageHeader: Text? = null,
+            actionLabel: Text? = null,
+            withDismissAction: Boolean = false,
+        ) : this(
+            data = BitwardenSnackbarData(
+                message = message,
+                messageHeader = messageHeader,
+                actionLabel = actionLabel,
+                withDismissAction = withDismissAction,
+            ),
+        )
+    }
+
+    /**
+     * Shows the prompt for biometrics using with the given [cipher].
+     */
+    data class ShowBiometricsPrompt(
+        val cipher: Cipher,
+    ) : SettingsEvent()
 }
 
 /**
  * Models actions for the settings screen.
  */
-sealed class SettingsAction(
-    val dialog: Dialog? = null,
-) {
-
+sealed class SettingsAction {
     /**
-     * Represents dialogs that may be displayed by the Settings screen.
+     * Indicates an update on device biometrics support.
      */
-    sealed class Dialog {
-
-        /**
-         * Display the loading screen with a [message].
-         */
-        data class Loading(
-            val message: Text,
-        ) : Dialog()
-    }
+    data class BiometricSupportChanged(val isBiometricsSupported: Boolean) : SettingsAction()
 
     /**
-     * Indicates the user clicked the Unlock with biometrics button.
+     * Models actions for the Security section of settings.
      */
     sealed class SecurityClick : SettingsAction() {
         /**
          * Indicates the user clicked unlock with biometrics toggle.
          */
         data class UnlockWithBiometricToggle(val enabled: Boolean) : SecurityClick()
+
+        /**
+         * User toggled the unlock with biometrics switch to on.
+         */
+        data class UnlockWithBiometricToggleEnabled(
+            val cipher: Cipher,
+        ) : SecurityClick()
+
+        /**
+         * Indicates the user clicked allow screen capture toggle.
+         */
+        data class AllowScreenCaptureToggle(val enabled: Boolean) : SecurityClick()
     }
 
     /**
@@ -491,7 +645,12 @@ sealed class SettingsAction(
         data object SyncWithBitwardenClick : DataClick()
 
         /**
-         * User confirmed a new [DeafultSaveOption].
+         * Indicates the user clicked sync learn more button.
+         */
+        data object SyncLearnMoreClick : DataClick()
+
+        /**
+         * User confirmed a new [DefaultSaveOption].
          */
         data class DefaultSaveOptionUpdated(val option: DefaultSaveOption) : DataClick()
     }
@@ -528,6 +687,13 @@ sealed class SettingsAction(
          */
         data class ThemeChange(
             val appTheme: AppTheme,
+        ) : AppearanceChange()
+
+        /**
+         * Indicates the user selected a new theme.
+         */
+        data class DynamicColorChange(
+            val isEnabled: Boolean,
         ) : AppearanceChange()
     }
 
@@ -574,6 +740,20 @@ sealed class SettingsAction(
          */
         data class DefaultSaveOptionUpdated(
             val option: DefaultSaveOption,
+        ) : SettingsAction()
+
+        /**
+         * Indicates that the dynamic colors state on disk was updated.
+         */
+        data class DynamicColorsUpdated(
+            val isEnabled: Boolean,
+        ) : SettingsAction()
+
+        /**
+         * Indicates that the biometric state on disk was updated.
+         */
+        data class UnlockWithBiometricsUpdated(
+            val isEnabled: Boolean,
         ) : SettingsAction()
     }
 }

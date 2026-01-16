@@ -6,8 +6,11 @@ import com.bitwarden.network.api.CiphersApi
 import com.bitwarden.network.model.AttachmentInfo
 import com.bitwarden.network.model.AttachmentJsonRequest
 import com.bitwarden.network.model.AttachmentJsonResponse
+import com.bitwarden.network.model.BulkShareCiphersJsonRequest
 import com.bitwarden.network.model.CipherJsonRequest
+import com.bitwarden.network.model.CipherMiniResponseJson
 import com.bitwarden.network.model.CreateCipherInOrganizationJsonRequest
+import com.bitwarden.network.model.CreateCipherResponseJson
 import com.bitwarden.network.model.FileUploadType
 import com.bitwarden.network.model.ImportCiphersJsonRequest
 import com.bitwarden.network.model.ImportCiphersResponseJson
@@ -30,22 +33,56 @@ import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 @Suppress("TooManyFunctions")
-class CiphersServiceImpl(
+internal class CiphersServiceImpl(
     private val azureApi: AzureApi,
     private val ciphersApi: CiphersApi,
     private val json: Json,
     private val clock: Clock,
 ) : CiphersService {
-    override suspend fun createCipher(body: CipherJsonRequest): Result<SyncResponseJson.Cipher> =
+    override suspend fun archiveCipher(
+        cipherId: String,
+    ): Result<Unit> = ciphersApi
+        .archiveCipher(cipherId = cipherId)
+        .toResult()
+
+    override suspend fun unarchiveCipher(
+        cipherId: String,
+    ): Result<Unit> = ciphersApi
+        .unarchiveCipher(cipherId = cipherId)
+        .toResult()
+
+    override suspend fun createCipher(
+        body: CipherJsonRequest,
+    ): Result<CreateCipherResponseJson> =
         ciphersApi
             .createCipher(body = body)
             .toResult()
+            .map { CreateCipherResponseJson.Success(it) }
+            .recoverCatching { throwable ->
+                throwable
+                    .toBitwardenError()
+                    .parseErrorBodyOrNull<CreateCipherResponseJson.Invalid>(
+                        code = NetworkErrorCode.BAD_REQUEST,
+                        json = json,
+                    )
+                    ?: throw throwable
+            }
 
     override suspend fun createCipherInOrganization(
         body: CreateCipherInOrganizationJsonRequest,
-    ): Result<SyncResponseJson.Cipher> = ciphersApi
+    ): Result<CreateCipherResponseJson> = ciphersApi
         .createCipherInOrganization(body = body)
         .toResult()
+        .map { CreateCipherResponseJson.Success(it) }
+        .recoverCatching { throwable ->
+            throwable
+                .toBitwardenError()
+                .parseErrorBodyOrNull<CreateCipherResponseJson.Invalid>(
+                    code = NetworkErrorCode.BAD_REQUEST,
+                    json = json,
+                )
+                ?: throw throwable
+        }
 
     override suspend fun createAttachment(
         cipherId: String,
@@ -160,6 +197,13 @@ class CiphersServiceImpl(
                 cipherId = cipherId,
                 body = body,
             )
+            .toResult()
+
+    override suspend fun bulkShareCiphers(
+        body: BulkShareCiphersJsonRequest,
+    ): Result<List<CipherMiniResponseJson>> =
+        ciphersApi
+            .bulkShareCiphers(body = body)
             .toResult()
 
     override suspend fun updateCipherCollections(

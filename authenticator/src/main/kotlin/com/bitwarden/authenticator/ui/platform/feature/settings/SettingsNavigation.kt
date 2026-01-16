@@ -4,44 +4,62 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.navigation
-import com.bitwarden.authenticator.ui.platform.base.util.composableWithRootPushTransitions
 import com.bitwarden.authenticator.ui.platform.feature.settings.export.exportDestination
 import com.bitwarden.authenticator.ui.platform.feature.settings.importing.importingDestination
-import com.bitwarden.authenticator.ui.platform.feature.tutorial.tutorialSettingsDestination
+import com.bitwarden.ui.platform.base.util.composableWithRootPushTransitions
+import kotlinx.serialization.Serializable
 
-const val SETTINGS_GRAPH_ROUTE = "settings_graph"
-private const val SETTINGS_ROUTE = "settings"
+/**
+ * The type-safe route for the settings graph.
+ */
+@Serializable
+data object SettingsGraphRoute
+
+/**
+ * The type-safe route for the settings screen.
+ */
+@Serializable
+data object SettingsRoute
+
+/**
+ * Add settings destination to the nav graph.
+ */
+fun NavGraphBuilder.settingsDestination(
+    onNavigateToExport: () -> Unit,
+    onNavigateToImport: () -> Unit,
+    onNavigateToTutorial: () -> Unit,
+) {
+    composableWithRootPushTransitions<SettingsRoute> {
+        SettingsScreen(
+            onNavigateToTutorial = onNavigateToTutorial,
+            onNavigateToExport = onNavigateToExport,
+            onNavigateToImport = onNavigateToImport,
+        )
+    }
+}
 
 /**
  * Add settings graph to the nav graph.
  */
 fun NavGraphBuilder.settingsGraph(
-    navController: NavController,
+    onNavigateBack: () -> Unit,
+    onNavigateToTutorial: () -> Unit,
     onNavigateToExport: () -> Unit,
     onNavigateToImport: () -> Unit,
-    onNavigateToTutorial: () -> Unit,
 ) {
-    navigation(
-        startDestination = SETTINGS_ROUTE,
-        route = SETTINGS_GRAPH_ROUTE,
+    navigation<SettingsGraphRoute>(
+        startDestination = SettingsRoute,
     ) {
-        composableWithRootPushTransitions(
-            route = SETTINGS_ROUTE,
-        ) {
-            SettingsScreen(
-                onNavigateToTutorial = onNavigateToTutorial,
-                onNavigateToExport = onNavigateToExport,
-                onNavigateToImport = onNavigateToImport,
-            )
-        }
-        tutorialSettingsDestination(
-            onTutorialFinished = { navController.popBackStack() },
+        settingsDestination(
+            onNavigateToTutorial = onNavigateToTutorial,
+            onNavigateToExport = onNavigateToExport,
+            onNavigateToImport = onNavigateToImport,
         )
         exportDestination(
-            onNavigateBack = { navController.popBackStack() },
+            onNavigateBack = onNavigateBack,
         )
         importingDestination(
-            onNavigateBack = { navController.popBackStack() },
+            onNavigateBack = onNavigateBack,
         )
     }
 }
@@ -50,5 +68,5 @@ fun NavGraphBuilder.settingsGraph(
  * Navigate to the settings screen.
  */
 fun NavController.navigateToSettingsGraph(navOptions: NavOptions? = null) {
-    navigate(SETTINGS_GRAPH_ROUTE, navOptions)
+    navigate(route = SettingsGraphRoute, navOptions = navOptions)
 }

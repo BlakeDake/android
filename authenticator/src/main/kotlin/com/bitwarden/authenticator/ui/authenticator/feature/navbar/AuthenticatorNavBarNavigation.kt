@@ -1,9 +1,14 @@
 package com.bitwarden.authenticator.ui.authenticator.feature.navbar
 
 import androidx.navigation.NavGraphBuilder
-import com.bitwarden.authenticator.ui.platform.base.util.composableWithStayTransitions
+import com.bitwarden.ui.platform.base.util.composableWithStayTransitions
+import kotlinx.serialization.Serializable
 
-const val AUTHENTICATOR_NAV_BAR_ROUTE: String = "AuthenticatorNavBarRoute"
+/**
+ * The type-safe route for the authenticator navbar screen.
+ */
+@Serializable
+data object AuthenticatorNavbarRoute
 
 /**
  * Add the authenticator nav bar to the nav graph.
@@ -15,21 +20,15 @@ fun NavGraphBuilder.authenticatorNavBarDestination(
     onNavigateToQrCodeScanner: () -> Unit,
     onNavigateToManualKeyEntry: () -> Unit,
     onNavigateToEditItem: (itemId: String) -> Unit,
-    onNavigateToExport: () -> Unit,
-    onNavigateToImport: () -> Unit,
     onNavigateToTutorial: () -> Unit,
 ) {
-    composableWithStayTransitions(
-        route = AUTHENTICATOR_NAV_BAR_ROUTE,
-    ) {
+    composableWithStayTransitions<AuthenticatorNavbarRoute> {
         AuthenticatorNavBarScreen(
             onNavigateBack = onNavigateBack,
             onNavigateToSearch = onNavigateToSearch,
             onNavigateToQrCodeScanner = onNavigateToQrCodeScanner,
             onNavigateToManualKeyEntry = onNavigateToManualKeyEntry,
             onNavigateToEditItem = onNavigateToEditItem,
-            onNavigateToExport = onNavigateToExport,
-            onNavigateToImport = onNavigateToImport,
             onNavigateToTutorial = onNavigateToTutorial,
         )
     }

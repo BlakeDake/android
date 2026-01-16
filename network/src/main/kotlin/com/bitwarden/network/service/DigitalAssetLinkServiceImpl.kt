@@ -1,23 +1,27 @@
 package com.bitwarden.network.service
 
 import com.bitwarden.network.api.DigitalAssetLinkApi
-import com.bitwarden.network.model.DigitalAssetLinkResponseJson
+import com.bitwarden.network.model.DigitalAssetLinkCheckResponseJson
 import com.bitwarden.network.util.toResult
 
 /**
  * Primary implementation of [DigitalAssetLinkService].
  */
-class DigitalAssetLinkServiceImpl(
+internal class DigitalAssetLinkServiceImpl(
     private val digitalAssetLinkApi: DigitalAssetLinkApi,
 ) : DigitalAssetLinkService {
 
-    override suspend fun getDigitalAssetLinkForRp(
-        scheme: String,
-        relyingParty: String,
-    ): Result<List<DigitalAssetLinkResponseJson>> =
-        digitalAssetLinkApi
-            .getDigitalAssetLinks(
-                url = "$scheme$relyingParty/.well-known/assetlinks.json",
-            )
-            .toResult()
+    override suspend fun checkDigitalAssetLinksRelations(
+        sourceWebSite: String,
+        targetPackageName: String,
+        targetCertificateFingerprint: String,
+        relations: List<String>,
+    ): Result<DigitalAssetLinkCheckResponseJson> = digitalAssetLinkApi
+        .checkDigitalAssetLinksRelations(
+            sourceWebSite = sourceWebSite,
+            targetPackageName = targetPackageName,
+            targetCertificateFingerprint = targetCertificateFingerprint,
+            relations = relations,
+        )
+        .toResult()
 }

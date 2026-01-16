@@ -1,27 +1,37 @@
+@file:OmitFromCoverage
+
 package com.bitwarden.authenticator.ui.authenticator.feature.authenticator
 
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.navigation
+import com.bitwarden.annotation.OmitFromCoverage
+import com.bitwarden.authenticator.ui.authenticator.feature.edititem.editItemDestination
 import com.bitwarden.authenticator.ui.authenticator.feature.edititem.navigateToEditItem
-import com.bitwarden.authenticator.ui.authenticator.feature.itemlisting.itemListingGraph
+import com.bitwarden.authenticator.ui.authenticator.feature.manualcodeentry.manualCodeEntryDestination
 import com.bitwarden.authenticator.ui.authenticator.feature.manualcodeentry.navigateToManualCodeEntryScreen
-import com.bitwarden.authenticator.ui.authenticator.feature.navbar.AUTHENTICATOR_NAV_BAR_ROUTE
+import com.bitwarden.authenticator.ui.authenticator.feature.navbar.AuthenticatorNavbarRoute
 import com.bitwarden.authenticator.ui.authenticator.feature.navbar.authenticatorNavBarDestination
 import com.bitwarden.authenticator.ui.authenticator.feature.qrcodescan.navigateToQrCodeScanScreen
+import com.bitwarden.authenticator.ui.authenticator.feature.qrcodescan.qrCodeScanDestination
+import com.bitwarden.authenticator.ui.authenticator.feature.search.itemSearchDestination
 import com.bitwarden.authenticator.ui.authenticator.feature.search.navigateToSearch
-import com.bitwarden.authenticator.ui.platform.feature.settings.export.navigateToExport
-import com.bitwarden.authenticator.ui.platform.feature.settings.importing.navigateToImporting
 import com.bitwarden.authenticator.ui.platform.feature.tutorial.navigateToSettingsTutorial
+import com.bitwarden.authenticator.ui.platform.feature.tutorial.tutorialSettingsDestination
+import kotlinx.serialization.Serializable
 
-const val AUTHENTICATOR_GRAPH_ROUTE = "authenticator_graph"
+/**
+ * The type-safe route for the authenticator graph.
+ */
+@Serializable
+data object AuthenticatorGraphRoute
 
 /**
  * Navigate to the authenticator graph
  */
 fun NavController.navigateToAuthenticatorGraph(navOptions: NavOptions? = null) {
-    navigate(AUTHENTICATOR_NAV_BAR_ROUTE, navOptions)
+    navigate(route = AuthenticatorNavbarRoute, navOptions = navOptions)
 }
 
 /**
@@ -29,40 +39,41 @@ fun NavController.navigateToAuthenticatorGraph(navOptions: NavOptions? = null) {
  */
 fun NavGraphBuilder.authenticatorGraph(
     navController: NavController,
-    onNavigateBack: () -> Unit,
 ) {
-    navigation(
-        startDestination = AUTHENTICATOR_NAV_BAR_ROUTE,
-        route = AUTHENTICATOR_GRAPH_ROUTE,
+    navigation<AuthenticatorGraphRoute>(
+        startDestination = AuthenticatorNavbarRoute,
     ) {
         authenticatorNavBarDestination(
-            onNavigateBack = onNavigateBack,
+            onNavigateBack = { navController.popBackStack() },
             onNavigateToSearch = { navController.navigateToSearch() },
             onNavigateToQrCodeScanner = { navController.navigateToQrCodeScanScreen() },
             onNavigateToManualKeyEntry = { navController.navigateToManualCodeEntryScreen() },
             onNavigateToEditItem = { navController.navigateToEditItem(itemId = it) },
-            onNavigateToExport = { navController.navigateToExport() },
-            onNavigateToImport = { navController.navigateToImporting() },
             onNavigateToTutorial = { navController.navigateToSettingsTutorial() },
         )
-        itemListingGraph(
-            navController = navController,
-            navigateBack = onNavigateBack,
-            navigateToSearch = {
-                navController.navigateToSearch()
-            },
-            navigateToQrCodeScanner = {
-                navController.navigateToQrCodeScanScreen()
-            },
-            navigateToManualKeyEntry = {
+        editItemDestination(
+            onNavigateBack = { navController.popBackStack() },
+        )
+        itemSearchDestination(
+            onNavigateBack = { navController.popBackStack() },
+            onNavigateToEdit = { navController.navigateToEditItem(itemId = it) },
+        )
+        qrCodeScanDestination(
+            onNavigateBack = { navController.popBackStack() },
+            onNavigateToManualCodeEntryScreen = {
+                navController.popBackStack()
                 navController.navigateToManualCodeEntryScreen()
             },
-            navigateToEditItem = {
-                navController.navigateToEditItem(itemId = it)
+        )
+        manualCodeEntryDestination(
+            onNavigateBack = { navController.popBackStack() },
+            onNavigateToQrCodeScreen = {
+                navController.popBackStack()
+                navController.navigateToQrCodeScanScreen()
             },
-            navigateToExport = { navController.navigateToExport() },
-            navigateToImport = { navController.navigateToImporting() },
-            navigateToTutorial = { navController.navigateToSettingsTutorial() },
+        )
+        tutorialSettingsDestination(
+            onTutorialFinished = { navController.popBackStack() },
         )
     }
 }

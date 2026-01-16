@@ -9,9 +9,10 @@ import com.bitwarden.network.BitwardenServiceClient
 import com.bitwarden.network.bitwardenServiceClient
 import com.bitwarden.network.interceptor.AuthTokenProvider
 import com.bitwarden.network.interceptor.BaseUrlsProvider
-import com.bitwarden.network.interceptor.HeadersInterceptor
+import com.bitwarden.network.model.AuthTokenData
 import com.bitwarden.network.model.BitwardenServiceClientConfig
 import com.bitwarden.network.service.ConfigService
+import com.bitwarden.network.service.DownloadService
 import com.bitwarden.network.ssl.CertificateProvider
 import dagger.Module
 import dagger.Provides
@@ -39,14 +40,6 @@ object PlatformNetworkModule {
 
     @Provides
     @Singleton
-    fun providesHeadersInterceptor(): HeadersInterceptor = HeadersInterceptor(
-        userAgent = HEADER_VALUE_USER_AGENT,
-        clientName = HEADER_VALUE_CLIENT_NAME,
-        clientVersion = HEADER_VALUE_CLIENT_VERSION,
-    )
-
-    @Provides
-    @Singleton
     fun provideBitwardenServiceClient(
         baseUrlsProvider: BaseUrlsProvider,
         authDiskSource: AuthDiskSource,
@@ -63,7 +56,8 @@ object PlatformNetworkModule {
             baseUrlsProvider = baseUrlsProvider,
             enableHttpBodyLogging = BuildConfig.DEBUG,
             authTokenProvider = object : AuthTokenProvider {
-                override fun getActiveAccessTokenOrNull(): String? = null
+                override fun getAuthTokenDataOrNull(): AuthTokenData? = null
+                override fun getAuthTokenDataOrNull(userId: String): AuthTokenData? = null
             },
             certificateProvider = object : CertificateProvider {
                 override fun chooseClientAlias(
@@ -78,4 +72,10 @@ object PlatformNetworkModule {
             },
         ),
     )
+
+    @Provides
+    @Singleton
+    fun provideDownloadService(
+        bitwardenServiceClient: BitwardenServiceClient,
+    ): DownloadService = bitwardenServiceClient.downloadService
 }

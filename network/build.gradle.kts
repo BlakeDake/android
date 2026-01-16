@@ -23,7 +23,7 @@ android {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
+                "proguard-rules.pro",
             )
         }
     }
@@ -39,15 +39,17 @@ android {
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
+        jvmTarget = JvmTarget.fromTarget(libs.versions.jvmTarget.get())
     }
 }
 
 dependencies {
+    implementation(project(":annotation"))
     implementation(project(":core"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.kotlinx.serialization)
+    implementation(platform(libs.square.okhttp.bom))
     implementation(libs.square.okhttp)
     implementation(libs.square.okhttp.logging)
     implementation(platform(libs.square.retrofit.bom))
@@ -57,7 +59,7 @@ dependencies {
 
     testImplementation(platform(libs.junit.bom))
     testRuntimeOnly(libs.junit.platform.launcher)
-    testImplementation(libs.junit.junit5)
+    testImplementation(libs.junit.jupiter)
     testImplementation(libs.junit.vintage)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk.mockk)
@@ -67,7 +69,7 @@ dependencies {
     testFixturesImplementation(project(":core"))
     testFixturesImplementation(platform(libs.junit.bom))
     testFixturesRuntimeOnly(libs.junit.platform.launcher)
-    testFixturesImplementation(libs.junit.junit5)
+    testFixturesImplementation(libs.junit.jupiter)
     testFixturesImplementation(libs.junit.vintage)
     testFixturesImplementation(libs.kotlinx.serialization)
     testFixturesImplementation(libs.square.okhttp)

@@ -1,11 +1,10 @@
 package com.bitwarden.data.repository
 
 import app.cash.turbine.test
+import com.bitwarden.core.data.manager.dispatcher.FakeDispatcherManager
 import com.bitwarden.core.data.util.asSuccess
-import com.bitwarden.data.datasource.disk.base.FakeDispatcherManager
 import com.bitwarden.data.datasource.disk.model.ServerConfig
 import com.bitwarden.data.datasource.disk.util.FakeConfigDiskSource
-import com.bitwarden.data.manager.DispatcherManager
 import com.bitwarden.network.model.ConfigResponseJson
 import com.bitwarden.network.model.ConfigResponseJson.EnvironmentJson
 import com.bitwarden.network.model.ConfigResponseJson.ServerJson
@@ -24,7 +23,7 @@ import java.time.Instant
 import java.time.ZoneOffset
 
 class ServerConfigRepositoryTest {
-    private val fakeDispatcherManager: DispatcherManager = FakeDispatcherManager()
+    private val fakeDispatcherManager: FakeDispatcherManager = FakeDispatcherManager()
     private val fakeConfigDiskSource = FakeConfigDiskSource()
     private val configService: ConfigService = mockk {
         coEvery {
@@ -119,6 +118,30 @@ class ServerConfigRepositoryTest {
             assertEquals(fakeConfigDiskSource.serverConfig, awaitItem())
         }
     }
+
+    @Suppress("MaxLineLength")
+    @Test
+    fun `serverConfigStateFlow should fetch new server configurations when minimum config sync interval is reached `() =
+        runTest {
+
+            val testConfig = SERVER_CONFIG.copy(
+                lastSync = fixedClock.instant().minusSeconds(60 * 60 + 1).toEpochMilli(),
+                serverData = CONFIG_RESPONSE_JSON.copy(
+                    version = "old version!!",
+                ),
+            )
+            fakeConfigDiskSource.serverConfig = testConfig
+
+            coEvery {
+                configService.getConfig()
+            } returns CONFIG_RESPONSE_JSON.asSuccess()
+
+            repository.getServerConfig(forceRefresh = false)
+
+            repository.serverConfigStateFlow.test {
+                assertNotEquals(testConfig, awaitItem())
+            }
+        }
 }
 
 private val SERVER_CONFIG = ServerConfig(

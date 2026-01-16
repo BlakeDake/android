@@ -1,13 +1,13 @@
 package com.bitwarden.network
 
-import com.bitwarden.core.annotation.OmitFromCoverage
+import com.bitwarden.annotation.OmitFromCoverage
 import com.bitwarden.core.data.serializer.ZonedDateTimeSerializer
-import com.bitwarden.network.authenticator.RefreshAuthenticator
-import com.bitwarden.network.interceptor.AuthTokenInterceptor
+import com.bitwarden.network.interceptor.AuthTokenManager
 import com.bitwarden.network.interceptor.BaseUrlInterceptors
 import com.bitwarden.network.interceptor.HeadersInterceptor
 import com.bitwarden.network.model.BitwardenServiceClientConfig
 import com.bitwarden.network.provider.RefreshTokenProvider
+import com.bitwarden.network.provider.TokenProvider
 import com.bitwarden.network.retrofit.Retrofits
 import com.bitwarden.network.retrofit.RetrofitsImpl
 import com.bitwarden.network.service.AccountsServiceImpl
@@ -52,7 +52,11 @@ internal class BitwardenServiceClientImpl(
     private val bitwardenServiceClientConfig: BitwardenServiceClientConfig,
 ) : BitwardenServiceClient {
 
-    private val refreshAuthenticator: RefreshAuthenticator = RefreshAuthenticator()
+    private val authTokenManager: AuthTokenManager = AuthTokenManager(
+        clock = bitwardenServiceClientConfig.clock,
+        authTokenProvider = bitwardenServiceClientConfig.authTokenProvider,
+    )
+    override val tokenProvider: TokenProvider = authTokenManager
     private val clientJson = Json {
 
         // If there are keys returned by the server not modeled by a serializable class,
@@ -71,9 +75,7 @@ internal class BitwardenServiceClientImpl(
     }
     private val retrofits: Retrofits by lazy {
         RetrofitsImpl(
-            authTokenInterceptor = AuthTokenInterceptor(
-                authTokenProvider = bitwardenServiceClientConfig.authTokenProvider,
-            ),
+            authTokenManager = authTokenManager,
             baseUrlInterceptors = BaseUrlInterceptors(
                 baseUrlsProvider = bitwardenServiceClientConfig.baseUrlsProvider,
             ),
@@ -82,7 +84,6 @@ internal class BitwardenServiceClientImpl(
                 clientName = bitwardenServiceClientConfig.clientData.clientName,
                 clientVersion = bitwardenServiceClientConfig.clientData.clientVersion,
             ),
-            refreshAuthenticator = refreshAuthenticator,
             logHttpBody = bitwardenServiceClientConfig.enableHttpBodyLogging,
             certificateProvider = bitwardenServiceClientConfig.certificateProvider,
             json = clientJson,
@@ -118,7 +119,7 @@ internal class BitwardenServiceClientImpl(
 
     override val configService: ConfigService by lazy {
         ConfigServiceImpl(
-            configApi = retrofits.createStaticRetrofit().create(),
+            configApi = retrofits.unauthenticatedApiRetrofit.create(),
         )
     }
 
@@ -131,7 +132,9 @@ internal class BitwardenServiceClientImpl(
 
     override val digitalAssetLinkService: DigitalAssetLinkService by lazy {
         DigitalAssetLinkServiceImpl(
-            digitalAssetLinkApi = retrofits.createStaticRetrofit().create(),
+            digitalAssetLinkApi = retrofits
+                .createStaticRetrofit(baseUrl = "https://digitalassetlinks.googleapis.com/")
+                .create(),
         )
     }
 
@@ -140,7 +143,7 @@ internal class BitwardenServiceClientImpl(
     }
 
     override val eventService: EventService by lazy {
-        EventServiceImpl(eventApi = retrofits.authenticatedApiRetrofit.create())
+        EventServiceImpl(eventApi = retrofits.authenticatedEventsRetrofit.create())
     }
 
     override val folderService: FolderService by lazy {
@@ -202,6 +205,6 @@ internal class BitwardenServiceClientImpl(
     }
 
     override fun setRefreshTokenProvider(refreshTokenProvider: RefreshTokenProvider?) {
-        refreshAuthenticator.refreshTokenProvider = refreshTokenProvider
+        authTokenManager.refreshTokenProvider = refreshTokenProvider
     }
 }

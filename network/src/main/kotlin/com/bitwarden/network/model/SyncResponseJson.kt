@@ -48,6 +48,9 @@ data class SyncResponseJson(
 
     @SerialName("sends")
     val sends: List<Send>?,
+
+    @SerialName("userDecryption")
+    val userDecryption: UserDecryptionJson?,
 ) {
     /**
      * Represents domains in the vault response.
@@ -112,6 +115,7 @@ data class SyncResponseJson(
      * @property type The type of policy.
      * @property isEnabled If the policy is enabled or not.
      * @property data Any extra data about the policy, in the form of a JSON string.
+     * @property revisionDate The revision date of the policy (nullable).
      */
     @Serializable
     data class Policy(
@@ -129,6 +133,10 @@ data class SyncResponseJson(
 
         @SerialName("data")
         val data: JsonObject?,
+
+        @SerialName("revisionDate")
+        @Contextual
+        val revisionDate: ZonedDateTime?,
     )
 
     /**
@@ -142,6 +150,8 @@ data class SyncResponseJson(
      * @property isEmailVerified If the profile has a verified email.
      * @property isTwoFactorEnabled If the profile has two factor authentication enabled.
      * @property privateKey The private key of the profile (nullable).
+     * @property accountKeys The account keys associated with the profile. This is temporarily
+     * nullable to maintain backwards compatibility.
      * @property isPremium If the profile is premium.
      * @property culture The culture of the profile (nullable).
      * @property name The name of the profile (nullable).
@@ -175,8 +185,15 @@ data class SyncResponseJson(
         @SerialName("twoFactorEnabled")
         val isTwoFactorEnabled: Boolean,
 
+        @Deprecated(
+            message = "Use `accountKeys` instead",
+            ReplaceWith("profile.accountKeys?.publicKeyEncryptionKeyPair?.wrappedPrivateKey"),
+        )
         @SerialName("privateKey")
         val privateKey: String?,
+
+        @SerialName("accountKeys")
+        val accountKeys: AccountKeysJson?,
 
         @SerialName("premium")
         val isPremium: Boolean,
@@ -250,6 +267,7 @@ data class SyncResponseJson(
          * @property familySponsorshipValidUntil The family sponsorship valid until
          * of the organization (nullable).
          * @property status The status of the organization.
+         * @property limitItemDeletion If the organization limits item deletion.
          */
         @Serializable
         data class Organization(
@@ -344,6 +362,12 @@ data class SyncResponseJson(
 
             @SerialName("status")
             val status: OrganizationStatusType,
+
+            @SerialName("userIsClaimedByOrganization")
+            val userIsClaimedByOrganization: Boolean = false,
+
+            @SerialName("limitItemDeletion")
+            val limitItemDeletion: Boolean = false,
         )
 
         /**
@@ -431,6 +455,9 @@ data class SyncResponseJson(
      * @property shouldViewPassword If the password can be viewed for the cipher.
      * @property isFavorite If the cipher is a favorite.
      * @property card The card of the cipher.
+     * @property key The key of the cipher (nullable).
+     * @property encryptedFor ID of the user who the cipher is encrypted by.
+     * @property archivedDate The archived date of the cipher (nullable).
      */
     @Serializable
     data class Cipher(
@@ -451,6 +478,9 @@ data class SyncResponseJson(
 
         @SerialName("passwordHistory")
         val passwordHistory: List<PasswordHistory>?,
+
+        @SerialName("permissions")
+        val permissions: CipherPermissions?,
 
         @SerialName("revisionDate")
         @Contextual
@@ -508,6 +538,13 @@ data class SyncResponseJson(
 
         @SerialName("key")
         val key: String?,
+
+        @SerialName("encryptedFor")
+        val encryptedFor: String?,
+
+        @SerialName("archivedDate")
+        @Contextual
+        val archivedDate: ZonedDateTime?,
     ) {
         /**
          * Represents an attachment in the vault response.
@@ -767,6 +804,21 @@ data class SyncResponseJson(
         )
 
         /**
+         * Represents a cipher permissions in the vault response.
+         *
+         * @property delete whether the delete permissions is active.
+         * @property restore whether the restore permissions is active.
+         */
+        @Serializable
+        data class CipherPermissions(
+            @SerialName("delete")
+            val delete: Boolean,
+
+            @SerialName("restore")
+            val restore: Boolean,
+        )
+
+        /**
          * Represents a secure note in the vault response.
          *
          * @property type The type of secure note.
@@ -959,6 +1011,9 @@ data class SyncResponseJson(
      * @property externalId The external ID of the collection (nullable).
      * @property isReadOnly If the collection is marked as read only.
      * @property id The ID of the collection.
+     * @property defaultUserCollectionEmail The offboarded user's email address to be used as name
+     * for the collection.
+     * @property type The collection's type.
      */
     @Serializable
     data class Collection(
@@ -982,5 +1037,11 @@ data class SyncResponseJson(
 
         @SerialName("manage")
         val canManage: Boolean?,
+
+        @SerialName("defaultUserCollectionEmail")
+        val defaultUserCollectionEmail: String?,
+
+        @SerialName("type")
+        val type: CollectionTypeJson = CollectionTypeJson.SHARED_COLLECTION,
     )
 }

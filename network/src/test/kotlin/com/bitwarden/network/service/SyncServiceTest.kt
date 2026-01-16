@@ -51,6 +51,23 @@ private const val SYNC_SUCCESS_JSON = """
     "twoFactorEnabled": false,
     "key": "mockKey-1",
     "privateKey": "mockPrivateKey-1",
+    "accountKeys": {
+      "signatureKeyPair": {
+        "wrappedSigningKey": "mockWrappedSigningKey-1",
+        "verifyingKey": "mockVerifyingKey-1"
+      },
+      "publicKeyEncryptionKeyPair": {
+        "wrappedPrivateKey": "mockWrappedPrivateKey-1",
+        "publicKey": "mockPublicKey-1",
+        "signedPublicKey": "mockSignedPublicKey-1",
+        "object": "publicKeyEncryptionKeyPair"
+      },
+      "securityState": {
+        "securityState": "mockSecurityState-1",
+        "securityVersion": 1
+      },
+      "object": "privateKeys"
+    },
     "securityStamp": "mockSecurityStamp-1",
     "forcePasswordReset": false,
     "usesKeyConnector": false,
@@ -101,7 +118,8 @@ private const val SYNC_SUCCESS_JSON = """
         "name": "mockName-1",
         "useApi": false,
         "familySponsorshipValidUntil": "2023-10-27T12:00:00.00Z",
-        "status": 1
+        "status": 1,
+        "userIsClaimedByOrganization": false
       }
     ],
     "providers": [
@@ -176,7 +194,8 @@ private const val SYNC_SUCCESS_JSON = """
         "name": "mockName-1",
         "useApi": false,
         "familySponsorshipValidUntil": "2023-10-27T12:00:00.00Z",
-        "status": 1
+        "status": 1,
+        "userIsClaimedByOrganization": false
       }
     ]
   },
@@ -195,7 +214,9 @@ private const val SYNC_SUCCESS_JSON = """
       "externalId": "mockExternalId-1",
       "readOnly": false,
       "id": "mockId-1",
-      "manage": true
+      "manage": true,
+      "defaultUserCollectionEmail": "mockOffboardedUserEmail-1",
+      "type": 0
     }
   ],
   "ciphers": [
@@ -220,6 +241,10 @@ private const val SYNC_SUCCESS_JSON = """
           "lastUsedDate": "2023-10-27T12:00:00.00Z"
         }
       ],
+      "permissions": {
+        "delete": true,
+        "restore": true
+      },
       "revisionDate": "2023-10-27T12:00:00.00Z",
       "type": 1,
       "login": {
@@ -309,7 +334,9 @@ private const val SYNC_SUCCESS_JSON = """
         "publicKey": "mockPublicKey-1",
         "privateKey": "mockPrivateKey-1",
         "keyFingerprint": "mockKeyFingerprint-1"
-      }
+      },
+      "encryptedFor": "mockEncryptedFor-1",
+      "archivedDate": "2023-10-27T12:00:00.00Z"
     }
   ],
   "domains": {

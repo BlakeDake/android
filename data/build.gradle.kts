@@ -40,11 +40,12 @@ android {
 
 kotlin {
     compilerOptions {
-        jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvmTarget.get()))
+        jvmTarget = JvmTarget.fromTarget(libs.versions.jvmTarget.get())
     }
 }
 
 dependencies {
+    implementation(project(":annotation"))
     implementation(project(":core"))
     implementation(project(":network"))
 
@@ -53,16 +54,23 @@ dependencies {
     implementation(libs.google.hilt.android)
     ksp(libs.google.hilt.compiler)
     implementation(libs.kotlinx.serialization)
+    implementation(libs.square.okhttp)
+    implementation(libs.timber)
+
+    // Pull in test fixtures from other modules
+    testImplementation(testFixtures(project(":core")))
 
     testImplementation(platform(libs.junit.bom))
     testRuntimeOnly(libs.junit.platform.launcher)
-    testImplementation(libs.junit.junit5)
+    testImplementation(libs.junit.jupiter)
     testImplementation(libs.junit.vintage)
     testImplementation(libs.kotlinx.coroutines.test)
     testImplementation(libs.mockk.mockk)
     testImplementation(libs.square.turbine)
 
     testFixturesImplementation(project(":core"))
+    testFixturesImplementation(platform(libs.junit.bom))
+    testFixturesImplementation(libs.junit.jupiter)
     testFixturesImplementation(libs.kotlinx.coroutines.test)
 }
 

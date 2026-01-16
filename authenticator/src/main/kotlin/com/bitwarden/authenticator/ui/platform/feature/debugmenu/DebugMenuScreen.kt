@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -18,21 +19,23 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bitwarden.authenticator.R
-import com.bitwarden.authenticator.data.platform.manager.model.FlagKey
-import com.bitwarden.authenticator.ui.platform.base.util.EventsEffect
-import com.bitwarden.authenticator.ui.platform.base.util.standardHorizontalMargin
-import com.bitwarden.authenticator.ui.platform.components.appbar.BitwardenTopAppBar
-import com.bitwarden.authenticator.ui.platform.components.appbar.NavigationIcon
-import com.bitwarden.authenticator.ui.platform.components.button.BitwardenFilledButton
-import com.bitwarden.authenticator.ui.platform.components.divider.BitwardenHorizontalDivider
-import com.bitwarden.authenticator.ui.platform.components.header.BitwardenListHeaderText
-import com.bitwarden.authenticator.ui.platform.components.scaffold.BitwardenScaffold
-import com.bitwarden.authenticator.ui.platform.components.util.rememberVectorPainter
-import com.bitwarden.authenticator.ui.platform.feature.debugmenu.components.ListItemContent
-import com.bitwarden.authenticator.ui.platform.theme.AuthenticatorTheme
+import com.bitwarden.core.data.manager.model.FlagKey
+import com.bitwarden.ui.platform.base.util.EventsEffect
+import com.bitwarden.ui.platform.base.util.standardHorizontalMargin
+import com.bitwarden.ui.platform.base.util.toListItemCardStyle
+import com.bitwarden.ui.platform.components.appbar.BitwardenTopAppBar
+import com.bitwarden.ui.platform.components.appbar.NavigationIcon
+import com.bitwarden.ui.platform.components.button.BitwardenFilledButton
+import com.bitwarden.ui.platform.components.content.BitwardenErrorContent
+import com.bitwarden.ui.platform.components.debug.ListItemContent
+import com.bitwarden.ui.platform.components.header.BitwardenListHeaderText
+import com.bitwarden.ui.platform.components.scaffold.BitwardenScaffold
+import com.bitwarden.ui.platform.components.util.rememberVectorPainter
+import com.bitwarden.ui.platform.resource.BitwardenDrawable
+import com.bitwarden.ui.platform.resource.BitwardenString
+import com.bitwarden.ui.platform.theme.BitwardenTheme
 
 /**
  * Top level screen for the debug menu.
@@ -58,11 +61,11 @@ fun DebugMenuScreen(
             .nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             BitwardenTopAppBar(
-                title = stringResource(R.string.debug_menu),
+                title = stringResource(BitwardenString.debug_menu),
                 scrollBehavior = scrollBehavior,
                 navigationIcon = NavigationIcon(
-                    navigationIcon = rememberVectorPainter(R.drawable.ic_back),
-                    navigationIconContentDescription = stringResource(id = R.string.back),
+                    navigationIcon = rememberVectorPainter(BitwardenDrawable.ic_back),
+                    navigationIconContentDescription = stringResource(id = BitwardenString.back),
                     onNavigationIconClick = remember(viewModel) {
                         {
                             viewModel.trySendAction(DebugMenuAction.NavigateBack)
@@ -71,13 +74,13 @@ fun DebugMenuScreen(
                 ),
             )
         },
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .verticalScroll(rememberScrollState())
-                .padding(innerPadding),
-        ) {
-            Spacer(modifier = Modifier.height(16.dp))
+    ) {
+        if (state.featureFlags.isEmpty()) {
+            BitwardenErrorContent(
+                message = stringResource(id = BitwardenString.empty_item_list),
+                modifier = Modifier.fillMaxSize(),
+            )
+        } else {
             FeatureFlagContent(
                 featureFlagMap = state.featureFlags,
                 onValueChange = remember(viewModel) {
@@ -86,10 +89,10 @@ fun DebugMenuScreen(
                     }
                 },
                 onResetValues = remember(viewModel) {
-                    {
-                        viewModel.trySendAction(DebugMenuAction.ResetFeatureFlagValues)
-                    }
+                    { viewModel.trySendAction(DebugMenuAction.ResetFeatureFlagValues) }
                 },
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState()),
             )
         }
     }
@@ -105,41 +108,44 @@ private fun FeatureFlagContent(
     Column(
         modifier = modifier,
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
         BitwardenListHeaderText(
-            label = stringResource(R.string.feature_flags),
-            modifier = Modifier.standardHorizontalMargin(),
+            label = stringResource(BitwardenString.feature_flags),
+            modifier = Modifier
+                .standardHorizontalMargin()
+                .padding(horizontal = 16.dp),
         )
         Spacer(modifier = Modifier.height(8.dp))
-        BitwardenHorizontalDivider()
-        featureFlagMap.forEach { featureFlag ->
+        featureFlagMap.onEach { featureFlag ->
             featureFlag.key.ListItemContent(
                 currentValue = featureFlag.value,
                 onValueChange = onValueChange,
+                cardStyle = featureFlagMap.keys.toListItemCardStyle(
+                    index = featureFlagMap.keys.indexOf(element = featureFlag.key),
+                ),
                 modifier = Modifier.standardHorizontalMargin(),
             )
-            BitwardenHorizontalDivider()
         }
         Spacer(modifier = Modifier.height(12.dp))
         BitwardenFilledButton(
-            label = stringResource(R.string.reset_values),
+            label = stringResource(BitwardenString.reset_values),
             onClick = onResetValues,
             modifier = Modifier
                 .standardHorizontalMargin()
                 .fillMaxWidth(),
         )
         Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.navigationBarsPadding())
     }
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun FeatureFlagContent_preview() {
-    AuthenticatorTheme {
+    BitwardenTheme {
         FeatureFlagContent(
             featureFlagMap = mapOf(
                 FlagKey.BitwardenAuthenticationEnabled to true,
-                FlagKey.PasswordManagerSync to false,
             ),
             onValueChange = { _, _ -> },
             onResetValues = { },
