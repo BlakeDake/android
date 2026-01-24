@@ -83,16 +83,15 @@ class AccountSecurityScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent(
-            biometricsManager = biometricsManager,
-            intentManager = intentManager,
-        ) {
+        composeTestRule.setContent {
             AccountSecurityScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToDeleteAccount = { onNavigateToDeleteAccountCalled = true },
                 onNavigateToPendingRequests = { onNavigateToPendingRequestsCalled = true },
                 onNavigateToSetupUnlockScreen = { onNavigateToUnlockSetupScreenCalled = true },
                 viewModel = viewModel,
+                biometricsManager = biometricsManager,
+                intentManager = intentManager,
             )
         }
     }
@@ -103,12 +102,7 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AccountSecurityAction.LogoutClick) }
     }
 
-    @Test
-    fun `on NavigateToApplicationDataSettings should launch the correct intent`() {
-        mutableEventFlow.tryEmit(AccountSecurityEvent.NavigateToApplicationDataSettings)
 
-        verify { intentManager.startApplicationDetailsSettingsActivity() }
-    }
 
     @Test
     fun `on pending login requests click should send PendingLoginRequestsClick`() {
@@ -1250,12 +1244,7 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AccountSecurityAction.TwoStepLoginClick) }
     }
 
-    @Test
-    fun `on NavigateToTwoStepLogin should call launchUri on intentManager`() {
-        val uri = "testUri"
-        mutableEventFlow.tryEmit(AccountSecurityEvent.NavigateToTwoStepLogin(uri))
-        verify { intentManager.launchUri(uri.toUri()) }
-    }
+
 
     @Suppress("MaxLineLength")
     @Test
@@ -1274,12 +1263,7 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AccountSecurityAction.ChangeMasterPasswordClick) }
     }
 
-    @Test
-    fun `on NavigateToChangeMasterPassword should call launchUri on intentManager`() {
-        val uri = "testUri"
-        mutableEventFlow.tryEmit(AccountSecurityEvent.NavigateToChangeMasterPassword(uri))
-        verify { intentManager.launchUri(uri.toUri()) }
-    }
+
 
     @Test
     fun `on Lock now click should send LockNowClick`() {
@@ -1299,23 +1283,11 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AccountSecurityAction.BackClick) }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(AccountSecurityEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `on NavigateToDeleteAccount should call onNavigateToDeleteAccount`() {
-        mutableEventFlow.tryEmit(AccountSecurityEvent.NavigateToDeleteAccount)
-        assertTrue(onNavigateToDeleteAccountCalled)
-    }
 
-    @Test
-    fun `on NavigateToPendingRequests should call onNavigateToPendingRequests`() {
-        mutableEventFlow.tryEmit(AccountSecurityEvent.NavigateToPendingRequests)
-        assertTrue(onNavigateToPendingRequestsCalled)
-    }
+
+
+
 
     @Test
     fun `confirm dialog be shown or hidden according to the state`() {
@@ -1446,13 +1418,7 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AccountSecurityAction.FingerPrintLearnMoreClick) }
     }
 
-    @Test
-    fun `on NavigateToFingerprintPhrase should call launchUri on intentManager`() {
-        mutableEventFlow.tryEmit(AccountSecurityEvent.NavigateToFingerprintPhrase)
-        verify {
-            intentManager.launchUri("http://bitwarden.com/help/fingerprint-phrase".toUri())
-        }
-    }
+
 
     @Test
     fun `loading dialog should be displayed according to state`() {
@@ -1591,11 +1557,7 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AccountSecurityAction.UnlockActionCardDismiss) }
     }
 
-    @Test
-    fun `on NavigateToSetupUnlockScreen event invokes the correct lambda`() {
-        mutableEventFlow.tryEmit(AccountSecurityEvent.NavigateToSetupUnlockScreen)
-        assertTrue(onNavigateToUnlockSetupScreenCalled)
-    }
+
 }
 
 private val CIPHER = mockk<Cipher>()

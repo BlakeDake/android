@@ -32,7 +32,7 @@ class RemovePasswordScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent {
+        composeTestRule.setContent {
             RemovePasswordScreen(
                 viewModel = viewModel,
             )

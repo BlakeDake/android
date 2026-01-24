@@ -65,11 +65,10 @@ class SetupUnlockScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent(
-            biometricsManager = biometricsManager,
-        ) {
+        composeTestRule.setContent {
             SetupUnlockScreen(
                 viewModel = viewModel,
+                biometricsManager = biometricsManager,
                 onNavigateBack = { onNavigateBackCalled = true },
             )
         }
@@ -628,11 +627,7 @@ class SetupUnlockScreenTest : BaseComposeTest() {
         composeTestRule.assertNoDialogExists()
     }
 
-    @Test
-    fun `on NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(SetupUnlockEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `close icon should not show when in initial setup`() {

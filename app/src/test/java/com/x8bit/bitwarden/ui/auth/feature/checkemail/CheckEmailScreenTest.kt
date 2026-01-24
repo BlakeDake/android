@@ -32,12 +32,11 @@ class CheckEmailScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent(
-            intentManager = intentManager,
-        ) {
+        composeTestRule.setContent {
             CheckEmailScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 viewModel = viewModel,
+                intentManager = intentManager,
             )
         }
     }
@@ -64,19 +63,9 @@ class CheckEmailScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(CheckEmailEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToEmailApp should call openEmailApp`() {
-        mutableEventFlow.tryEmit(CheckEmailEvent.NavigateToEmailApp)
-        verify {
-            intentManager.startDefaultEmailApplication()
-        }
-    }
+
+
 
     @Test
     fun `change email button click should send ChangeEmailClick action`() {

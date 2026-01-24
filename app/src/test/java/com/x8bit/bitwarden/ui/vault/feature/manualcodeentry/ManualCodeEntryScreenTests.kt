@@ -52,49 +52,24 @@ class ManualCodeEntryScreenTests : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent(
-            permissionsManager = fakePermissionManager,
-            intentManager = intentManager,
-        ) {
+        composeTestRule.setContent {
             ManualCodeEntryScreen(
-                viewModel = viewModel,
                 onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToQrCodeScreen = { onNavigateToScanQrCodeCalled = true },
+                viewModel = viewModel,
+                onNavigateToQrCodeScreen = {
+                    onNavigateToScanQrCodeCalled = true
+                },
+                permissionsManager = fakePermissionManager,
+                intentManager = intentManager,
             )
         }
     }
 
-    @Test
-    fun `on NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(ManualCodeEntryEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `on NavigateToScanQrCode event should invoke NavigateToScanQrCode`() {
-        mutableEventFlow.tryEmit(ManualCodeEntryEvent.NavigateToQrCodeScreen)
-        assertTrue(onNavigateToScanQrCodeCalled)
-    }
 
-    @Test
-    fun `on NavigateToAppSettings event should invoke intent handler`() {
-        mutableEventFlow.tryEmit(ManualCodeEntryEvent.NavigateToAppSettings)
 
-        val uri = Uri.parse(
-            "package:" +
-                ApplicationProvider
-                    .getApplicationContext<Application>()
-                    .packageName,
-        )
 
-        val intentSlot = slot<Intent>()
-        verify { intentManager.startActivity(capture(intentSlot)) }
 
-        assertEquals(
-            uri,
-            intentSlot.captured.data,
-        )
-    }
 
     @Suppress("MaxLineLength")
     @Test

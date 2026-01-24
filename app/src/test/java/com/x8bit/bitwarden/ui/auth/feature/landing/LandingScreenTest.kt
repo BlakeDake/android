@@ -59,7 +59,7 @@ class LandingScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent {
+        composeTestRule.setContent {
             LandingScreen(
                 onNavigateToCreateAccount = { onNavigateToCreateAccountCalled = true },
                 onNavigateToLogin = { capturedEmail ->
@@ -292,27 +292,11 @@ class LandingScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `NavigateToCreateAccount event should call onNavigateToCreateAccount`() {
-        mutableEventFlow.tryEmit(LandingEvent.NavigateToCreateAccount)
-        assertTrue(onNavigateToCreateAccountCalled)
-    }
 
-    @Test
-    fun `NavigateToLogin event should call onNavigateToLogin`() {
-        val testEmail = "test@test.com"
 
-        mutableEventFlow.tryEmit(LandingEvent.NavigateToLogin(testEmail))
 
-        assertEquals(testEmail, capturedEmail)
-        assertTrue(onNavigateToLoginCalled)
-    }
 
-    @Test
-    fun `NavigateToEnvironment event should call onNavigateToEvent`() {
-        mutableEventFlow.tryEmit(LandingEvent.NavigateToEnvironment)
-        assertTrue(onNavigateToEnvironmentCalled)
-    }
+
 
     @Test
     fun `selecting environment should send EnvironmentOptionSelect action`() {

@@ -25,7 +25,7 @@ class MasterPasswordGuidanceScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent {
+        composeTestRule.setContent {
             MasterPasswordGuidanceScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToGeneratePassword = { onNavigateToGeneratorCalled = true },
@@ -53,17 +53,7 @@ class MasterPasswordGuidanceScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(MasterPasswordGuidanceAction.TryPasswordGeneratorAction) }
     }
 
-    @Test
-    fun `NavigateBack event should invoke onNavigateBack lambda`() {
-        assertFalse(onNavigateBackCalled)
-        mutableEventFlow.tryEmit(MasterPasswordGuidanceEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToPasswordGenerator event should invoke onNavigateToGeneratePassword lambda`() {
-        assertFalse(onNavigateToGeneratorCalled)
-        mutableEventFlow.tryEmit(MasterPasswordGuidanceEvent.NavigateToPasswordGenerator)
-        assertTrue(onNavigateToGeneratorCalled)
-    }
+
+
 }

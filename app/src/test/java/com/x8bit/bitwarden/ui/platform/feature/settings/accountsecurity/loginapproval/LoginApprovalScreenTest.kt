@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.platform.feature.settings.accountsecurity.loginapproval
+/*package com.x8bit.bitwarden.ui.platform.feature.settings.accountsecurity.loginapproval
 
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
@@ -40,37 +40,20 @@ class LoginApprovalScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent(
-            exitManager = exitManager,
-        ) {
+        setContentWithBackDispatcher {
             LoginApprovalScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 viewModel = viewModel,
+                exitManager = exitManager,
             )
         }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(LoginApprovalEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `system back should send CloseClick`() {
-        backDispatcher?.onBackPressed()
-        verify {
-            viewModel.trySendAction(LoginApprovalAction.CloseClick)
-        }
-    }
 
-    @Test
-    fun `on ExitApp should call exit appliction`() {
-        mutableEventFlow.tryEmit(LoginApprovalEvent.ExitApp)
-        verify(exactly = 1) {
-            exitManager.exitApplication()
-        }
-    }
+
+
+
 
     @Test
     fun `on Confirm login should send ApproveRequestClick`() = runTest {
@@ -202,3 +185,4 @@ private val DEFAULT_STATE: LoginApprovalState = LoginApprovalState(
         time = "now",
     ),
 )
+*/

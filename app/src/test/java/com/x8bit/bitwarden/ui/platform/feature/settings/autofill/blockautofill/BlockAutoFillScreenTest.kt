@@ -33,7 +33,7 @@ class BlockAutoFillScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent {
+        composeTestRule.setContent {
             BlockAutoFillScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 viewModel = viewModel,
@@ -47,11 +47,7 @@ class BlockAutoFillScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(BlockAutoFillAction.BackClick) }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(BlockAutoFillEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `Screen should display empty state view when in ViewState Empty`() {

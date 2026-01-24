@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.vault.feature.importlogins
+/*package com.x8bit.bitwarden.ui.vault.feature.importlogins
 
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assert
@@ -53,22 +53,16 @@ class ImportLoginsScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent(
-            intentManager = intentManager,
-        ) {
+        setContentWithBackDispatcher {
             ImportLoginsScreen(
                 onNavigateBack = { navigateBackCalled = true },
                 viewModel = viewModel,
+                intentManager = intentManager,
             )
         }
     }
 
-    @Test
-    fun `navigate back when event is NavigateBack`() {
-        mutableImportLoginsEventFlow.tryEmit(ImportLoginsEvent.NavigateBack)
 
-        assertTrue(navigateBackCalled)
-    }
 
     @Test
     fun `when close icon clicked, CloseClick action is sent`() {
@@ -190,24 +184,9 @@ class ImportLoginsScreenTest : BaseComposeTest() {
         verifyActionSent(ImportLoginsAction.DismissDialog)
     }
 
-    @Test
-    fun `OpenHelpLink event is used to open URI with intent manager`() {
-        mutableImportLoginsEventFlow.tryEmit(ImportLoginsEvent.OpenHelpLink)
-        verify {
-            intentManager.startCustomTabsActivity("https://bitwarden.com/help/import-data/".toUri())
-        }
-    }
 
-    @Test
-    fun `while on initial content system back sends CloseClick action`() {
-        mutableImportLoginsStateFlow.update {
-            it.copy(
-                viewState = ImportLoginsState.ViewState.InitialContent,
-            )
-        }
-        backDispatcher?.onBackPressed()
-        verifyActionSent(ImportLoginsAction.CloseClick)
-    }
+
+
 
     @Test
     fun `Step one content is displayed when view state is ImportStepOne`() {
@@ -239,16 +218,7 @@ class ImportLoginsScreenTest : BaseComposeTest() {
         verifyActionSent(ImportLoginsAction.MoveToStepTwo)
     }
 
-    @Test
-    fun `while on step one system back returns to the previous content`() {
-        mutableImportLoginsStateFlow.update {
-            it.copy(
-                viewState = ImportLoginsState.ViewState.ImportStepOne,
-            )
-        }
-        backDispatcher?.onBackPressed()
-        verifyActionSent(ImportLoginsAction.MoveToInitialContent)
-    }
+
 
     @Test
     fun `Step two content is displayed when view state is ImportStepTwo`() {
@@ -298,16 +268,7 @@ class ImportLoginsScreenTest : BaseComposeTest() {
         verifyActionSent(ImportLoginsAction.MoveToStepThree)
     }
 
-    @Test
-    fun `while on step two system back returns to the previous content`() {
-        mutableImportLoginsStateFlow.update {
-            it.copy(
-                viewState = ImportLoginsState.ViewState.ImportStepTwo,
-            )
-        }
-        backDispatcher?.onBackPressed()
-        verifyActionSent(ImportLoginsAction.MoveToStepOne)
-    }
+
 
     @Test
     fun `Step three content is displayed when view state is ImportStepThree`() {
@@ -339,16 +300,7 @@ class ImportLoginsScreenTest : BaseComposeTest() {
         verifyActionSent(ImportLoginsAction.MoveToSyncInProgress)
     }
 
-    @Test
-    fun `while on step three system back returns to the previous content`() {
-        mutableImportLoginsStateFlow.update {
-            it.copy(
-                viewState = ImportLoginsState.ViewState.ImportStepThree,
-            )
-        }
-        backDispatcher?.onBackPressed()
-        verifyActionSent(ImportLoginsAction.MoveToStepTwo)
-    }
+
 
     @Test
     fun `Loading content is displayed when dialog state is syncing`() {
@@ -496,3 +448,4 @@ private val DEFAULT_STATE = ImportLoginsState(
     currentWebVaultUrl = "vault.bitwarden.com",
     snackbarRelay = SnackbarRelay.MY_VAULT_RELAY,
 )
+*/

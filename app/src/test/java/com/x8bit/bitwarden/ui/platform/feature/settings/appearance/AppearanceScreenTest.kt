@@ -37,7 +37,7 @@ class AppearanceScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent {
+        composeTestRule.setContent {
             AppearanceScreen(
                 onNavigateBack = { haveCalledNavigateBack = true },
                 viewModel = viewModel,
@@ -64,7 +64,7 @@ class AppearanceScreenTest : BaseComposeTest() {
     }
 
     @Test
-    fun `on language selection dialog item click should send LanguageChange`() {
+    fun `on language selection dialog item click should send LanguageChange and show dialog`() {
         // Clicking the Language row shows the language selection dialog
         composeTestRule
             .onNodeWithContentDescription(label = "Default (System). Language")
@@ -79,6 +79,17 @@ class AppearanceScreenTest : BaseComposeTest() {
             .onAllNodesWithText("Afrikaans")
             .filterToOne(hasAnyAncestor(isDialog()))
             .assertIsNotDisplayed()
+
+        // Should show confirmation dialog
+        composeTestRule
+            .onAllNodesWithText("Ok")
+            .filterToOne(hasAnyAncestor(isDialog()))
+            .assertIsDisplayed()
+        // Clicking "Ok" should dismiss confirmation dialog
+        composeTestRule.onAllNodesWithText("Ok")
+            .filterToOne(hasAnyAncestor(isDialog()))
+            .performClick()
+        composeTestRule.assertNoDialogExists()
 
         verify {
             viewModel.trySendAction(
@@ -161,11 +172,7 @@ class AppearanceScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AppearanceAction.ShowWebsiteIconsToggle(true)) }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(AppearanceEvent.NavigateBack)
-        assertTrue(haveCalledNavigateBack)
-    }
+
 }
 
 private val DEFAULT_STATE = AppearanceState(

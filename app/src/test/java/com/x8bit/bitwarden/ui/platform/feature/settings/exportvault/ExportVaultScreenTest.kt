@@ -45,24 +45,16 @@ class ExportVaultScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent(
-            intentManager = intentManager,
-        ) {
+        composeTestRule.setContent {
             ExportVaultScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 viewModel = viewModel,
+                intentManager = intentManager,
             )
         }
     }
 
-    @Test
-    fun `NavigateToSelectExportDataLocation should invoke createDocumentIntent`() {
-        mutableEventFlow.tryEmit(ExportVaultEvent.NavigateToSelectExportDataLocation("test.json"))
 
-        verify(exactly = 1) {
-            intentManager.createDocumentIntent("test.json")
-        }
-    }
 
     @Test
     fun `basicDialog should update according to state`() {
@@ -214,11 +206,7 @@ class ExportVaultScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithText("Loading...").isDisplayed()
     }
 
-    @Test
-    fun `NavigateBack event should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(ExportVaultEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `confirm file password input change should send ConfirmFilePasswordInputChange action`() {

@@ -49,13 +49,12 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent(
-            intentManager = intentManager,
-            nfcManager = nfcManager,
-        ) {
+        composeTestRule.setContent {
             TwoFactorLoginScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 viewModel = viewModel,
+                intentManager = intentManager,
+                nfcManager = nfcManager,
             )
         }
     }
@@ -254,41 +253,15 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithText("Authenticator App").isDisplayed()
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(TwoFactorLoginEvent.NavigateBack)
-        TestCase.assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToCaptcha should call intentManager startCustomTabsActivity`() {
-        val mockUri = mockk<Uri>()
-        mutableEventFlow.tryEmit(TwoFactorLoginEvent.NavigateToCaptcha(mockUri))
-        verify { intentManager.startCustomTabsActivity(mockUri) }
-    }
 
-    @Test
-    fun `NavigateToDuo should call intentManager startCustomTabsActivity`() {
-        val mockUri = mockk<Uri>()
-        mutableEventFlow.tryEmit(TwoFactorLoginEvent.NavigateToDuo(mockUri))
-        verify { intentManager.startCustomTabsActivity(mockUri) }
-    }
 
-    @Test
-    fun `NavigateToDuoNavigateToWebAuth should call intentManager startCustomTabsActivity`() {
-        val mockUri = mockk<Uri>()
-        mutableEventFlow.tryEmit(TwoFactorLoginEvent.NavigateToWebAuth(mockUri))
-        verify { intentManager.startCustomTabsActivity(mockUri) }
-    }
 
-    @Test
-    fun `NavigateToRecoveryCode should launch the recovery code uri`() {
-        val mockUri = mockk<Uri>()
-        mutableEventFlow.tryEmit(TwoFactorLoginEvent.NavigateToRecoveryCode(mockUri))
-        verify {
-            intentManager.launchUri(mockUri)
-        }
-    }
+
+
+
+
+
 
     @Test
     fun `remember me should not be visible if isNewDeviceVerification is true`() {

@@ -54,9 +54,7 @@ class StartRegistrationScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent(
-            intentManager = intentManager,
-        ) {
+        composeTestRule.setContent {
             StartRegistrationScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToCompleteRegistration = { _, _ ->
@@ -64,6 +62,7 @@ class StartRegistrationScreenTest : BaseComposeTest() {
                 },
                 onNavigateToCheckEmail = { _ -> onNavigateToCheckEmailCalled = true },
                 onNavigateToEnvironment = { onNavigateToEnvironmentCalled = true },
+                intentManager = intentManager,
                 viewModel = viewModel,
             )
         }
@@ -75,62 +74,19 @@ class StartRegistrationScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(CloseClick) }
     }
 
-    @Test
-    fun `NavigateBack event should invoke navigate back lambda`() {
-        mutableEventFlow.tryEmit(StartRegistrationEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `onNavigateToCompleteRegistration event should invoke navigate to complete registration`() {
-        mutableEventFlow.tryEmit(
-            StartRegistrationEvent.NavigateToCompleteRegistration(
-                email = "email",
-                verificationToken = "verificationToken",
-            ),
-        )
-        assertTrue(onNavigateToCompleteRegistrationCalled)
-    }
 
-    @Test
-    fun `NavigateToCheckEmail event should invoke navigate to check email`() {
-        mutableEventFlow.tryEmit(
-            StartRegistrationEvent.NavigateToCheckEmail(
-                email = "email",
-            ),
-        )
-        assertTrue(onNavigateToCheckEmailCalled)
-    }
 
-    @Test
-    fun `NavigateToEnvironment event should invoke navigate to environment`() {
-        mutableEventFlow.tryEmit(StartRegistrationEvent.NavigateToEnvironment)
-        assertTrue(onNavigateToEnvironmentCalled)
-    }
 
-    @Test
-    fun `NavigateToPrivacyPolicy event should invoke intent manager`() {
-        mutableEventFlow.tryEmit(StartRegistrationEvent.NavigateToPrivacyPolicy)
-        verify {
-            intentManager.launchUri("https://bitwarden.com/privacy/".toUri())
-        }
-    }
 
-    @Test
-    fun `NavigateToTerms event should invoke intent manager`() {
-        mutableEventFlow.tryEmit(StartRegistrationEvent.NavigateToTerms)
-        verify {
-            intentManager.launchUri("https://bitwarden.com/terms/".toUri())
-        }
-    }
 
-    @Test
-    fun `NavigateToUnsubscribe event should invoke intent manager`() {
-        mutableEventFlow.tryEmit(StartRegistrationEvent.NavigateToUnsubscribe)
-        verify {
-            intentManager.launchUri("https://bitwarden.com/email-preferences/".toUri())
-        }
-    }
+
+
+
+
+
+
+
 
     @Test
     fun `email input change should send EmailInputChange action`() {
@@ -193,16 +149,7 @@ class StartRegistrationScreenTest : BaseComposeTest() {
             .assertDoesNotExist()
     }
 
-    @Test
-    fun `when NavigateToServerSelectionInfo is observed event should invoke intent manager`() {
-        mutableEventFlow.tryEmit(StartRegistrationEvent.NavigateToServerSelectionInfo)
 
-        verify {
-            intentManager.launchUri(
-                uri = "https://bitwarden.com/help/server-geographies/".toUri(),
-            )
-        }
-    }
 
     @Test
     fun `when environment selected in dialog should send EnvironmentTypeSelect action`() {

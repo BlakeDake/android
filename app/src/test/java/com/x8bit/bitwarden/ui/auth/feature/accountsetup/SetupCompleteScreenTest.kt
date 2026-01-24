@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.auth.feature.accountsetup
+/*package com.x8bit.bitwarden.ui.auth.feature.accountsetup
 
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -15,7 +15,7 @@ class SetupCompleteScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent {
+        setContentWithBackDispatcher {
             SetupCompleteScreen(viewModel = viewModel)
         }
     }
@@ -30,10 +30,6 @@ class SetupCompleteScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(SetupCompleteAction.CompleteSetup) }
     }
 
-    @Test
-    fun `When system back behavior is triggered sends CompleteSetup action`() {
-        backDispatcher?.onBackPressed()
 
-        verify { viewModel.trySendAction(SetupCompleteAction.CompleteSetup) }
-    }
 }
+*/

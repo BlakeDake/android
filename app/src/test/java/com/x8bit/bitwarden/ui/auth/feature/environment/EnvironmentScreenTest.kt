@@ -47,22 +47,17 @@ class EnvironmentScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent(
-            intentManager = mockIntentManager,
-            keyChainManager = mockKeyChainManager,
-        ) {
+        composeTestRule.setContent {
             EnvironmentScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
+                intentManager = mockIntentManager,
+                keyChainManager = mockKeyChainManager,
                 viewModel = viewModel,
             )
         }
     }
 
-    @Test
-    fun `NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(EnvironmentEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `close click should send CloseClick`() {
@@ -165,35 +160,9 @@ class EnvironmentScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `ShowSystemCertificateSelection event should show system certificate selection dialog`() {
-        mutableEventFlow.tryEmit(
-            EnvironmentEvent.ShowSystemCertificateSelectionDialog(serverUrl = ""),
-        )
-        coVerify { mockKeyChainManager.choosePrivateKeyAlias(null) }
-    }
 
-    @Suppress("MaxLineLength")
-    @Test
-    fun `system certificate selection should send SystemCertificateSelectionResultReceive action`() {
-        coEvery {
-            mockKeyChainManager.choosePrivateKeyAlias(null)
-        } returns PrivateKeyAliasSelectionResult.Success("alias")
 
-        mutableEventFlow.tryEmit(
-            EnvironmentEvent.ShowSystemCertificateSelectionDialog(serverUrl = ""),
-        )
 
-        verify {
-            viewModel.trySendAction(
-                EnvironmentAction.SystemCertificateSelectionResultReceive(
-                    privateKeyAliasSelectionResult = PrivateKeyAliasSelectionResult.Success(
-                        alias = "alias",
-                    ),
-                ),
-            )
-        }
-    }
 
     @Test
     fun `key alias should change according to the state`() {

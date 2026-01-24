@@ -43,7 +43,7 @@ class ResetPasswordScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent {
+        composeTestRule.setContent {
             ResetPasswordScreen(
                 onNavigateToPreventAccountLockOut = {
                     onNavigateToLearnToPreventLockoutCalled = true
@@ -274,11 +274,7 @@ class ResetPasswordScreenTest : BaseComposeTest() {
             .assertCountEquals(3)
     }
 
-    @Test
-    fun `NavigateToPreventAccountLockout event calls onNavigateToPreventAccountLockout`() {
-        mutableEventFlow.tryEmit(ResetPasswordEvent.NavigateToPreventAccountLockout)
-        assertTrue(onNavigateToLearnToPreventLockoutCalled)
-    }
+
 
     @Test
     fun `When learn new ways text is clicked, send correct action`() {

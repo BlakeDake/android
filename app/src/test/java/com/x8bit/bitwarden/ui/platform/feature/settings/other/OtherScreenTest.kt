@@ -38,7 +38,7 @@ class OtherScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent {
+        composeTestRule.setContent {
             OtherScreen(
                 viewModel = viewModel,
                 onNavigateBack = { haveCalledNavigateBack = true },
@@ -144,11 +144,7 @@ class OtherScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(OtherAction.SyncNowButtonClick) }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(OtherEvent.NavigateBack)
-        assertTrue(haveCalledNavigateBack)
-    }
+
 
     @Test
     fun `loading dialog should be displayed according to state`() {

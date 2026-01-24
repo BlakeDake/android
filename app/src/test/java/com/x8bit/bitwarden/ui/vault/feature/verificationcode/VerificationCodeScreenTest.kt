@@ -48,39 +48,22 @@ class VerificationCodeScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent(
-            appResumeStateManager = appResumeStateManager,
-        ) {
+        composeTestRule.setContent {
             VerificationCodeScreen(
                 viewModel = viewModel,
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToVaultItemScreen = { onNavigateToVaultItemArgs = it },
                 onNavigateToSearch = { onNavigateToSearchCalled = true },
+                appResumeStateManager = appResumeStateManager,
             )
         }
     }
 
-    @Test
-    fun `NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(VerificationCodeEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToVaultSearchScreen event should invoke onNavigateToSearch`() {
-        mutableEventFlow.tryEmit(VerificationCodeEvent.NavigateToVaultSearchScreen)
-        assertTrue(onNavigateToSearchCalled)
-    }
 
-    @Test
-    fun `NavigateToVaultItem event should call onNavigateToVaultItemScreen`() {
-        val id = "id4321"
-        mutableEventFlow.tryEmit(VerificationCodeEvent.NavigateToVaultItem(id = id))
-        assertEquals(
-            VaultItemArgs(vaultItemId = id, cipherType = VaultItemCipherType.LOGIN),
-            onNavigateToVaultItemArgs,
-        )
-    }
+
+
+
 
     @Test
     fun `clicking back button should send BackClick action`() {

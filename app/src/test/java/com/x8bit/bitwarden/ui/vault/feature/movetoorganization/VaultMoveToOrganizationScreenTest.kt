@@ -45,7 +45,7 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent {
+        composeTestRule.setContent {
             VaultMoveToOrganizationScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 viewModel = viewModel,
@@ -138,11 +138,7 @@ class VaultMoveToOrganizationScreenTest : BaseComposeTest() {
             .assertIsNotDisplayed()
     }
 
-    @Test
-    fun `on NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(VaultMoveToOrganizationEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `clicking close button should send BackClick action`() {

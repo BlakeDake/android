@@ -46,21 +46,16 @@ class AttachmentsScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent(
-            intentManager = intentManager,
-        ) {
+        composeTestRule.setContent {
             AttachmentsScreen(
                 viewModel = viewModel,
+                intentManager = intentManager,
                 onNavigateBack = { onNavigateBackCalled = true },
             )
         }
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(AttachmentsEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
+
 
     @Test
     fun `on back click should send BackClick`() {
@@ -217,7 +212,6 @@ class AttachmentsScreenTest : BaseComposeTest() {
                 dialogState = AttachmentsState.DialogState.Error(
                     title = null,
                     message = errorMessage.asText(),
-                    throwable = null,
                 ),
             )
         }

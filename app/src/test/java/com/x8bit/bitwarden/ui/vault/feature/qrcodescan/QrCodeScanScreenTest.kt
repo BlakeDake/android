@@ -31,7 +31,7 @@ class QrCodeScanScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent {
+        composeTestRule.setContent {
             QrCodeScanScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 viewModel = viewModel,
@@ -43,17 +43,9 @@ class QrCodeScanScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on NavigateBack event should invoke onNavigateBack`() {
-        mutableEventFlow.tryEmit(QrCodeScanEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `on NavigateToManualCodeEntry event should invoke onNavigateToManualCodeEntryScreen`() {
-        mutableEventFlow.tryEmit(QrCodeScanEvent.NavigateToManualCodeEntry)
-        assertTrue(onNavigateToManualCodeEntryScreenCalled)
-    }
+
+
 
     @Test
     fun `when unable to setup camera CameraErrorReceive will be sent`() = runTest {

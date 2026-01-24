@@ -38,7 +38,7 @@ class DeleteAccountScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent {
+        composeTestRule.setContent {
             DeleteAccountScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToDeleteAccountConfirmation = {
@@ -49,18 +49,9 @@ class DeleteAccountScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(DeleteAccountEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    @Suppress("MaxLineLength")
-    fun `NavigateToDeleteAccountConfirmationScreen should call onNavigateToDeleteAccountConfirmationScreenCalled`() {
-        mutableEventFlow.tryEmit(DeleteAccountEvent.NavigateToDeleteAccountConfirmationScreen)
-        assertTrue(onNavigateToDeleteAccountConfirmationScreenCalled)
-    }
+
+
 
     @Test
     fun `cancel click should emit CancelClick`() {

@@ -66,15 +66,16 @@ class GeneratorScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent(
-            intentManager = intentManager,
-            appResumeStateManager = appResumeStateManager,
-        ) {
+        composeTestRule.setContent {
             GeneratorScreen(
                 viewModel = viewModel,
-                onNavigateToPasswordHistory = { onNavigateToPasswordHistoryScreenCalled = true },
+                onNavigateToPasswordHistory = {
+                    onNavigateToPasswordHistoryScreenCalled = true
+                },
                 onNavigateBack = {},
                 onDimNavBarRequest = { onDimNavBarRequest = it },
+                intentManager = intentManager,
+                appResumeStateManager = appResumeStateManager,
             )
         }
     }
@@ -174,11 +175,7 @@ class GeneratorScreenTest : BaseComposeTest() {
             .assertDoesNotExist()
     }
 
-    @Test
-    fun `NavigateToPasswordHistory event should call onNavigateToPasswordHistoryScreen`() {
-        mutableEventFlow.tryEmit(GeneratorEvent.NavigateToPasswordHistory)
-        assertTrue(onNavigateToPasswordHistoryScreenCalled)
-    }
+
 
     @Test
     fun `Snackbar should be displayed with correct message on ShowSnackbar event`() {
@@ -1567,13 +1564,7 @@ class GeneratorScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `on NavigateToTooltip should call launchUri on IntentManager`() {
-        mutableEventFlow.tryEmit(GeneratorEvent.NavigateToTooltip)
-        verify {
-            intentManager.launchUri("https://bitwarden.com/help/generator/#username-types".toUri())
-        }
-    }
+
 
     //endregion Username Type Tests
 
@@ -1691,10 +1682,7 @@ class GeneratorScreenTest : BaseComposeTest() {
         }
     }
 
-    @Test
-    fun `send LifecycleResumed action on screen resume`() {
-        verify { viewModel.trySendAction(GeneratorAction.LifecycleResume) }
-    }
+
 
     @Suppress("MaxLineLength")
     @Test

@@ -28,7 +28,7 @@ class SettingsScreenTest : BaseComposeTest() {
     fun `on about row click should emit SettingsClick`() {
 
         every { viewModel.trySendAction(SettingsAction.SettingsClick(Settings.ABOUT)) } just runs
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -48,7 +48,7 @@ class SettingsScreenTest : BaseComposeTest() {
         every {
             viewModel.trySendAction(SettingsAction.SettingsClick(Settings.ACCOUNT_SECURITY))
         } just runs
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -68,7 +68,7 @@ class SettingsScreenTest : BaseComposeTest() {
         every {
             viewModel.trySendAction(SettingsAction.SettingsClick(Settings.APPEARANCE))
         } just runs
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -89,7 +89,7 @@ class SettingsScreenTest : BaseComposeTest() {
         every {
             viewModel.trySendAction(SettingsAction.SettingsClick(Settings.AUTO_FILL))
         } just runs
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -108,7 +108,7 @@ class SettingsScreenTest : BaseComposeTest() {
     fun `on other row click should emit SettingsClick`() {
 
         every { viewModel.trySendAction(SettingsAction.SettingsClick(Settings.OTHER)) } just runs
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -127,7 +127,7 @@ class SettingsScreenTest : BaseComposeTest() {
     fun `on vault row click should emit SettingsClick`() {
 
         every { viewModel.trySendAction(SettingsAction.SettingsClick(Settings.VAULT)) } just runs
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -145,7 +145,7 @@ class SettingsScreenTest : BaseComposeTest() {
     @Test
     fun `on NavigateAbout should call onNavigateToAbout`() {
         var haveCalledNavigateToAbout = false
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = {
@@ -165,7 +165,7 @@ class SettingsScreenTest : BaseComposeTest() {
     @Test
     fun `on NavigateAccountSecurity should call onNavigateToAccountSecurity`() {
         var haveCalledNavigateToAccountSecurity = false
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -185,7 +185,7 @@ class SettingsScreenTest : BaseComposeTest() {
     @Test
     fun `on NavigateAccountSecurity should call NavigateAppearance`() {
         var haveCalledNavigateToAppearance = false
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -203,7 +203,7 @@ class SettingsScreenTest : BaseComposeTest() {
     @Test
     fun `on NavigateAccountSecurity should call onNavigateToAutoFill`() {
         var haveCalledNavigateToAutoFill = false
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -223,7 +223,7 @@ class SettingsScreenTest : BaseComposeTest() {
     @Test
     fun `on NavigateAccountSecurity should call onNavigateToOther`() {
         var haveCalledNavigateToOther = false
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -243,7 +243,7 @@ class SettingsScreenTest : BaseComposeTest() {
     @Test
     fun `on NavigateAccountSecurity should call NavigateVault`() {
         var haveCalledNavigateToVault = false
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -263,7 +263,7 @@ class SettingsScreenTest : BaseComposeTest() {
     @Test
     fun `on NavigateAccountSecurityShortcut should call onNavigateToAccountSecurity`() {
         var haveCalledNavigateToAccountSecurity = false
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = { },
@@ -281,7 +281,7 @@ class SettingsScreenTest : BaseComposeTest() {
 
     @Test
     fun `Settings screen should show correct number of notification badges based on state`() {
-        setContent {
+        composeTestRule.setContent {
             SettingsScreen(
                 viewModel = viewModel,
                 onNavigateToAbout = {},

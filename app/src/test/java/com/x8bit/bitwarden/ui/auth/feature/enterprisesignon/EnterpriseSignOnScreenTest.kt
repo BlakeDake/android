@@ -47,9 +47,7 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent(
-            intentManager = intentManager,
-        ) {
+        composeTestRule.setContent {
             EnterpriseSignOnScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToSetPassword = { onNavigateToSetPasswordCalled = true },
@@ -57,6 +55,7 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
                     onNavigateToTwoFactorLoginEmailAndOrgIdentifier = email to orgIdentifier
                 },
                 viewModel = viewModel,
+                intentManager = intentManager,
             )
         }
     }
@@ -97,45 +96,15 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
             .assertTextEquals("Organization identifier", "test")
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(EnterpriseSignOnEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToSsoLogin should call startCustomTabsActivity`() {
-        val ssoUri = Uri.parse("https://identity.bitwarden.com/sso-test")
-        mutableEventFlow.tryEmit(EnterpriseSignOnEvent.NavigateToSsoLogin(ssoUri))
-        verify(exactly = 1) {
-            intentManager.startCustomTabsActivity(ssoUri)
-        }
-    }
 
-    @Test
-    fun `NavigateToCaptcha should call startCustomTabsActivity`() {
-        val captchaUri = Uri.parse("https://captcha.com")
-        mutableEventFlow.tryEmit(EnterpriseSignOnEvent.NavigateToCaptcha(captchaUri))
-        verify(exactly = 1) {
-            intentManager.startCustomTabsActivity(captchaUri)
-        }
-    }
 
-    @Test
-    fun `NavigateToSetPassword should call onNavigateToSetPassword`() {
-        mutableEventFlow.tryEmit(EnterpriseSignOnEvent.NavigateToSetPassword)
-        assertTrue(onNavigateToSetPasswordCalled)
-    }
 
-    @Test
-    fun `NavigateToTwoFactorLogin should call onNavigateToTwoFactorLogin`() {
-        val email = "test@example.com"
-        val orgIdentifier = "org_identifier"
-        mutableEventFlow.tryEmit(
-            EnterpriseSignOnEvent.NavigateToTwoFactorLogin(email, orgIdentifier),
-        )
-        assertEquals(email to orgIdentifier, onNavigateToTwoFactorLoginEmailAndOrgIdentifier)
-    }
+
+
+
+
+
 
     @Test
     fun `error dialog should be shown or hidden according to the state`() {

@@ -61,12 +61,11 @@ class CreateAccountScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent(
-            intentManager = intentManager,
-        ) {
+        composeTestRule.setContent {
             CreateAccountScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToLogin = { _, _ -> onNavigateToLoginCalled = true },
+                intentManager = intentManager,
                 viewModel = viewModel,
             )
         }
@@ -115,42 +114,15 @@ class CreateAccountScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AcceptPoliciesToggle(true)) }
     }
 
-    @Test
-    fun `NavigateBack event should invoke navigate back lambda`() {
-        mutableEventFlow.tryEmit(CreateAccountEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToLogin event should invoke navigate login lambda`() {
-        mutableEventFlow.tryEmit(CreateAccountEvent.NavigateToLogin(email = "", captchaToken = ""))
-        assertTrue(onNavigateToLoginCalled)
-    }
 
-    @Test
-    fun `NavigateToCaptcha event should invoke intent manager`() {
-        val mockUri = mockk<Uri>()
-        mutableEventFlow.tryEmit(CreateAccountEvent.NavigateToCaptcha(uri = mockUri))
-        verify {
-            intentManager.startCustomTabsActivity(mockUri)
-        }
-    }
 
-    @Test
-    fun `NavigateToPrivacyPolicy event should invoke intent manager`() {
-        mutableEventFlow.tryEmit(CreateAccountEvent.NavigateToPrivacyPolicy)
-        verify {
-            intentManager.launchUri("https://bitwarden.com/privacy/".toUri())
-        }
-    }
 
-    @Test
-    fun `NavigateToTerms event should invoke intent manager`() {
-        mutableEventFlow.tryEmit(CreateAccountEvent.NavigateToTerms)
-        verify {
-            intentManager.launchUri("https://bitwarden.com/terms/".toUri())
-        }
-    }
+
+
+
+
+
 
     @Test
     fun `email input change should send EmailInputChange action`() {

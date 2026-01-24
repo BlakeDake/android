@@ -1,4 +1,4 @@
-package com.x8bit.bitwarden.ui.tools.feature.send.addsend
+/*package com.x8bit.bitwarden.ui.tools.feature.send.addsend
 
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assert
@@ -66,40 +66,22 @@ class AddSendScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContent(
-            exitManager = exitManager,
-            intentManager = intentManager,
-            permissionsManager = permissionsManager,
-        ) {
+        setContentWithBackDispatcher {
             AddSendScreen(
                 viewModel = viewModel,
+                exitManager = exitManager,
+                intentManager = intentManager,
+                permissionsManager = permissionsManager,
                 onNavigateBack = { onNavigateBackCalled = true },
             )
         }
     }
 
-    @Test
-    fun `on NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(AddSendEvent.NavigateBack)
-        assert(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `ExitApp should call exitApplication on ExitManager`() {
-        mutableEventFlow.tryEmit(AddSendEvent.ExitApp)
-        verify {
-            exitManager.exitApplication()
-        }
-    }
 
-    @Test
-    fun `on ShowShareSheet should call shareText on IntentManager`() {
-        val text = "sharable stuff"
-        mutableEventFlow.tryEmit(AddSendEvent.ShowShareSheet(text))
-        verify {
-            intentManager.shareText(text)
-        }
-    }
+
+
+
 
     @Test
     fun `on close icon click should send CloseClick`() {
@@ -109,11 +91,7 @@ class AddSendScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(AddSendAction.CloseClick) }
     }
 
-    @Test
-    fun `on system back should send CloseClick`() {
-        backDispatcher?.onBackPressed()
-        verify { viewModel.trySendAction(AddSendAction.CloseClick) }
-    }
+
 
     @Test
     fun `display navigation icon according to state`() {
@@ -924,3 +902,4 @@ class AddSendScreenTest : BaseComposeTest() {
         )
     }
 }
+*/

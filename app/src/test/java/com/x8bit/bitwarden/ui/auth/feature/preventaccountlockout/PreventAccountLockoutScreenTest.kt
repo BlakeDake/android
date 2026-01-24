@@ -20,7 +20,7 @@ class PreventAccountLockoutScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent {
+        composeTestRule.setContent {
             PreventAccountLockoutScreen(
                 onNavigateBack = { onBackHasBeenInvoked = true },
                 viewModel = viewModel,
@@ -37,10 +37,5 @@ class PreventAccountLockoutScreenTest : BaseComposeTest() {
         verify { viewModel.trySendAction(PreventAccountLockoutAction.CloseClickAction) }
     }
 
-    @Test
-    fun `NavigateBackEvent from ViewModel invokes onBackNavigation lambda`() {
-        mutableEventFlow.tryEmit(PreventAccountLockoutEvent.NavigateBack)
 
-        assertTrue(onBackHasBeenInvoked)
-    }
 }

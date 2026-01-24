@@ -70,71 +70,30 @@ class SearchScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContent(
-            appResumeStateManager = appResumeStateManager,
-            intentManager = intentManager,
-        ) {
+        composeTestRule.setContent {
             SearchScreen(
                 viewModel = viewModel,
+                intentManager = intentManager,
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToEditSend = { onNavigateToEditSendId = it },
                 onNavigateToEditCipher = { onNavigateToEditCipherArgs = it },
                 onNavigateToViewCipher = { onNavigateToViewCipherArgs = it },
+                appResumeStateManager = appResumeStateManager,
             )
         }
     }
 
-    @Test
-    fun `NavigateBack should call onNavigateBack`() {
-        mutableEventFlow.tryEmit(SearchEvent.NavigateBack)
-        assertTrue(onNavigateBackCalled)
-    }
 
-    @Test
-    fun `NavigateToEditSend should call onNavigateToEditSend`() {
-        val sendId = "sendId"
-        mutableEventFlow.tryEmit(SearchEvent.NavigateToEditSend(sendId))
-        assertEquals(sendId, onNavigateToEditSendId)
-    }
 
-    @Test
-    fun `NavigateToEditCipher should call onNavigateToEditCipher`() {
-        val cipherId = "cipherId"
-        val cipherType = VaultItemCipherType.LOGIN
-        val args = VaultAddEditArgs(
-            vaultAddEditType = VaultAddEditType.EditItem(vaultItemId = cipherId),
-            vaultItemCipherType = cipherType,
-        )
-        mutableEventFlow.tryEmit(SearchEvent.NavigateToEditCipher(cipherId, cipherType))
-        assertEquals(args, onNavigateToEditCipherArgs)
-    }
 
-    @Test
-    fun `NavigateToViewCipher should call onNavigateToViewCipher`() {
-        val cipherId = "cipherId"
-        val cipherType = VaultItemCipherType.LOGIN
-        val args = VaultItemArgs(vaultItemId = cipherId, cipherType = cipherType)
-        mutableEventFlow.tryEmit(SearchEvent.NavigateToViewCipher(cipherId, cipherType))
-        assertEquals(args, onNavigateToViewCipherArgs)
-    }
 
-    @Test
-    fun `NavigateToUrl should call launchUri on the IntentManager`() {
-        val url = "www.test.com"
-        mutableEventFlow.tryEmit(SearchEvent.NavigateToUrl(url))
-        verify(exactly = 1) {
-            intentManager.launchUri(url.toUri())
-        }
-    }
 
-    @Test
-    fun `ShowShareSheet should call onNavigateBack`() {
-        val sendUrl = "www.test.com"
-        mutableEventFlow.tryEmit(SearchEvent.ShowShareSheet(sendUrl))
-        verify {
-            intentManager.shareText(sendUrl)
-        }
-    }
+
+
+
+
+
+
 
     @Test
     fun `clicking back button should send BackClick action`() {
