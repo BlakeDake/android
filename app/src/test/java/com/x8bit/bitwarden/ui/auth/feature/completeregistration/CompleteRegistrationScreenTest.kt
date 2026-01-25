@@ -26,6 +26,7 @@ import com.x8bit.bitwarden.ui.auth.feature.completeregistration.CompleteRegistra
 import com.x8bit.bitwarden.ui.auth.feature.completeregistration.CompleteRegistrationAction.PasswordInputChange
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.theme.BitwardenTheme
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -55,7 +56,7 @@ class CompleteRegistrationScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContentWithBackDispatcher {
+        setContentWithBackgroundDispatcher {
             CompleteRegistrationScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToPasswordGuidance = { onNavigateToPasswordGuidanceCalled = true },
@@ -71,6 +72,7 @@ class CompleteRegistrationScreenTest : BaseComposeTest() {
             )
         }
     }
+
 
     @Test
     fun `determine if using the old ui by title text`() {
@@ -112,9 +114,6 @@ class CompleteRegistrationScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(CheckDataBreachesToggle(false)) }
     }
-
-
-
 
 
     @Test
@@ -245,11 +244,6 @@ class CompleteRegistrationScreenTest : BaseComposeTest() {
             .onAllNodesWithContentDescription("Show")
             .assertCountEquals(2)
     }
-
-
-
-
-
 
 
     // New Onboarding UI tests
