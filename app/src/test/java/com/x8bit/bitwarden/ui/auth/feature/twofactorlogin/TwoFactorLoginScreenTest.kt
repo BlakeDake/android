@@ -1,6 +1,7 @@
 package com.x8bit.bitwarden.ui.auth.feature.twofactorlogin
 
 import android.net.Uri
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -18,8 +19,12 @@ import com.x8bit.bitwarden.data.auth.datasource.network.model.TwoFactorAuthMetho
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
+import com.x8bit.bitwarden.ui.platform.composition.LocalNfcManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.platform.manager.nfc.NfcManager
+import com.x8bit.bitwarden.ui.platform.model.FeatureFlagsState
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -50,12 +55,19 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            TwoFactorLoginScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                viewModel = viewModel,
-                intentManager = intentManager,
-                nfcManager = nfcManager,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalNfcManager provides nfcManager,
+                LocalFeatureFlagsState provides FeatureFlagsState(
+                    isErrorReportingDialogEnabled = false,
+                ),
+
+                ) {
+                TwoFactorLoginScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    viewModel = viewModel,
+                )
+            }
         }
     }
 
@@ -252,15 +264,6 @@ class TwoFactorLoginScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithText("Email").assertDoesNotExist()
         composeTestRule.onNodeWithText("Authenticator App").isDisplayed()
     }
-
-
-
-
-
-
-
-
-
 
 
     @Test

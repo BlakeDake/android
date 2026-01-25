@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.auth.feature.vaultunlock
+package com.x8bit.bitwarden.ui.auth.feature.vaultunlock
 
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.NativeKeyEvent
