@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.auth.feature.startregistration
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.filterToOne
@@ -18,13 +19,17 @@ import com.x8bit.bitwarden.ui.auth.feature.startregistration.StartRegistrationAc
 import com.x8bit.bitwarden.ui.auth.feature.startregistration.StartRegistrationAction.EmailInputChange
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
+import com.x8bit.bitwarden.ui.platform.model.FeatureFlagsState
 import com.x8bit.bitwarden.ui.util.performCustomAccessibilityAction
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
+import kotlinx.collections.immutable.persistentMapOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertTrue
@@ -55,16 +60,23 @@ class StartRegistrationScreenTest : BaseComposeTest() {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            StartRegistrationScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToCompleteRegistration = { _, _ ->
-                    onNavigateToCompleteRegistrationCalled = true
-                },
-                onNavigateToCheckEmail = { _ -> onNavigateToCheckEmailCalled = true },
-                onNavigateToEnvironment = { onNavigateToEnvironmentCalled = true },
-                intentManager = intentManager,
-                viewModel = viewModel,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides FeatureFlagsState(
+                    isErrorReportingDialogEnabled = false,
+                ),
+            ) {
+                StartRegistrationScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    onNavigateToCompleteRegistration = { _, _ ->
+                        onNavigateToCompleteRegistrationCalled = true
+                    },
+                    onNavigateToCheckEmail = { _ -> onNavigateToCheckEmailCalled = true },
+                    onNavigateToEnvironment = { onNavigateToEnvironmentCalled = true },
+                    intentManager = intentManager,
+                    viewModel = viewModel,
+                )
+            }
         }
     }
 
@@ -73,19 +85,6 @@ class StartRegistrationScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithContentDescription("Close").performClick()
         verify { viewModel.trySendAction(CloseClick) }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
@@ -148,7 +147,6 @@ class StartRegistrationScreenTest : BaseComposeTest() {
             .onNodeWithContentDescription("Help with server geolocations.")
             .assertDoesNotExist()
     }
-
 
 
     @Test

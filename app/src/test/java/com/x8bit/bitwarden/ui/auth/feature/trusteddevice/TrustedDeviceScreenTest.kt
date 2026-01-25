@@ -1,5 +1,6 @@
-/*package com.x8bit.bitwarden.ui.auth.feature.trusteddevice
+package com.x8bit.bitwarden.ui.auth.feature.trusteddevice
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
@@ -14,6 +15,8 @@ import androidx.compose.ui.test.performScrollTo
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
+import com.x8bit.bitwarden.ui.platform.theme.BitwardenTheme
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
 import io.mockk.every
 import io.mockk.mockk
@@ -40,20 +43,22 @@ class TrustedDeviceScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            TrustedDeviceScreen(
-                viewModel = viewModel,
-                onNavigateToAdminApproval = { onNavigateToAdminApprovalEmail = it },
-                onNavigateToLoginWithOtherDevice = { onNavigateToLoginWithOtherDeviceEmail = it },
-                onNavigateToLock = { onNavigateToLockEmail = it },
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides mockk(relaxed = true),
+            ) {
+                BitwardenTheme {
+                    TrustedDeviceScreen(
+                        viewModel = viewModel,
+                        onNavigateToAdminApproval = { onNavigateToAdminApprovalEmail = it },
+                        onNavigateToLoginWithOtherDevice = {
+                            onNavigateToLoginWithOtherDeviceEmail = it
+                        },
+                        onNavigateToLock = { onNavigateToLockEmail = it },
+                    )
+                }
+            }
         }
     }
-
-
-
-
-
-
 
     @Test
     fun `on back click should send BackClick`() {
@@ -250,6 +255,7 @@ class TrustedDeviceScreenTest : BaseComposeTest() {
                 dialogState = TrustedDeviceState.DialogState.Error(
                     title = "Hello".asText(),
                     message = "World".asText(),
+                    error = null,
                 ),
             )
         }
@@ -278,4 +284,3 @@ private val DEFAULT_STATE: TrustedDeviceState = TrustedDeviceState(
     showRequestAdminButton = true,
     showMasterPasswordButton = true,
 )
-*/
