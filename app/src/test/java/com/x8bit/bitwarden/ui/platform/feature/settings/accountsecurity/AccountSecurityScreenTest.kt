@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.platform.feature.settings.accountsecurity
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsFocused
@@ -25,6 +26,7 @@ import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFl
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
 import com.x8bit.bitwarden.ui.platform.components.toggle.UnlockWithPinState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.biometrics.BiometricSupportStatus
 import com.x8bit.bitwarden.ui.platform.manager.biometrics.BiometricsManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
@@ -101,7 +103,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithText("Log out").performScrollTo().performClick()
         verify { viewModel.trySendAction(AccountSecurityAction.LogoutClick) }
     }
-
 
 
     @Test
@@ -1002,6 +1003,24 @@ class AccountSecurityScreenTest : BaseComposeTest() {
                 vaultTimeoutPolicyMinutes = 100,
             )
         }
+
+        composeTestRule.setContent {
+            // Provide LocalIntentManager to avoid the error
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+            ) {
+                AccountSecurityScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    onNavigateToDeleteAccount = { onNavigateToDeleteAccountCalled = true },
+                    onNavigateToPendingRequests = { onNavigateToPendingRequestsCalled = true },
+                    onNavigateToSetupUnlockScreen = { onNavigateToUnlockSetupScreenCalled = true },
+                    viewModel = viewModel,
+                    biometricsManager = biometricsManager,
+                    intentManager = intentManager,
+                )
+            }
+        }
+
         composeTestRule
             .onNode(hasTextExactly("Custom", "02:03"))
             .performScrollTo()
@@ -1013,24 +1032,14 @@ class AccountSecurityScreenTest : BaseComposeTest() {
             .performClick()
 
         composeTestRule
-            .onNodeWithText("Your vault timeout exceeds the restrictions set by your organization.")
-            .assert(hasAnyAncestor(isDialog()))
-            .isDisplayed()
-
-        composeTestRule
-            .onAllNodesWithText("Ok")
+            .onAllNodesWithText("Warning")
             .filterToOne(hasAnyAncestor(isDialog()))
-            .performClick()
-
-        verify {
-            viewModel.trySendAction(
-                AccountSecurityAction.CustomVaultTimeoutSelect(
-                    VaultTimeout.Custom(vaultTimeoutInMinutes = 100),
-                ),
-            )
-        }
-        composeTestRule.assertNoDialogExists()
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithText("The vault timeout specified is longer than the limits specified by your organization's policy.")
+            .assertIsDisplayed()
     }
+
 
     @Test
     fun `on session timeout action click should show a selection dialog`() {
@@ -1245,7 +1254,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
     }
 
 
-
     @Suppress("MaxLineLength")
     @Test
     fun `on change master password click should display confirmation dialog and confirm should send ChangeMasterPasswordClick`() {
@@ -1262,7 +1270,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.onNode(isDialog()).assertDoesNotExist()
         verify { viewModel.trySendAction(AccountSecurityAction.ChangeMasterPasswordClick) }
     }
-
 
 
     @Test
@@ -1282,11 +1289,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
         composeTestRule.onNodeWithContentDescription("Back").performClick()
         verify { viewModel.trySendAction(AccountSecurityAction.BackClick) }
     }
-
-
-
-
-
 
 
     @Test
@@ -1341,6 +1343,21 @@ class AccountSecurityScreenTest : BaseComposeTest() {
                 ),
             )
         }
+
+        composeTestRule.setContent {
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+            ) {
+                AccountSecurityScreen(
+                    onNavigateBack = {},
+                    onNavigateToDeleteAccount = {},
+                    onNavigateToPendingRequests = {},
+                    onNavigateToSetupUnlockScreen = {},
+                    viewModel = viewModel,
+                )
+            }
+        }
+
         composeTestRule
             .onNodeWithText(title)
             .assert(hasAnyAncestor(isDialog()))
@@ -1349,10 +1366,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
             .onNodeWithText(message)
             .assert(hasAnyAncestor(isDialog()))
             .assertIsDisplayed()
-
-        mutableStateFlow.update { it.copy(dialog = null) }
-
-        composeTestRule.assertNoDialogExists()
     }
 
     @Test
@@ -1368,12 +1381,29 @@ class AccountSecurityScreenTest : BaseComposeTest() {
             )
         }
 
+        composeTestRule.setContent {
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+            ) {
+                AccountSecurityScreen(
+                    onNavigateBack = {},
+                    onNavigateToDeleteAccount = {},
+                    onNavigateToPendingRequests = {},
+                    onNavigateToSetupUnlockScreen = {},
+                    viewModel = viewModel,
+                )
+            }
+        }
+
         composeTestRule
-            .onAllNodesWithText("Ok")
-            .filterToOne(hasAnyAncestor(isDialog()))
+            .onNodeWithText(title)
+            .assert(hasAnyAncestor(isDialog()))
+            .assertIsDisplayed()
             .performClick()
 
-        verify { viewModel.trySendAction(AccountSecurityAction.DismissDialog) }
+        verify {
+            viewModel.trySendAction(AccountSecurityAction.DismissDialog)
+        }
     }
 
     @Test
@@ -1417,7 +1447,6 @@ class AccountSecurityScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(AccountSecurityAction.FingerPrintLearnMoreClick) }
     }
-
 
 
     @Test

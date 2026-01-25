@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.auth.feature.vaultunlock
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.NativeKeyEvent
 import androidx.compose.ui.test.assertIsDisplayed
@@ -27,7 +28,11 @@ import com.x8bit.bitwarden.ui.autofill.fido2.manager.Fido2CompletionManager
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
 import com.x8bit.bitwarden.ui.platform.components.model.AccountSummary
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.biometrics.BiometricsManager
+import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
+import com.x8bit.bitwarden.ui.platform.model.FeatureFlagsState
 import com.x8bit.bitwarden.ui.util.assertLockOrLogoutDialogIsDisplayed
 import com.x8bit.bitwarden.ui.util.assertLogoutConfirmationDialogIsDisplayed
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
@@ -81,25 +86,24 @@ class VaultUnlockScreenTest : BaseComposeTest() {
         every { completeFido2GetCredentialRequest(any()) } just runs
     }
 
+    private val intentManager = mockk<IntentManager>(relaxed = true)
+    private val featureFlagsState = mockk<FeatureFlagsState>(relaxed = true)
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            VaultUnlockScreen(
-                viewModel = viewModel,
-                biometricsManager = biometricsManager,
-                fido2CompletionManager = fido2CompletionManager,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides featureFlagsState,
+            ) {
+                VaultUnlockScreen(
+                    viewModel = viewModel,
+                    biometricsManager = biometricsManager,
+                    fido2CompletionManager = fido2CompletionManager,
+                )
+            }
         }
     }
-
-
-
-
-
-
-
-
-
 
 
     @Test
@@ -426,6 +430,12 @@ class VaultUnlockScreenTest : BaseComposeTest() {
     @Test
     fun `state with input and without biometrics should request focus on input field`() {
         mutableStateFlow.update { it.copy(hideInput = false, isBiometricEnabled = false) }
+
+        // Wait for the auto-focus delay to complete
+        composeTestRule.waitForIdle()
+        composeTestRule.mainClock.advanceTimeBy(600L) // Slightly more than AUTO_FOCUS_DELAY (575ms)
+        composeTestRule.waitForIdle()
+
         composeTestRule
             .onNodeWithText("Master password")
             .performScrollTo()
@@ -592,5 +602,6 @@ private val DEFAULT_STATE: VaultUnlockState = VaultUnlockState(
     userId = ACTIVE_ACCOUNT_SUMMARY.userId,
     vaultUnlockType = VaultUnlockType.MASTER_PASSWORD,
     hasMasterPassword = true,
+    isFromLockFlow = false,
 )
-*/
+

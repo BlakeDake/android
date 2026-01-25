@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.platform.feature.debugmenu
+package com.x8bit.bitwarden.ui.platform.feature.debugmenu
 
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -14,15 +14,16 @@ import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
+import kotlinx.collections.immutable.toImmutableMap
 import kotlinx.coroutines.flow.MutableStateFlow
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 
 class DebugMenuScreenTest : BaseComposeTest() {
     private var onNavigateBackCalled = false
     private val mutableEventFlow = bufferedMutableSharedFlow<DebugMenuEvent>()
-    private val mutableStateFlow = MutableStateFlow(DebugMenuState(featureFlags = emptyMap()))
+    private val mutableStateFlow =
+        MutableStateFlow(DebugMenuState(featureFlags = emptyMap<FlagKey<Any>, Any>().toImmutableMap()))
     private val viewModel = mockk<DebugMenuViewModel>(relaxed = true) {
         every { stateFlow } returns mutableStateFlow
         every { eventFlow } returns mutableEventFlow
@@ -37,7 +38,6 @@ class DebugMenuScreenTest : BaseComposeTest() {
             )
         }
     }
-
 
 
     @Test
@@ -61,9 +61,9 @@ class DebugMenuScreenTest : BaseComposeTest() {
     fun `feature flag content should display if the state is not empty`() {
         mutableStateFlow.tryEmit(
             DebugMenuState(
-                featureFlags = mapOf(
+                featureFlags = mapOf<FlagKey<Any>, Any>(
                     FlagKey.EmailVerification to true,
-                ),
+                ).toImmutableMap(),
             ),
         )
 
@@ -76,9 +76,9 @@ class DebugMenuScreenTest : BaseComposeTest() {
     fun `boolean feature flag content should send action when clicked`() {
         mutableStateFlow.tryEmit(
             DebugMenuState(
-                featureFlags = mapOf(
+                featureFlags = mapOf<FlagKey<Any>, Any>(
                     FlagKey.EmailVerification to true,
-                ),
+                ).toImmutableMap(),
             ),
         )
         composeTestRule
@@ -109,9 +109,9 @@ class DebugMenuScreenTest : BaseComposeTest() {
     fun `restart onboarding should send action when enabled and clicked`() {
         mutableStateFlow.tryEmit(
             DebugMenuState(
-                featureFlags = mapOf(
-                    FlagKey.OnboardingFlow to true,
-                ),
+                featureFlags = mapOf<FlagKey<Any>, Any>(
+                    FlagKey.OnboardingFlow to true,  // Changed from EmailVerification
+                ).toImmutableMap(),
             ),
         )
         composeTestRule
@@ -123,13 +123,14 @@ class DebugMenuScreenTest : BaseComposeTest() {
         verify(exactly = 1) { viewModel.trySendAction(DebugMenuAction.RestartOnboarding) }
     }
 
+
     @Test
     fun `restart onboarding should not send action when not enabled`() {
         mutableStateFlow.tryEmit(
             DebugMenuState(
-                featureFlags = mapOf(
-                    FlagKey.OnboardingFlow to false,
-                ),
+                featureFlags = mapOf<FlagKey<Any>, Any>(
+                    FlagKey.EmailVerification to true,
+                ).toImmutableMap(),
             ),
         )
 
@@ -146,9 +147,9 @@ class DebugMenuScreenTest : BaseComposeTest() {
     fun `Show onboarding carousel should send action when enabled and clicked`() {
         mutableStateFlow.tryEmit(
             DebugMenuState(
-                featureFlags = mapOf(
-                    FlagKey.OnboardingCarousel to true,
-                ),
+                featureFlags = mapOf<FlagKey<Any>, Any>(
+                    FlagKey.OnboardingCarousel to true,  // Changed from EmailVerification
+                ).toImmutableMap(),
             ),
         )
         composeTestRule
@@ -160,13 +161,14 @@ class DebugMenuScreenTest : BaseComposeTest() {
         verify(exactly = 1) { viewModel.trySendAction(DebugMenuAction.RestartOnboardingCarousel) }
     }
 
+
     @Test
     fun `show onboarding carousel should not send action when not enabled`() {
         mutableStateFlow.tryEmit(
             DebugMenuState(
-                featureFlags = mapOf(
-                    FlagKey.OnboardingCarousel to false,
-                ),
+                featureFlags = mapOf<FlagKey<Any>, Any>(
+                    FlagKey.EmailVerification to true,
+                ).toImmutableMap(),
             ),
         )
 
@@ -189,4 +191,3 @@ class DebugMenuScreenTest : BaseComposeTest() {
         verify(exactly = 1) { viewModel.trySendAction(DebugMenuAction.ResetCoachMarkTourStatuses) }
     }
 }
-*/

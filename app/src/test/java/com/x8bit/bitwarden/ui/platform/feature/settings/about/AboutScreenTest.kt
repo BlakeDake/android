@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.platform.feature.settings.about
+package com.x8bit.bitwarden.ui.platform.feature.settings.about
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -39,11 +39,14 @@ class AboutScreenTest : BaseComposeTest() {
     private val mutableStateFlow = MutableStateFlow(
         AboutState(
             version = "Version: 1.0.0 (1)".asText(),
+            deviceData = "Device: Test Device".asText(),
+            ciData = "".asText(),
             isSubmitCrashLogsEnabled = false,
             copyrightInfo = "".asText(),
             shouldShowCrashLogsButton = true,
         ),
     )
+
     private val mutableEventFlow = bufferedMutableSharedFlow<AboutEvent>()
     val viewModel: AboutViewModel = mockk {
         every { stateFlow } returns mutableStateFlow
@@ -153,17 +156,6 @@ class AboutScreenTest : BaseComposeTest() {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
     @Test
     fun `submit crash logs switch should be displayed according to state`() {
         mutableStateFlow.update { it.copy(shouldShowCrashLogsButton = true) }
@@ -229,4 +221,3 @@ class AboutScreenTest : BaseComposeTest() {
             .assertIsDisplayed()
     }
 }
-*/
