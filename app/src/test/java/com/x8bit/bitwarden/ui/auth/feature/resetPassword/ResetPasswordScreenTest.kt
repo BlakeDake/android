@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.auth.feature.resetPassword
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -21,6 +22,8 @@ import com.x8bit.bitwarden.ui.auth.feature.resetpassword.ResetPasswordState
 import com.x8bit.bitwarden.ui.auth.feature.resetpassword.ResetPasswordViewModel
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import com.x8bit.bitwarden.ui.util.performCustomAccessibilityAction
 import io.mockk.every
@@ -44,14 +47,20 @@ class ResetPasswordScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            ResetPasswordScreen(
-                onNavigateToPreventAccountLockOut = {
-                    onNavigateToLearnToPreventLockoutCalled = true
-                },
-                viewModel = viewModel,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides mockk(relaxed = true),
+                LocalFeatureFlagsState provides mockk(relaxed = true),
+            ) {
+                ResetPasswordScreen(
+                    onNavigateToPreventAccountLockOut = {
+                        onNavigateToLearnToPreventLockoutCalled = true
+                    },
+                    viewModel = viewModel,
+                )
+            }
         }
     }
+
 
     @Test
     fun `basicDialog should update according to state`() {
@@ -273,7 +282,6 @@ class ResetPasswordScreenTest : BaseComposeTest() {
             .onAllNodesWithContentDescription("Show")
             .assertCountEquals(3)
     }
-
 
 
     @Test

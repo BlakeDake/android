@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.auth.feature.removepassword
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
@@ -13,6 +14,11 @@ import androidx.compose.ui.test.performScrollTo
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
+import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
+import com.x8bit.bitwarden.ui.platform.model.FeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.theme.BitwardenTheme
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
 import io.mockk.every
@@ -24,18 +30,27 @@ import org.junit.Before
 import org.junit.Test
 
 class RemovePasswordScreenTest : BaseComposeTest() {
-    private val mutableStateFlow = MutableStateFlow(DEFAULT_STATE)
+    private val mutableStateFlow = MutableStateFlow(DEFAULT_STATE.copy(dialogState = null))
     val viewModel = mockk<RemovePasswordViewModel>(relaxed = true) {
         every { eventFlow } returns bufferedMutableSharedFlow()
         every { stateFlow } returns mutableStateFlow
     }
+    private val mockIntentManager = mockk<IntentManager>(relaxed = true)
+    private val mockFeatureFlagsState = mockk<FeatureFlagsState>(relaxed = true)
 
     @Before
     fun setup() {
         composeTestRule.setContent {
-            RemovePasswordScreen(
-                viewModel = viewModel,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides mockIntentManager,
+                LocalFeatureFlagsState provides mockFeatureFlagsState,
+            ) {
+                BitwardenTheme {
+                    RemovePasswordScreen(
+                        viewModel = viewModel,
+                    )
+                }
+            }
         }
     }
 

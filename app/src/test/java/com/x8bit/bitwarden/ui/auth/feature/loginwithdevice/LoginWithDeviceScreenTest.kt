@@ -1,6 +1,7 @@
 package com.x8bit.bitwarden.ui.auth.feature.loginwithdevice
 
 import android.net.Uri
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -16,6 +17,7 @@ import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFl
 import com.x8bit.bitwarden.ui.auth.feature.loginwithdevice.model.LoginWithDeviceType
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
 import com.x8bit.bitwarden.ui.util.isProgressBar
@@ -30,6 +32,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.model.FeatureFlagsState
+
 
 class LoginWithDeviceScreenTest : BaseComposeTest() {
     private var onNavigateBackCalled = false
@@ -48,12 +53,19 @@ class LoginWithDeviceScreenTest : BaseComposeTest() {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            LoginWithDeviceScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToTwoFactorLogin = { onNavigateToTwoFactorLoginEmail = it },
-                viewModel = viewModel,
-                intentManager = intentManager,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides FeatureFlagsState(
+                    isErrorReportingDialogEnabled = false,
+                ),
+            ) {
+                LoginWithDeviceScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    onNavigateToTwoFactorLogin = { onNavigateToTwoFactorLoginEmail = it },
+                    viewModel = viewModel,
+                    intentManager = intentManager,
+                )
+            }
         }
     }
 
@@ -99,11 +111,6 @@ class LoginWithDeviceScreenTest : BaseComposeTest() {
             viewModel.trySendAction(LoginWithDeviceAction.ViewAllLogInOptionsClick)
         }
     }
-
-
-
-
-
 
 
     @Test

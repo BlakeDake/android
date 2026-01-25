@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.auth.feature.masterpasswordhint
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -7,6 +8,8 @@ import androidx.compose.ui.test.performTextReplacement
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import io.mockk.every
 import io.mockk.mockk
@@ -29,12 +32,18 @@ class MasterPasswordHintScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            MasterPasswordHintScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                viewModel = viewModel,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides mockk(relaxed = true),
+                LocalFeatureFlagsState provides mockk(relaxed = true),
+            ) {
+                MasterPasswordHintScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    viewModel = viewModel,
+                )
+            }
         }
     }
+
 
     @Test
     fun `email input change should send EmailInputChange action`() {

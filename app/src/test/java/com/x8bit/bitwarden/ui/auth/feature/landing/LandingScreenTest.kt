@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.auth.feature.landing
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
@@ -21,6 +22,7 @@ import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFl
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
 import com.x8bit.bitwarden.ui.platform.components.model.AccountSummary
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.util.assertLockOrLogoutDialogIsDisplayed
 import com.x8bit.bitwarden.ui.util.assertLogoutConfirmationDialogIsDisplayed
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
@@ -43,6 +45,8 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+
 
 class LandingScreenTest : BaseComposeTest() {
     private var capturedEmail: String? = null
@@ -60,16 +64,21 @@ class LandingScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            LandingScreen(
-                onNavigateToCreateAccount = { onNavigateToCreateAccountCalled = true },
-                onNavigateToLogin = { capturedEmail ->
-                    this.capturedEmail = capturedEmail
-                    onNavigateToLoginCalled = true
-                },
-                onNavigateToEnvironment = { onNavigateToEnvironmentCalled = true },
-                onNavigateToStartRegistration = { onNavigateToStartRegistrationCalled = true },
-                viewModel = viewModel,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides mockk(relaxed = true),
+                LocalFeatureFlagsState provides mockk(relaxed = true),
+            ) {
+                LandingScreen(
+                    onNavigateToCreateAccount = { onNavigateToCreateAccountCalled = true },
+                    onNavigateToLogin = { capturedEmail ->
+                        this.capturedEmail = capturedEmail
+                        onNavigateToLoginCalled = true
+                    },
+                    onNavigateToEnvironment = { onNavigateToEnvironmentCalled = true },
+                    onNavigateToStartRegistration = { onNavigateToStartRegistrationCalled = true },
+                    viewModel = viewModel,
+                )
+            }
         }
     }
 
@@ -291,11 +300,6 @@ class LandingScreenTest : BaseComposeTest() {
             viewModel.trySendAction(LandingAction.EmailInputChanged(input))
         }
     }
-
-
-
-
-
 
 
     @Test

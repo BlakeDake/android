@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.auth.feature.setpassword
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.hasAnyAncestor
@@ -12,6 +13,8 @@ import androidx.compose.ui.test.performTextInput
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import io.mockk.every
 import io.mockk.mockk
@@ -20,6 +23,10 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Test
+import com.x8bit.bitwarden.ui.platform.composition.LocalManagerProvider
+import com.x8bit.bitwarden.ui.platform.model.FeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.theme.BitwardenTheme
+
 
 class SetPasswordScreenTest : BaseComposeTest() {
     private val mutableEventFlow = bufferedMutableSharedFlow<SetPasswordEvent>()
@@ -32,11 +39,21 @@ class SetPasswordScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            SetPasswordScreen(
-                viewModel = viewModel,
-            )
+            BitwardenTheme {
+                CompositionLocalProvider(
+                    LocalIntentManager provides mockk(relaxed = true),
+                    LocalFeatureFlagsState provides FeatureFlagsState(
+                        isErrorReportingDialogEnabled = false,
+                    ),
+                ) {
+                    SetPasswordScreen(
+                        viewModel = viewModel,
+                    )
+                }
+            }
         }
     }
+
 
     @Test
     fun `basicDialog should update according to state`() {
