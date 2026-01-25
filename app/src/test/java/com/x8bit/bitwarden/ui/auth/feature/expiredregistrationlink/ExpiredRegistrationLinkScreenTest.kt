@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.auth.feature.expiredregistrationlink
+package com.x8bit.bitwarden.ui.auth.feature.expiredregistrationlink
 
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
@@ -25,7 +25,7 @@ class ExpiredRegistrationLinkScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContentWithBackDispatcher {
+        composeTestRule.setContent {
             ExpiredRegistrationLinkScreen(
                 onNavigateBack = { onNavigateBackCalled = true },
                 onNavigateToLogin = { onNavigateToLoginCalled = true },
@@ -34,7 +34,6 @@ class ExpiredRegistrationLinkScreenTest : BaseComposeTest() {
             )
         }
     }
-
 
 
     @Test
@@ -65,9 +64,4 @@ class ExpiredRegistrationLinkScreenTest : BaseComposeTest() {
     }
 
 
-
-
-
-
 }
-*/

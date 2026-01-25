@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.auth.feature.environment
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
@@ -16,9 +17,13 @@ import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFl
 import com.x8bit.bitwarden.ui.auth.feature.environment.EnvironmentState.DialogState
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
+import com.x8bit.bitwarden.ui.platform.composition.LocalKeyChainManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.platform.manager.keychain.KeyChainManager
 import com.x8bit.bitwarden.ui.platform.manager.keychain.model.PrivateKeyAliasSelectionResult
+import com.x8bit.bitwarden.ui.platform.model.FeatureFlagsState
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.every
@@ -48,16 +53,18 @@ class EnvironmentScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            EnvironmentScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                intentManager = mockIntentManager,
-                keyChainManager = mockKeyChainManager,
-                viewModel = viewModel,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides mockIntentManager,
+                LocalKeyChainManager provides mockKeyChainManager,
+                LocalFeatureFlagsState provides FeatureFlagsState(isErrorReportingDialogEnabled = false),
+            ) {
+                EnvironmentScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    viewModel = viewModel,
+                )
+            }
         }
     }
-
-
 
     @Test
     fun `close click should send CloseClick`() {
@@ -159,9 +166,6 @@ class EnvironmentScreenTest : BaseComposeTest() {
             viewModel.trySendAction(EnvironmentAction.ChooseSystemCertificateClick)
         }
     }
-
-
-
 
 
     @Test
