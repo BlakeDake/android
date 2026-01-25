@@ -1,6 +1,7 @@
 package com.x8bit.bitwarden.ui.auth.feature.enterprisesignon
 
 import android.net.Uri
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextEquals
@@ -16,7 +17,10 @@ import androidx.compose.ui.test.performTextInput
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
+import com.x8bit.bitwarden.ui.platform.model.FeatureFlagsState
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
 import io.mockk.every
 import io.mockk.just
@@ -29,6 +33,7 @@ import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Test
 import org.junit.jupiter.api.Assertions.assertEquals
+import kotlin.collections.mapOf
 
 class EnterpriseSignOnScreenTest : BaseComposeTest() {
     private var onNavigateBackCalled = false
@@ -48,15 +53,20 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            EnterpriseSignOnScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToSetPassword = { onNavigateToSetPasswordCalled = true },
-                onNavigateToTwoFactorLogin = { email, orgIdentifier ->
-                    onNavigateToTwoFactorLoginEmailAndOrgIdentifier = email to orgIdentifier
-                },
-                viewModel = viewModel,
-                intentManager = intentManager,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides FeatureFlagsState(false),
+            ) {
+                EnterpriseSignOnScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    onNavigateToSetPassword = { onNavigateToSetPasswordCalled = true },
+                    onNavigateToTwoFactorLogin = { email, orgIdentifier ->
+                        onNavigateToTwoFactorLoginEmailAndOrgIdentifier = email to orgIdentifier
+                    },
+                    viewModel = viewModel,
+                    intentManager = intentManager,
+                )
+            }
         }
     }
 
@@ -95,15 +105,6 @@ class EnterpriseSignOnScreenTest : BaseComposeTest() {
             .onNodeWithText("Organization identifier")
             .assertTextEquals("Organization identifier", "test")
     }
-
-
-
-
-
-
-
-
-
 
 
     @Test

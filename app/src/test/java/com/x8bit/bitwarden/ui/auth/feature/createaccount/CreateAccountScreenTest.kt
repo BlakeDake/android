@@ -1,6 +1,7 @@
 package com.x8bit.bitwarden.ui.auth.feature.createaccount
 
 import android.net.Uri
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsOff
@@ -28,6 +29,8 @@ import com.x8bit.bitwarden.ui.auth.feature.createaccount.CreateAccountAction.Pas
 import com.x8bit.bitwarden.ui.auth.feature.createaccount.CreateAccountAction.SubmitClick
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.util.performCustomAccessibilityAction
 import io.mockk.every
@@ -62,14 +65,20 @@ class CreateAccountScreenTest : BaseComposeTest() {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            CreateAccountScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToLogin = { _, _ -> onNavigateToLoginCalled = true },
-                intentManager = intentManager,
-                viewModel = viewModel,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides mockk(relaxed = true),
+            ) {
+                CreateAccountScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    onNavigateToLogin = { _, _ -> onNavigateToLoginCalled = true },
+                    intentManager = intentManager,
+                    viewModel = viewModel,
+                )
+            }
         }
     }
+
 
     @Test
     fun `app bar submit click should send SubmitClick action`() {
@@ -113,15 +122,6 @@ class CreateAccountScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(AcceptPoliciesToggle(true)) }
     }
-
-
-
-
-
-
-
-
-
 
 
     @Test
