@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.auth.feature.accountsetup
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsOff
@@ -18,8 +19,11 @@ import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFl
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
 import com.x8bit.bitwarden.ui.platform.components.toggle.UnlockWithPinState
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.biometrics.BiometricSupportStatus
 import com.x8bit.bitwarden.ui.platform.manager.biometrics.BiometricsManager
+import com.x8bit.bitwarden.ui.platform.theme.BitwardenTheme
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
 import io.mockk.every
@@ -66,11 +70,18 @@ class SetupUnlockScreenTest : BaseComposeTest() {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            SetupUnlockScreen(
-                viewModel = viewModel,
-                biometricsManager = biometricsManager,
-                onNavigateBack = { onNavigateBackCalled = true },
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides mockk(relaxed = true),
+                LocalFeatureFlagsState provides mockk(relaxed = true),
+            ) {
+                BitwardenTheme {
+                    SetupUnlockScreen(
+                        viewModel = viewModel,
+                        biometricsManager = biometricsManager,
+                        onNavigateBack = { onNavigateBackCalled = true },
+                    )
+                }
+            }
         }
     }
 
@@ -626,8 +637,6 @@ class SetupUnlockScreenTest : BaseComposeTest() {
         mutableStateFlow.update { it.copy(dialogState = null) }
         composeTestRule.assertNoDialogExists()
     }
-
-
 
     @Test
     fun `close icon should not show when in initial setup`() {

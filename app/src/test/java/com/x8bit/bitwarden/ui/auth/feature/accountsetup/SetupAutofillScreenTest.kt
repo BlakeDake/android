@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.auth.feature.accountsetup
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.hasAnyAncestor
@@ -11,16 +12,18 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
-import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Test
+
 
 class SetupAutofillScreenTest : BaseComposeTest() {
     private var onNavigateBackCalled = false
@@ -38,11 +41,16 @@ class SetupAutofillScreenTest : BaseComposeTest() {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            SetupAutoFillScreen(
-                intentManager = intentManager,
-                viewModel = viewModel,
-                onNavigateBack = { onNavigateBackCalled = true },
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides mockk(relaxed = true),
+            ) {
+                SetupAutoFillScreen(
+                    intentManager = intentManager,
+                    viewModel = viewModel,
+                    onNavigateBack = { onNavigateBackCalled = true },
+                )
+            }
         }
     }
 
@@ -102,10 +110,6 @@ class SetupAutofillScreenTest : BaseComposeTest() {
             .onNodeWithText(text = "Turn on later")
             .assertDoesNotExist()
     }
-
-
-
-
 
     @Test
     fun `Show autofill fallback dialog when dialog state is AutoFillFallbackDialog`() {
@@ -207,7 +211,6 @@ class SetupAutofillScreenTest : BaseComposeTest() {
         }
         composeTestRule.assertNoDialogExists()
     }
-
 
 
     @Test
