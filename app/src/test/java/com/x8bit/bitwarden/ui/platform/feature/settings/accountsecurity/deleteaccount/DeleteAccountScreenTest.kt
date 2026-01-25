@@ -15,6 +15,8 @@ import androidx.compose.ui.test.performTextInput
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalManagerProvider
+import com.x8bit.bitwarden.ui.platform.theme.BitwardenTheme
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -39,18 +41,21 @@ class DeleteAccountScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            DeleteAccountScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToDeleteAccountConfirmation = {
-                    onNavigateToDeleteAccountConfirmationScreenCalled = true
-                },
-                viewModel = viewModel,
-            )
+            BitwardenTheme {
+                LocalManagerProvider(
+                    featureFlagsState = mockk(relaxed = true),
+                ) {
+                    DeleteAccountScreen(
+                        onNavigateBack = { onNavigateBackCalled = true },
+                        onNavigateToDeleteAccountConfirmation = {
+                            onNavigateToDeleteAccountConfirmationScreenCalled = true
+                        },
+                        viewModel = viewModel,
+                    )
+                }
+            }
         }
     }
-
-
-
 
 
     @Test

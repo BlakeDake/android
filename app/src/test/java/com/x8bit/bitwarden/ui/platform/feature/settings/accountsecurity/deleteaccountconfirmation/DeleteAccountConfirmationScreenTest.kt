@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.platform.feature.settings.accountsecurity.deleteaccountconfirmation
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.filterToOne
 import androidx.compose.ui.test.hasAnyAncestor
 import androidx.compose.ui.test.isDialog
@@ -12,6 +13,9 @@ import androidx.compose.ui.test.performTextInput
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
+import com.x8bit.bitwarden.ui.platform.theme.BitwardenTheme
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.verify
@@ -34,13 +38,19 @@ class DeleteAccountConfirmationScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            DeleteAccountConfirmationScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                viewModel = viewModel,
-            )
+            BitwardenTheme {
+                CompositionLocalProvider(
+                    LocalIntentManager provides mockk(relaxed = true),
+                    LocalFeatureFlagsState provides mockk(relaxed = true),
+                ) {
+                    DeleteAccountConfirmationScreen(
+                        onNavigateBack = { onNavigateBackCalled = true },
+                        viewModel = viewModel,
+                    )
+                }
+            }
         }
     }
-
 
 
     @Test
@@ -95,7 +105,7 @@ class DeleteAccountConfirmationScreenTest : BaseComposeTest() {
         mutableStateFlow.update {
             DEFAULT_STATE.copy(
                 dialog =
-                DeleteAccountConfirmationState.DeleteAccountConfirmationDialog.DeleteSuccess(),
+                    DeleteAccountConfirmationState.DeleteAccountConfirmationDialog.DeleteSuccess(),
             )
         }
 
@@ -110,7 +120,7 @@ class DeleteAccountConfirmationScreenTest : BaseComposeTest() {
         mutableStateFlow.update {
             DEFAULT_STATE.copy(
                 dialog =
-                DeleteAccountConfirmationState.DeleteAccountConfirmationDialog.DeleteSuccess(),
+                    DeleteAccountConfirmationState.DeleteAccountConfirmationDialog.DeleteSuccess(),
             )
         }
 
