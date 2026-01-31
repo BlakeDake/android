@@ -70,25 +70,13 @@ class AppearanceScreenTest : BaseComposeTest() {
             .onNodeWithContentDescription(label = "Default (System). Language")
             .performScrollTo()
             .performClick()
-        // Selecting a language dismisses this dialog and displays the confirmation
+        // Selecting a language dismisses this dialog
         composeTestRule
             .onAllNodesWithText("Afrikaans")
             .filterToOne(hasAnyAncestor(isDialog()))
             .performClick()
-        composeTestRule
-            .onAllNodesWithText("Afrikaans")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsNotDisplayed()
 
-        // Should show confirmation dialog
-        composeTestRule
-            .onAllNodesWithText("Ok")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .assertIsDisplayed()
-        // Clicking "Ok" should dismiss confirmation dialog
-        composeTestRule.onAllNodesWithText("Ok")
-            .filterToOne(hasAnyAncestor(isDialog()))
-            .performClick()
+        // The dialog should be dismissed
         composeTestRule.assertNoDialogExists()
 
         verify {

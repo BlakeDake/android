@@ -1,5 +1,6 @@
 /*package com.x8bit.bitwarden.ui.platform.feature.settings.accountsecurity.loginapproval
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.filterToOne
@@ -9,10 +10,14 @@ import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
+import com.x8bit.bitwarden.data.platform.manager.model.FlagKey
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.exit.ExitManager
+import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
@@ -40,20 +45,22 @@ class LoginApprovalScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContentWithBackDispatcher {
-            LoginApprovalScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                viewModel = viewModel,
-                exitManager = exitManager,
-            )
+        val intentManager = mockk<IntentManager>(relaxed = true)
+        val featureFlagsState = MutableStateFlow<Map<FlagKey<Any>, Any>>(emptyMap())
+
+        composeTestRule.setContent {
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides featureFlagsState,
+            ) {
+                LoginApprovalScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    viewModel = viewModel,
+                    exitManager = exitManager,
+                )
+            }
         }
     }
-
-
-
-
-
-
 
     @Test
     fun `on Confirm login should send ApproveRequestClick`() = runTest {
