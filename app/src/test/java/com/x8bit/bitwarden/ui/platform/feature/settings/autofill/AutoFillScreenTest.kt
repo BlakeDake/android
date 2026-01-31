@@ -1,5 +1,6 @@
-/*package com.x8bit.bitwarden.ui.platform.feature.settings.autofill
+package com.x8bit.bitwarden.ui.platform.feature.settings.autofill
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
@@ -17,13 +18,17 @@ import androidx.compose.ui.test.performScrollTo
 import com.x8bit.bitwarden.data.platform.repository.model.UriMatchType
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
+import com.x8bit.bitwarden.ui.platform.model.FeatureFlagsState
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import io.mockk.every
 import io.mockk.just
 import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.verify
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertTrue
@@ -49,19 +54,27 @@ class AutoFillScreenTest : BaseComposeTest() {
         every { startSystemAccessibilitySettingsActivity() } just runs
     }
 
+    private val featureFlagsState = mockk<FeatureFlagsState>(relaxed = true)
+
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            AutoFillScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                onNavigateToBlockAutoFillScreen = { onNavigateToBlockAutoFillScreenCalled = true },
-                viewModel = viewModel,
-                intentManager = intentManager,
-                onNavigateToSetupAutofill = { onNavigateToSetupAutoFillScreenCalled = true },
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides featureFlagsState,
+            ) {
+                AutoFillScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    onNavigateToBlockAutoFillScreen = {
+                        onNavigateToBlockAutoFillScreenCalled = true
+                    },
+                    viewModel = viewModel,
+                    intentManager = intentManager,
+                    onNavigateToSetupAutofill = { onNavigateToSetupAutoFillScreenCalled = true },
+                )
+            }
         }
     }
-
 
 
     @Suppress("MaxLineLength")
@@ -437,7 +450,6 @@ class AutoFillScreenTest : BaseComposeTest() {
     }
 
 
-
     @Test
     fun `on block auto fill click should send BlockAutoFillClick`() {
         composeTestRule
@@ -446,7 +458,6 @@ class AutoFillScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(AutoFillAction.BlockAutoFillClick) }
     }
-
 
 
     @Test
@@ -472,7 +483,7 @@ class AutoFillScreenTest : BaseComposeTest() {
             .performScrollTo()
             .performClick()
 
-        verify { viewModel.trySendAction(AutoFillAction.AutoFillActionCardCtaClick) }
+        verify { viewModel.trySendAction(AutoFillAction.AutofillActionCardCtaClick) }
     }
 
     @Test
@@ -499,5 +510,6 @@ private val DEFAULT_STATE: AutoFillState = AutoFillState(
     defaultUriMatchType = UriMatchType.DOMAIN,
     showAutofillActionCard = false,
     activeUserId = "activeUserId",
+    chromeAutofillSettingsOptions = persistentListOf(),
 )
-*/
+

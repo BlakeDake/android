@@ -1,5 +1,6 @@
-/*package com.x8bit.bitwarden.ui.tools.feature.send.addsend
+package com.x8bit.bitwarden.ui.tools.feature.send.addsend
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
@@ -26,6 +27,8 @@ import androidx.compose.ui.test.performTextInput
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.exit.ExitManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.platform.manager.permissions.FakePermissionManager
@@ -66,22 +69,21 @@ class AddSendScreenTest : BaseComposeTest() {
 
     @Before
     fun setUp() {
-        setContentWithBackDispatcher {
-            AddSendScreen(
-                viewModel = viewModel,
-                exitManager = exitManager,
-                intentManager = intentManager,
-                permissionsManager = permissionsManager,
-                onNavigateBack = { onNavigateBackCalled = true },
-            )
+        composeTestRule.setContent {
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides mockk(relaxed = true),
+            ) {
+                AddSendScreen(
+                    viewModel = viewModel,
+                    exitManager = exitManager,
+                    intentManager = intentManager,
+                    permissionsManager = permissionsManager,
+                    onNavigateBack = { onNavigateBackCalled = true },
+                )
+            }
         }
     }
-
-
-
-
-
-
 
     @Test
     fun `on close icon click should send CloseClick`() {
@@ -90,7 +92,6 @@ class AddSendScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(AddSendAction.CloseClick) }
     }
-
 
 
     @Test
@@ -902,4 +903,3 @@ class AddSendScreenTest : BaseComposeTest() {
         )
     }
 }
-*/

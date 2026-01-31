@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.tools.feature.send
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -26,7 +27,10 @@ import com.x8bit.bitwarden.data.platform.manager.util.AppResumeStateManager
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
+import com.x8bit.bitwarden.ui.platform.model.FeatureFlagsState
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
 import com.x8bit.bitwarden.ui.util.isProgressBar
@@ -66,31 +70,24 @@ class SendScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            SendScreen(
-                viewModel = viewModel,
-                onNavigateToAddSend = { onNavigateToNewSendCalled = true },
-                onNavigateToEditSend = { onNavigateToEditSendId = it },
-                onNavigateToSendFilesList = { onNavigateToSendFilesListCalled = true },
-                onNavigateToSendTextList = { onNavigateToSendTextListCalled = true },
-                onNavigateToSearchSend = { onNavigateToSendSearchCalled = true },
-                intentManager = intentManager,
-                appResumeStateManager = appResumeStateManager,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides FeatureFlagsState(
+                    isErrorReportingDialogEnabled = false,
+                ),
+            ) {
+                SendScreen(
+                    viewModel = viewModel,
+                    onNavigateToAddSend = { onNavigateToNewSendCalled = true },
+                    onNavigateToEditSend = { onNavigateToEditSendId = it },
+                    onNavigateToSendFilesList = { onNavigateToSendFilesListCalled = true },
+                    onNavigateToSendTextList = { onNavigateToSendTextListCalled = true },
+                    onNavigateToSearchSend = { onNavigateToSendSearchCalled = true },
+                    appResumeStateManager = appResumeStateManager,
+                )
+            }
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test

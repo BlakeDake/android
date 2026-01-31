@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.platform.feature.settings.folders.addedit
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -14,7 +15,10 @@ import androidx.compose.ui.test.performClick
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.feature.settings.folders.model.FolderAddEditType
+import com.x8bit.bitwarden.ui.platform.theme.BitwardenTheme
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
 import io.mockk.every
 import io.mockk.mockk
@@ -39,14 +43,17 @@ class FolderAddEditScreenTest : BaseComposeTest() {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            FolderAddEditScreen(
-                viewModel = viewModel,
-                onNavigateBack = { onNavigateBackCalled = true },
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides mockk(relaxed = true),
+                LocalFeatureFlagsState provides mockk(relaxed = true),
+            ) {
+                FolderAddEditScreen(
+                    viewModel = viewModel,
+                    onNavigateBack = { onNavigateBackCalled = true },
+                )
+            }
         }
     }
-
-
 
     @Test
     fun `clicking save button should send SaveClick action`() {

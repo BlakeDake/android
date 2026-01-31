@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.platform.feature.settings.exportvault
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -19,6 +20,8 @@ import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFl
 import com.x8bit.bitwarden.ui.auth.feature.completeregistration.PasswordStrengthState
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.feature.settings.exportvault.model.ExportVaultFormat
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
@@ -46,14 +49,18 @@ class ExportVaultScreenTest : BaseComposeTest() {
     @Before
     fun setUp() {
         composeTestRule.setContent {
-            ExportVaultScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                viewModel = viewModel,
-                intentManager = intentManager,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides mockk(relaxed = true),
+            ) {
+                ExportVaultScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    viewModel = viewModel,
+                    intentManager = intentManager,
+                )
+            }
         }
     }
-
 
 
     @Test
@@ -205,7 +212,6 @@ class ExportVaultScreenTest : BaseComposeTest() {
 
         composeTestRule.onNodeWithText("Loading...").isDisplayed()
     }
-
 
 
     @Test
