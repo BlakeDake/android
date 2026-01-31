@@ -656,7 +656,6 @@ class VaultScreenTest : BaseComposeTest() {
     }
 
 
-
     @Test
     fun `search icon click should send SearchIconClick action`() {
         mutableStateFlow.update { it.copy(viewState = VaultState.ViewState.NoItems) }
@@ -680,31 +679,6 @@ class VaultScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(VaultAction.AddItemClick(CreateVaultItemType.LOGIN)) }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
@@ -1159,7 +1133,6 @@ class VaultScreenTest : BaseComposeTest() {
     }
 
 
-
     @Test
     fun `when ShowSnackbar is sent snackbar should be displayed`() {
         val data = BitwardenSnackbarData("message".asText())
@@ -1235,11 +1208,6 @@ class VaultScreenTest : BaseComposeTest() {
             .onNodeWithText("mockSshKey")
             .isNotDisplayed()
     }
-
-
-
-
-
 
 
     @Test
