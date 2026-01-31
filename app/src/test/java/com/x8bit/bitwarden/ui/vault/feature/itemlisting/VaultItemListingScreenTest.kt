@@ -351,11 +351,6 @@ class VaultItemListingScreenTest : BaseComposeTest() {
     }
 
 
-
-
-
-
-
     @Test
     fun `clicking back button should send BackClick action`() {
         composeTestRule
@@ -438,23 +433,6 @@ class VaultItemListingScreenTest : BaseComposeTest() {
             .performClick()
         verify { viewModel.trySendAction(VaultItemListingsAction.RefreshClick) }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     @Test
@@ -1825,23 +1803,6 @@ class VaultItemListingScreenTest : BaseComposeTest() {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @Suppress("MaxLineLength")
     @Test
     fun `OverwritePasskeyConfirmationPrompt should display based on dialog state and send ConfirmOverwriteExistingPasskeyClick on Ok click`() {
@@ -1875,7 +1836,6 @@ class VaultItemListingScreenTest : BaseComposeTest() {
             )
         }
     }
-
 
 
     @Test

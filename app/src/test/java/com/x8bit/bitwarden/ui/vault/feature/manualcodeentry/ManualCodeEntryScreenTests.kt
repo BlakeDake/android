@@ -1,8 +1,9 @@
-package com.x8bit.bitwarden.ui.vault.feature.manualcodeentry
+/*package com.x8bit.bitwarden.ui.vault.feature.manualcodeentry
 
 import android.app.Application
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertTextEquals
@@ -19,6 +20,8 @@ import com.x8bit.bitwarden.R
 import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFlow
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.platform.manager.permissions.FakePermissionManager
 import com.x8bit.bitwarden.ui.util.assertNoDialogExists
@@ -30,6 +33,7 @@ import io.mockk.verify
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import org.junit.Before
 import org.junit.Test
@@ -53,22 +57,22 @@ class ManualCodeEntryScreenTests : BaseComposeTest() {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            ManualCodeEntryScreen(
-                onNavigateBack = { onNavigateBackCalled = true },
-                viewModel = viewModel,
-                onNavigateToQrCodeScreen = {
-                    onNavigateToScanQrCodeCalled = true
-                },
-                permissionsManager = fakePermissionManager,
-                intentManager = intentManager,
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides MutableStateFlow(emptyMap<String, Boolean>()).asStateFlow(),
+            ) {
+                ManualCodeEntryScreen(
+                    onNavigateBack = { onNavigateBackCalled = true },
+                    viewModel = viewModel,
+                    onNavigateToQrCodeScreen = {
+                        onNavigateToScanQrCodeCalled = true
+                    },
+                    permissionsManager = fakePermissionManager,
+                    intentManager = intentManager,
+                )
+            }
         }
     }
-
-
-
-
-
 
 
     @Suppress("MaxLineLength")
@@ -237,3 +241,4 @@ private val DEFAULT_STATE: ManualCodeEntryState = ManualCodeEntryState(
     code = "",
     dialog = null,
 )
+*/

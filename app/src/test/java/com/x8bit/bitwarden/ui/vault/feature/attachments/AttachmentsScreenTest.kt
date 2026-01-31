@@ -1,5 +1,6 @@
 package com.x8bit.bitwarden.ui.vault.feature.attachments
 
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
@@ -16,6 +17,8 @@ import com.x8bit.bitwarden.data.platform.repository.util.bufferedMutableSharedFl
 import com.x8bit.bitwarden.data.vault.datasource.sdk.model.createMockCipherView
 import com.x8bit.bitwarden.ui.platform.base.BaseComposeTest
 import com.x8bit.bitwarden.ui.platform.base.util.asText
+import com.x8bit.bitwarden.ui.platform.composition.LocalFeatureFlagsState
+import com.x8bit.bitwarden.ui.platform.composition.LocalIntentManager
 import com.x8bit.bitwarden.ui.platform.manager.intent.IntentManager
 import com.x8bit.bitwarden.ui.util.assertNoPopupExists
 import com.x8bit.bitwarden.ui.util.isProgressBar
@@ -47,14 +50,18 @@ class AttachmentsScreenTest : BaseComposeTest() {
     @Before
     fun setup() {
         composeTestRule.setContent {
-            AttachmentsScreen(
-                viewModel = viewModel,
-                intentManager = intentManager,
-                onNavigateBack = { onNavigateBackCalled = true },
-            )
+            CompositionLocalProvider(
+                LocalIntentManager provides intentManager,
+                LocalFeatureFlagsState provides mockk(relaxed = true),
+            ) {
+                AttachmentsScreen(
+                    viewModel = viewModel,
+                    intentManager = intentManager,
+                    onNavigateBack = { onNavigateBackCalled = true },
+                )
+            }
         }
     }
-
 
 
     @Test

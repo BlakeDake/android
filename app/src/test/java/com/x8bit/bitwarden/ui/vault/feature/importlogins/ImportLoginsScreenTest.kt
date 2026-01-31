@@ -1,4 +1,4 @@
-/*package com.x8bit.bitwarden.ui.vault.feature.importlogins
+package com.x8bit.bitwarden.ui.vault.feature.importlogins
 
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assert
@@ -36,6 +36,7 @@ import kotlinx.coroutines.flow.update
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import kotlin.collections.get
 
 class ImportLoginsScreenTest : BaseComposeTest() {
     private var navigateBackCalled = false
@@ -53,7 +54,7 @@ class ImportLoginsScreenTest : BaseComposeTest() {
 
     @Before
     fun setup() {
-        setContentWithBackDispatcher {
+        composeTestRule.setContent {
             ImportLoginsScreen(
                 onNavigateBack = { navigateBackCalled = true },
                 viewModel = viewModel,
@@ -61,7 +62,6 @@ class ImportLoginsScreenTest : BaseComposeTest() {
             )
         }
     }
-
 
 
     @Test
@@ -185,9 +185,6 @@ class ImportLoginsScreenTest : BaseComposeTest() {
     }
 
 
-
-
-
     @Test
     fun `Step one content is displayed when view state is ImportStepOne`() {
         mutableImportLoginsStateFlow.update {
@@ -217,7 +214,6 @@ class ImportLoginsScreenTest : BaseComposeTest() {
             .performClick()
         verifyActionSent(ImportLoginsAction.MoveToStepTwo)
     }
-
 
 
     @Test
@@ -269,7 +265,6 @@ class ImportLoginsScreenTest : BaseComposeTest() {
     }
 
 
-
     @Test
     fun `Step three content is displayed when view state is ImportStepThree`() {
         mutableImportLoginsStateFlow.update {
@@ -299,7 +294,6 @@ class ImportLoginsScreenTest : BaseComposeTest() {
             .performClick()
         verifyActionSent(ImportLoginsAction.MoveToSyncInProgress)
     }
-
 
 
     @Test
@@ -421,9 +415,11 @@ class ImportLoginsScreenTest : BaseComposeTest() {
             .onNodeWithText("Import Successful!")
             .assertIsDisplayed()
 
+        // Wait for the bottom sheet to fully display
+        composeTestRule.waitForIdle()
+
         composeTestRule
-            .onAllNodesWithContentDescription("Close")
-            .filterToOne(hasAnySibling(hasText("Bitwarden Tools")))
+            .onAllNodesWithContentDescription("Close")[1]
             .assertIsDisplayed()
             .performSemanticsAction(SemanticsActions.OnClick)
 
@@ -448,4 +444,3 @@ private val DEFAULT_STATE = ImportLoginsState(
     currentWebVaultUrl = "vault.bitwarden.com",
     snackbarRelay = SnackbarRelay.MY_VAULT_RELAY,
 )
-*/
